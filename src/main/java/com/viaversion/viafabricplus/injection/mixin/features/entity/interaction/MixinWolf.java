@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction;
 
 import com.viaversion.viafabricplus.features.entity.metadata.WolfHealthTracker1_14_4;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
@@ -64,7 +65,7 @@ public abstract class MixinWolf extends TamableAnimal implements NeutralMob {
     @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
     private void fixWolfInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         final ItemStack itemStack = player.getItemInHand(hand);
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             final Item item = itemStack.getItem();
             if (this.isTame()) {
                 final FoodProperties foodComponent = itemStack.get(DataComponents.FOOD);
@@ -91,7 +92,7 @@ public abstract class MixinWolf extends TamableAnimal implements NeutralMob {
             }
 
             cir.setReturnValue(super.mobInteract(player, hand));
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && this.isTame()) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && this.isTame()) {
             // Call armor shearing manually as removed in MixinEntity
             if (itemStack.is(Items.SHEARS)
                 && this.isOwnedBy(player)

@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.features.hud_changes;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -50,7 +50,7 @@ public final class VFPDebugHudEntry implements DebugScreenEntry {
         final List<String> information = new ArrayList<>();
         information.add(ChatUtil.PREFIX + ChatFormatting.RESET + ' ' + ViaFabricPlus.api().version());
 
-        final UserConnection connection = ProtocolTranslator.getPlayStateUserConnection();
+        final UserConnection connection = ViaFabricPlus.api().userConnection();
         if (connection == null) {
             lines.addLine(information.getFirst());
             return;

@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.entity.metadata;
 
 import com.viaversion.viafabricplus.features.entity.metadata.WolfHealthTracker1_14_4;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.NeutralMob;
@@ -42,7 +43,7 @@ public abstract class MixinWolf extends TamableAnimal implements NeutralMob {
 
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/wolf/Wolf;getHealth()F"))
     private float fixWolfHealth(Wolf instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return WolfHealthTracker1_14_4.getWolfHealth(this);
         } else {
             return instance.getHealth();

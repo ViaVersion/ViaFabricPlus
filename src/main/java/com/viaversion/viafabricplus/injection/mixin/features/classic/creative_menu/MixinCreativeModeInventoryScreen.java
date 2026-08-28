@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.classic.creative_menu;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.classic.creative_menu.GridItemSelectionScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -35,7 +36,7 @@ public abstract class MixinCreativeModeInventoryScreen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void replaceCreativeMenu(CallbackInfo ci) {
-        if (ViaFabricPlus.api().settings().visual().replaceCreativeInventory().isActive()) {
+        if (ViaFabricPlusImpl.impl().visuals().replaceCreativeInventory().isActive()) {
             Minecraft.getInstance().gui.setScreen(GridItemSelectionScreen.INSTANCE);
         }
     }

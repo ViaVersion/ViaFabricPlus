@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Map;
 import net.minecraft.world.item.ShovelItem;
@@ -36,7 +37,7 @@ public abstract class MixinShovelItem {
 
     @Redirect(method = "useOn", slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/world/item/ShovelItem;FLATTENABLES:Ljava/util/Map;", opcode = Opcodes.GETSTATIC)), at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0, remap = false))
     private Object disablePathAction(Map<Object, Object> instance, Object grassBlock) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return null;
         } else {
             return instance.get(grassBlock);

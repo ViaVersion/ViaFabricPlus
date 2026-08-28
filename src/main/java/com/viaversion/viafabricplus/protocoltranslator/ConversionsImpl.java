@@ -21,29 +21,39 @@
 
 package com.viaversion.viafabricplus.protocoltranslator;
 
+import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.protocoltranslator.Conversions;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
+import com.viaversion.viafabricplus.protocoltranslator.util.NoPacketSendChannel;
+import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.connection.ProtocolInfo;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.Protocol;
+import com.viaversion.viaversion.api.protocol.ProtocolPathEntry;
+import com.viaversion.viaversion.api.protocol.ProtocolPipeline;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.connection.UserConnectionImpl;
+import com.viaversion.viaversion.protocol.ProtocolPipelineImpl;
 import com.viaversion.viaversion.protocols.v1_12to1_12_1.packet.ClientboundPackets1_12_1;
 import io.netty.buffer.Unpooled;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class ConversionsImpl implements Conversions {
 
     @Override
     public @Nullable Item translateItem(final ItemStack stack, final ProtocolVersion targetVersion) {
-        final UserConnection connection = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, targetVersion);
+        final UserConnection connection = createDummyUserConnection(ProtocolTranslationImpl.NATIVE_VERSION, targetVersion);
 
         try {
             final RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), Minecraft.getInstance().getConnection().registryAccess());
@@ -62,8 +72,8 @@ public final class ConversionsImpl implements Conversions {
     }
 
     @Override
-    public @Nullable ItemStack translateItem(final Item item, final ProtocolVersion sourceVersion) {
-        final UserConnection connection = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, sourceVersion);
+    public @NotNull ItemStack translateItem(final Item item, final ProtocolVersion sourceVersion) {
+        final UserConnection connection = createDummyUserConnection(ProtocolTranslationImpl.NATIVE_VERSION, sourceVersion);
 
         try {
             final Protocol<?, ?, ?, ?> sourceProtocol = connection.getProtocolInfo().getPipeline().reversedPipes().stream().filter(p -> !p.isBaseProtocol()).findFirst().orElseThrow();
@@ -90,6 +100,32 @@ public final class ConversionsImpl implements Conversions {
             ViaFabricPlusImpl.impl().logger().error("Error converting ViaVersion {} item to native item stack", sourceVersion, t);
             return ItemStack.EMPTY;
         }
+    }
+
+    @Override
+    public UserConnection createDummyUserConnection(final ProtocolVersion clientVersion, final ProtocolVersion serverVersion) {
+        final UserConnection user = new UserConnectionImpl(NoPacketSendChannel.INSTANCE, true);
+        final ProtocolPipeline pipeline = new ProtocolPipelineImpl(user);
+        final List<ProtocolPathEntry> path = Via.getManager().getProtocolManager().getProtocolPath(clientVersion, serverVersion);
+        if (path != null) {
+            for (ProtocolPathEntry pair : path) {
+                pipeline.add(pair.protocol());
+                pair.protocol().init(user);
+            }
+        }
+
+        final ProtocolInfo info = user.getProtocolInfo();
+        info.setState(State.PLAY);
+        info.setProtocolVersion(clientVersion);
+        info.setServerProtocolVersion(serverVersion);
+        final Minecraft mc = Minecraft.getInstance();
+        if (mc.player != null) {
+            final GameProfile profile = mc.player.getGameProfile();
+            info.setUsername(profile.name());
+            info.setUuid(profile.id());
+        }
+
+        return user;
     }
 
 }

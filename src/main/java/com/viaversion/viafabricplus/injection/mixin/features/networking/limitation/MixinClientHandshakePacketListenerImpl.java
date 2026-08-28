@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.limitation;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
 import net.minecraft.network.Connection;
@@ -34,7 +35,7 @@ public abstract class MixinClientHandshakePacketListenerImpl {
 
     @Redirect(method = "handleCompression", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;setupCompression(IZ)V"))
     private void pre1_17_1CompressionBehaviour(Connection instance, int threshold, boolean validateDecompressed) {
-        instance.setupCompression(threshold, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17));
+        instance.setupCompression(threshold, ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17));
     }
 
 }

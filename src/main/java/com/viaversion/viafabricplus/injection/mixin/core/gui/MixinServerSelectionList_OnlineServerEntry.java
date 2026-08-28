@@ -25,6 +25,7 @@ import com.google.common.collect.Lists;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public abstract class MixinServerSelectionList_OnlineServerEntry {
     private void drawTranslatingState(GuiGraphicsExtractor instance, Component component, int x, int y, Operation<Void> original) {
         final List<Component> tooltips = new ArrayList<>();
         tooltips.add(component);
-        if (ViaFabricPlus.api().settings().general().showAdvertisedServerVersion().value()) {
+        if (ViaFabricPlusImpl.impl().options().showAdvertisedServerVersion().isActive()) {
             tooltips.add(Component.translatable("base.viafabricplus.target_version", ((IServerData) serverData).viaFabricPlus$translatingVersion()));
             tooltips.add(Component.translatable("base.viafabricplus.server_version", serverData.version.getString() + " (" + serverData.protocol + ")"));
         }

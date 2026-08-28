@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.recipe;
 
 import com.viaversion.viafabricplus.features.recipe.Recipes1_11_2;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.AbstractCraftingMenu;
@@ -42,7 +43,7 @@ public abstract class MixinInventoryMenu extends AbstractCraftingMenu {
 
     @Inject(method = "slotsChanged", at = @At("HEAD"))
     private void clientSideCrafting(Container container, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             Recipes1_11_2.setCraftingResultSlot(containerId, this, this.craftSlots);
         }
     }

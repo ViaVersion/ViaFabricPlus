@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.features.recipe.custom;
 
 import com.mojang.serialization.MapCodec;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
@@ -78,7 +79,7 @@ public final class AddBannerPatternRecipe extends CustomRecipe {
         final BannerPattern_1_13_2 pattern = getBannerPattern(input);
         if (pattern != null) {
             final Holder.Reference<BannerPattern> patternKey = Minecraft.getInstance().getConnection().registryAccess().lookupOrThrow(Registries.BANNER_PATTERN).getOrThrow(pattern.getKey());
-            DyeColor color = ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ? DyeColor.BLACK : DyeColor.WHITE;
+            DyeColor color = ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ? DyeColor.BLACK : DyeColor.WHITE;
             for (int i = 0; i < input.size(); i++) {
                 ItemStack item = input.getItem(i);
                 if (item.get(DataComponents.DYE) != null) {
@@ -129,7 +130,7 @@ public final class AddBannerPatternRecipe extends CustomRecipe {
                         }
                     }
                 }
-                if (!foundBaseItem || (!foundDye && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_10)))
+                if (!foundBaseItem || (!foundDye && ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_10)))
                     matches = false;
             } else if (input.size() == pattern.getRecipePattern().length * pattern.getRecipePattern()[0].length()) {
                 DyeColor patternColor = null;

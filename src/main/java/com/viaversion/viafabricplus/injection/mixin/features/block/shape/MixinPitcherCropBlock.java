@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -79,7 +80,7 @@ public abstract class MixinPitcherCropBlock extends DoublePlantBlock {
 
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             final int age = state.getValue(AGE);
             if (state.getValue(HALF) == DoubleBlockHalf.UPPER) {
                 cir.setReturnValue(viaFabricPlus$upper_outline_shapes_r1_21_4[Math.min(Math.abs(4 - (age + 1)), viaFabricPlus$upper_outline_shapes_r1_21_4.length - 1)]);
@@ -91,7 +92,7 @@ public abstract class MixinPitcherCropBlock extends DoublePlantBlock {
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     private void changeBlockStatePropertyPriority(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             if (state.getValue(AGE) == 0) {
                 cir.setReturnValue(SHAPE_BULB);
             } else {

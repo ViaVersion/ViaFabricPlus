@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +34,7 @@ public abstract class MixinArmadillo {
 
     @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/armadillo/Armadillo;isScared()Z"))
     private boolean changeCondition(Armadillo instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5) && instance.isScared();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_20_5) && instance.isScared();
     }
 
 }

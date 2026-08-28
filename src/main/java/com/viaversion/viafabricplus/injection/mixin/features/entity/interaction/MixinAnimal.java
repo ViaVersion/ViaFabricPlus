@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.animal.Animal;
@@ -36,7 +37,7 @@ public abstract class MixinAnimal {
 
     @Redirect(method = "mobInteract", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;SUCCESS_SERVER:Lnet/minecraft/world/InteractionResult$Success;", opcode = Opcodes.GETSTATIC))
     private InteractionResult.Success swingHand() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return InteractionResult.SUCCESS;
         } else {
             return InteractionResult.SUCCESS_SERVER;
@@ -45,7 +46,7 @@ public abstract class MixinAnimal {
 
     @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;isClientSide()Z"))
     private boolean changeIsClientCondition(Level instance) {
-        return instance.isClientSide() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
+        return instance.isClientSide() && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
 }

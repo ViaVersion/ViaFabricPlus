@@ -21,7 +21,10 @@
 
 package com.viaversion.viafabricplus.features.entity.attribute;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.core.Holder;
@@ -41,7 +44,7 @@ public final class EnchantmentAttributesEmulation1_20_6 {
 
     public static void init() {
         ClientTickEvents.START_LEVEL_TICK.register(world -> {
-            if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5)) {
+            if (ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_20_5)) {
                 return;
             }
 

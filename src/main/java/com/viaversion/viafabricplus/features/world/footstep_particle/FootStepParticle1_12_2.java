@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.features.world.footstep_particle;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
@@ -90,7 +91,7 @@ public final class FootStepParticle1_12_2 extends SingleQuadParticle {
 
         @Override
         public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, RandomSource random) {
-            if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
+            if (ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_12_2)) {
                 throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
             }
 

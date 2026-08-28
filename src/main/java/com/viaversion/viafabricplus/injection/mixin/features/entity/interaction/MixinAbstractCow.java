@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -44,7 +45,7 @@ public abstract class MixinAbstractCow extends Animal {
 
     @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
     private void disableMilkingInCreative(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && player.getAbilities().instabuild) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && player.getAbilities().instabuild) {
             cir.setReturnValue(super.mobInteract(player, hand));
         }
     }

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -36,9 +37,9 @@ public abstract class MixinBedBlock extends HorizontalDirectionalBlock {
 
     @Override
     public float getBounceRestitution() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             return 0F;
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
             return 0.66F;
         } else {
             return super.getBounceRestitution();

@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import de.florianreuth.classic4j.BetaCraftHandler;
@@ -41,7 +42,7 @@ public final class ViaFabricPlusClassicMPPassProvider extends ClassicMpPassProvi
             return mpPass;
         }
 
-        if (ViaFabricPlus.api().settings().general().betaCraftAuthentication().value()) {
+        if (ViaFabricPlusImpl.impl().options().betaCraftAuthentication().isActive()) {
             // Doesn't use the MPPass system anymore, but still kept here for simplicity
             BetaCraftHandler.authenticate(serverId -> {
                 try {

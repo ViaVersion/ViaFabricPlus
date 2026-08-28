@@ -21,8 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.liquid;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,10 +46,10 @@ public abstract class MixinFlowingFluid {
 
     @Redirect(method = "isSolidFace", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;isFaceSturdy(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)Z"))
     private boolean modifyIsSolidBlock(BlockState instance, BlockGetter blockView, BlockPos blockPos, Direction direction) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
             final ViaFabricPlusMappingDataLoader.Material material = ViaFabricPlusMappingDataLoader.MATERIALS.get(ViaFabricPlusMappingDataLoader.getBlockMaterial(instance.getBlock()));
             return material.solid();
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             final Block block = instance.getBlock();
             if (block instanceof ShulkerBoxBlock || block instanceof LeavesBlock || block instanceof TrapDoorBlock ||
                 block == Blocks.BEACON || block == Blocks.CAULDRON || block == Blocks.GLASS ||

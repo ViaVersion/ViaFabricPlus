@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.jump;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.LivingEntity;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -44,7 +45,7 @@ public abstract class MixinLivingEntity {
 
     @Redirect(method = "jumpFromGround", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
     private double dontLimitJumpVelocity(double a, double b) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return a;
         } else {
             return Math.max(a, b);
@@ -53,12 +54,12 @@ public abstract class MixinLivingEntity {
 
     @Redirect(method = "handleRelativeFrictionAndCalculateMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;jumping:Z", opcode = Opcodes.GETFIELD))
     private boolean disableJumpOnLadder(LivingEntity self) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && jumping;
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_13_2) && jumping;
     }
 
     @Inject(method = "aiStep", at = @At("HEAD"))
     private void removeJumpDelay(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_0_0tor1_0_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.r1_0_0tor1_0_1)) {
             this.noJumpDelay = 0;
         }
     }

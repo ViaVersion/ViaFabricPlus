@@ -25,8 +25,11 @@ import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.IntTag;
 import com.viaversion.nbt.tag.MixedListTag;
 import com.viaversion.nbt.tag.Tag;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -68,12 +71,10 @@ public final class RenderableGlyphDiff {
     }
 
     public static boolean isGlyphRenderable(final int codePoint) {
-        final ProtocolVersion targetVersion = ProtocolTranslator.getTargetVersion();
-
-        if (targetVersion.newerThanOrEqualTo(v1_20)) { // 1.20 switched to using Unihex as a main font
-            return !RENDERABLE_GLYPH_DIFF.containsKey(codePoint) || targetVersion.newerThanOrEqualTo(RENDERABLE_GLYPH_DIFF.get(codePoint));
+        if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(v1_20)) { // 1.20 switched to using Unihex as a main font
+            return !RENDERABLE_GLYPH_DIFF.containsKey(codePoint) || ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(RENDERABLE_GLYPH_DIFF.get(codePoint));
         } else {
-            return RENDERABLE_GLYPH_DIFF_LEGACY.containsKey(codePoint) && targetVersion.newerThanOrEqualTo(RENDERABLE_GLYPH_DIFF_LEGACY.get(codePoint));
+            return RENDERABLE_GLYPH_DIFF_LEGACY.containsKey(codePoint) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(RENDERABLE_GLYPH_DIFF_LEGACY.get(codePoint));
         }
     }
 

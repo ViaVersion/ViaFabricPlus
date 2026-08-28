@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.item_picking;
 
 import com.viaversion.viafabricplus.features.world.item_picking.ItemPick1_21_3;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +36,7 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "pickBlockOrEntity", at = @At("HEAD"), cancellable = true)
     private void pickItemClientside(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             ItemPick1_21_3.doItemPick((Minecraft) (Object) this);
             ci.cancel();
         }

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.AxeItem;
@@ -43,12 +44,12 @@ public abstract class MixinAxeItem {
 
     @Redirect(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/AxeItem;playerHasBlockingItemUseIntent(Lnet/minecraft/world/item/context/UseOnContext;)Z"))
     private boolean neverCancelStripAttempt(UseOnContext context) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_5) && playerHasBlockingItemUseIntent(context);
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_20_5) && playerHasBlockingItemUseIntent(context);
     }
 
     @Inject(method = "useOn", at = @At("HEAD"), cancellable = true)
     private void disableUse(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(InteractionResult.PASS);
         }
     }

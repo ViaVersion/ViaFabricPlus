@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.dimensions;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -52,14 +53,14 @@ public abstract class MixinGoat extends Animal {
 
     @Inject(method = "getDefaultDimensions", at = @At("HEAD"), cancellable = true)
     private void replaceDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
             cir.setReturnValue(pose == Pose.LONG_JUMPING ? viaFabricPlus$dimensions_r26_1.scale(this.getAgeScale()) : super.getDefaultDimensions(pose));
         }
     }
 
     @Redirect(method = "getAgeScale", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/goat/Goat;isBaby()Z"))
     private boolean dontChangeScale(Goat instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_11) && instance.isBaby();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21_11) && instance.isBaby();
     }
 
 }

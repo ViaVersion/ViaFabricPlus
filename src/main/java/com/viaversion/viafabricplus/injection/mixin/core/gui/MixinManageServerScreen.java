@@ -22,9 +22,12 @@
 package com.viaversion.viafabricplus.injection.mixin.core.gui;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.settings.impl.Orientation;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
 import com.viaversion.viafabricplus.screen.impl.PerServerVersionScreen;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -65,7 +68,7 @@ public abstract class MixinManageServerScreen extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void addVersionSetterButton(CallbackInfo ci) {
-        final Orientation orientation = ViaFabricPlus.api().settings().general().addServerScreenButtonOrientation().value();
+        final Orientation orientation = ViaFabricPlusImpl.impl().options().addServerScreenButtonOrientation().value();
         if (orientation != Orientation.NONE) {
             final IServerData mixinServerInfo = (IServerData) serverData;
             final ProtocolVersion forcedVersion = mixinServerInfo.viaFabricPlus$forcedVersion();

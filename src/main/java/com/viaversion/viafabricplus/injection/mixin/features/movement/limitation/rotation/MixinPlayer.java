@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.limitation.rotation;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +34,7 @@ public abstract class MixinPlayer {
 
     @Redirect(method = "getMaxHeadRotationRelativeToBody", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isBlocking()Z"))
     private boolean dontModifyHeadRotationWhenBlocking(Player instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_2) && instance.isBlocking();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_20_2) && instance.isBlocking();
     }
 
 }

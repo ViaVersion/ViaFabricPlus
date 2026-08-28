@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.compat.ipnext;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -46,14 +47,14 @@ public abstract class MixinAutoRefillHandler_ItemSlotMonitor {
 
     @Inject(method = {"checkHandle", "checkShouldHandle"}, at = @At("HEAD"), cancellable = true)
     public void dontHandleOffhandSlot(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             if (currentSlotId == 45) ci.cancel();
         }
     }
 
     @Inject(method = "updateCurrent", at = @At(value = "FIELD", target = "Lorg/anti_ad/mc/ipnext/event/AutoRefillHandler$ItemSlotMonitor;currentSlotId:I", shift = At.Shift.AFTER), cancellable = true)
     public void dontUpdateCurrentOffhandSlot(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             if (currentSlotId == 45) ci.cancel();
         }
     }

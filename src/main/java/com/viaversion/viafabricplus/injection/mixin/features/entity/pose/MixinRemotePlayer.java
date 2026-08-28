@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.entity.pose;
 
 import com.mojang.authlib.GameProfile;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -41,7 +42,7 @@ public abstract class MixinRemotePlayer extends AbstractClientPlayer {
 
     @Inject(method = "updatePlayerPose", at = @At("HEAD"))
     private void onUpdatePose(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             super.updatePlayerPose();
         }
     }

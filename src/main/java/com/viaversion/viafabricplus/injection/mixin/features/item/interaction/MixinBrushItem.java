@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BrushItem;
@@ -34,7 +35,7 @@ public abstract class MixinBrushItem {
 
     @Redirect(method = "calculateHitResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;blockInteractionRange()D"))
     private double modifyReachDistance(Player instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             return 5D;
         } else {
             return instance.blockInteractionRange();

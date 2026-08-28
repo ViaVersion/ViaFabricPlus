@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,7 +39,7 @@ public abstract class MixinLivingEntity {
 
     @Redirect(method = "updatingUsingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isSameItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"))
     private boolean replaceItemStackEqualsCheck(ItemStack a, ItemStack b) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
             return a == b;
         } else {
             return ItemStack.isSameItem(a, b);
@@ -47,7 +48,7 @@ public abstract class MixinLivingEntity {
 
     @Inject(method = "getEquipmentSlotForItem", at = @At("HEAD"), cancellable = true)
     private void removeShieldSlotPreference(ItemStack itemStack, CallbackInfoReturnable<EquipmentSlot> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3) && itemStack.is(Items.SHIELD)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3) && itemStack.is(Items.SHIELD)) {
             cir.setReturnValue(EquipmentSlot.MAINHAND);
         }
     }

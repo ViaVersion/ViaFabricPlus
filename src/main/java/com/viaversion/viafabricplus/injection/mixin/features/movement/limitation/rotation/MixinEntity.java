@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.limitation.rotation;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +38,7 @@ public abstract class MixinEntity {
 
     @Redirect(method = "setXRot", at = @At(value = "INVOKE", target = "Ljava/lang/Math;clamp(FFF)F", remap = false))
     private float dontClampPitch(float value, float min, float max) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return value;
         } else {
             return Math.clamp(value, min, max);
@@ -46,12 +47,12 @@ public abstract class MixinEntity {
 
     @Redirect(method = {"setYRot", "setXRot"}, at = @At(value = "INVOKE", target = "Ljava/lang/Float;isFinite(F)Z"))
     private boolean allowInfiniteValues(float f) {
-        return Float.isFinite(f) || ((Object) this instanceof LocalPlayer && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4));
+        return Float.isFinite(f) || ((Object) this instanceof LocalPlayer && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4));
     }
 
     @Inject(method = "calculateViewVector(FF)Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
     private void revertCalculation(float xRot, float yRot, CallbackInfoReturnable<Vec3> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(Vec3.directionFromRotation(xRot, yRot));
         }
     }

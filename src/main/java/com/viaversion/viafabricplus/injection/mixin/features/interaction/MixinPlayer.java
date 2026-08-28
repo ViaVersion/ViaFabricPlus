@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
@@ -41,14 +42,14 @@ public abstract class MixinPlayer {
 
     @Inject(method = "canEat", at = @At("HEAD"), cancellable = true)
     private void preventEatingFoodInCreative(boolean canAlwaysEat, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && this.abilities.invulnerable) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && this.abilities.invulnerable) {
             cir.setReturnValue(false);
         }
     }
 
     @Inject(method = "isCreative", at = @At("HEAD"), cancellable = true)
     private void fixCreativeCheck(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(this.abilities.instabuild);
         }
     }

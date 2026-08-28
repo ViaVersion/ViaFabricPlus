@@ -25,7 +25,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.CrossCollisionBlock;
@@ -54,7 +55,7 @@ public abstract class MixinIronBarsBlock extends CrossCollisionBlock {
 
     @Inject(method = "getStateForPlacement", at = @At("RETURN"), cancellable = true)
     private void changePlacementState(BlockPlaceContext context, CallbackInfoReturnable<BlockState> cir, @Share("count") LocalIntRef countRef) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && countRef.get() == 0) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && countRef.get() == 0) {
             cir.setReturnValue(cir.getReturnValue().setValue(NORTH, true).setValue(SOUTH, true).setValue(WEST, true).setValue(EAST, true));
         }
     }

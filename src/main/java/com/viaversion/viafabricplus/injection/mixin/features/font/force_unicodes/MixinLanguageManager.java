@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.font.force_unicodes;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.features.font.force_unicodes.UnicodeFontFix1_12_2;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +35,7 @@ public abstract class MixinLanguageManager {
 
     @Inject(method = "onResourceManagerReload", at = @At("RETURN"))
     private void updateUnicodeFontOverride(ResourceManager resourceManager, CallbackInfo ci) {
-        UnicodeFontFix1_12_2.updateUnicodeFontOverride(ProtocolTranslator.getTargetVersion());
+        UnicodeFontFix1_12_2.updateUnicodeFontOverride(ViaFabricPlus.api().targetVersion());
     }
 
 }

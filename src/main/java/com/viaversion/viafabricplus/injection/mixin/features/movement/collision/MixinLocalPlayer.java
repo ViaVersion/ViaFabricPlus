@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.phys.Vec3;
@@ -35,7 +36,7 @@ public abstract class MixinLocalPlayer {
 
     @Inject(method = "isHorizontalCollisionMinor", at = @At("HEAD"), cancellable = true)
     private void neverCollideSoftly(Vec3 movement, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             cir.setReturnValue(false);
         }
     }

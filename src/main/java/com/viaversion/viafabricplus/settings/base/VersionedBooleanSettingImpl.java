@@ -28,11 +28,11 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import net.minecraft.network.chat.Component;
 
-public final class VersionedBooleanSettingImpl extends SettingImpl<Boolean> implements VersionedBooleanSetting {
+public final class VersionedBooleanSettingImpl extends BooleanSettingImpl implements VersionedBooleanSetting {
 
     private final ProtocolVersionRange versionRange;
 
-    public VersionedBooleanSettingImpl(final String key, final Component component, final ProtocolVersionRange versionRange, final Boolean defaultValue) {
+    public VersionedBooleanSettingImpl(final String key, final Component component, final ProtocolVersionRange versionRange, final boolean defaultValue) {
         super(key, component, defaultValue);
         this.versionRange = versionRange;
     }
@@ -43,23 +43,28 @@ public final class VersionedBooleanSettingImpl extends SettingImpl<Boolean> impl
     }
 
     @Override
+    public boolean value() {
+        return super.isActive();
+    }
+
+    @Override
     public void write(final JsonObject object) {
-        object.addProperty(this.key(), this.value());
+        object.addProperty(this.key(), this.isActive());
     }
 
     @Override
     public void read(final JsonObject object) {
-        this.setValue(object.get(this.key()).getAsBoolean());
+        this.setActive(object.get(this.key()).getAsBoolean());
     }
 
     @Override
     public boolean isActive() {
-        return this.versionRange.contains(ViaFabricPlusImpl.impl().targetVersion()) && this.value();
+        return this.versionRange.contains(ViaFabricPlusImpl.impl().targetVersion()) && super.isActive();
     }
 
     @Override
     public boolean isActive(final ProtocolVersion version) {
-        return this.versionRange.contains(version) && this.value();
+        return this.versionRange.contains(version) && super.isActive();
     }
 
 }

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.constants;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.EntityAttachment;
@@ -49,9 +50,9 @@ public abstract class MixinAvatar {
     @Inject(method = "getDefaultDimensions", at = @At("HEAD"), cancellable = true)
     private void modifyDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> cir) {
         if (pose == Pose.CROUCHING) {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 cir.setReturnValue(viaFabricPlus$sneaking_dimensions_v1_8);
-            } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
                 cir.setReturnValue(viaFabricPlus$sneaking_dimensions_v1_13_2);
             }
         }

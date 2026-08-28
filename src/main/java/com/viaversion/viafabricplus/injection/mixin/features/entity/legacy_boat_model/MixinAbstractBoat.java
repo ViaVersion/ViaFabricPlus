@@ -23,7 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.legacy_boat
 
 import com.viaversion.viafabricplus.features.entity.legacy_boat_model.PositionInterpolator1_8;
 import com.viaversion.viafabricplus.injection.access.entity.legacy_boat_model.IAbstractBoat;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -80,7 +81,7 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
 
     @Inject(method = "push", at = @At("HEAD"), cancellable = true)
     private void pushAwayFrom1_8(Entity entity, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
             super.push(entity);
         }
@@ -88,7 +89,7 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
 
     @Inject(method = "getInterpolation", at = @At("HEAD"), cancellable = true)
     private void replaceInterpolation(CallbackInfoReturnable<InterpolationHandler> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(viaFabricPlus$positionInterpolator);
         }
     }
@@ -97,14 +98,14 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
     public void lerpMotion(final @NonNull Vec3 clientVelocity) {
         super.lerpMotion(clientVelocity);
 
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             this.viaFabricPlus$boatVelocity = clientVelocity;
         }
     }
 
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void tick1_8(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
             super.tick();
 
@@ -130,7 +131,7 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
             }
 
             final double oldHorizontalSpeed = this.getDeltaMovement().horizontalDistance();
-            if (oldHorizontalSpeed > (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) ? 0.2625D : 0.2975D)) {
+            if (oldHorizontalSpeed > (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) ? 0.2625D : 0.2975D)) {
                 final double rx = Math.cos(this.getYRot() * Math.PI / 180);
                 final double rz = Math.sin(this.getYRot() * Math.PI / 180);
                 for (int i = 0; i < 1 + oldHorizontalSpeed * 60; i++) {
@@ -179,11 +180,11 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
 
                 if (this.getControllingPassenger() != null) {
                     final LivingEntity passenger = this.getControllingPassenger();
-                    if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
+                    if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_5_2)) {
                         final double xAcceleration = passenger.getDeltaMovement().x * this.viaFabricPlus$speedMultiplier;
                         final double zAcceleration = passenger.getDeltaMovement().z * this.viaFabricPlus$speedMultiplier;
                         this.setDeltaMovement(this.getDeltaMovement().add(xAcceleration, 0, zAcceleration));
-                    } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+                    } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
                         if (passenger.zza > 0) {
                             final double xAcceleration = -Math.sin(passenger.getYRot() * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * 0.05D;
                             final double zAcceleration = Math.cos(passenger.getYRot() * Math.PI / 180) * this.viaFabricPlus$speedMultiplier * 0.05D;
@@ -216,7 +217,7 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
                     }
                 }
 
-                if (ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_6_4)) {
+                if (ViaFabricPlus.api().targetVersion().newerThan(LegacyProtocolVersion.r1_6_4)) {
                     for (int i = 0; i < 4; i++) {
                         final int dx = Mth.floor(this.getX() + ((i % 2) - 0.5D) * 0.8D);
                         //noinspection IntegerDivisionInFloatingPointContext
@@ -259,7 +260,7 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
 
     @Inject(method = "onPassengerTurned", at = @At("HEAD"), cancellable = true)
     private void onPassengerLookAround1_8(Entity passenger, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
             super.onPassengerTurned(passenger);
         }
@@ -267,17 +268,17 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
 
     @Inject(method = "checkFallDamage", at = @At("HEAD"), cancellable = true)
     private void fall1_8(double ya, boolean onGround, BlockState onState, BlockPos pos, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_6_4)) {
             ci.cancel();
             super.checkFallDamage(ya, onGround, onState, pos);
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             this.status = Boat.Status.ON_LAND;
         }
     }
 
     @Inject(method = "canAddPassenger", at = @At("HEAD"), cancellable = true)
     private void canAddPassenger1_8(Entity passenger, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(super.canAddPassenger(passenger));
         }
     }

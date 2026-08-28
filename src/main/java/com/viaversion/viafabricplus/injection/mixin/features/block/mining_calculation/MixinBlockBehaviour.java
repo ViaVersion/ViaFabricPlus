@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.mining_calculation;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -38,7 +38,7 @@ public abstract class MixinBlockBehaviour {
 
     @Inject(method = "getDestroyProgress", at = @At("HEAD"), cancellable = true)
     private void changeMiningSpeedCalculation(BlockState state, Player player, BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             final float hardness = state.getDestroySpeed(level, pos);
             if (hardness == -1.0F) {
                 cir.setReturnValue(0.0F);

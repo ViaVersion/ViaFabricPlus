@@ -22,7 +22,10 @@ package com.viaversion.viafabricplus.protocoltranslator.util;
 
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.util.JsonSave;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.protocol.version.VersionType;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -30,6 +33,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.network.protocol.handshake.ClientIntent;
@@ -38,6 +42,26 @@ import net.minecraft.network.protocol.handshake.ClientIntent;
  * This class can be used to detect the protocol version of a server without connecting to it.
  */
 public final class ProtocolVersionDetector {
+
+    public static final ProtocolVersion AUTO_DETECT_VERSION = new ProtocolVersion(VersionType.SPECIAL, -2, -1, "Auto Detect (1.7+ servers)", null) {
+        @Override
+        protected Comparator<ProtocolVersion> customComparator() {
+            return (o1, o2) -> {
+                if (o1 == AUTO_DETECT_VERSION) {
+                    return 1;
+                } else if (o2 == AUTO_DETECT_VERSION) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            };
+        }
+
+        @Override
+        public boolean isKnown() {
+            return false;
+        }
+    };
 
     private static final int TIMEOUT = 3_000;
 
@@ -50,13 +74,13 @@ public final class ProtocolVersionDetector {
      */
     public static ProtocolVersion get(final ServerAddress serverAddress, final InetSocketAddress socketAddress, final ProtocolVersion clientVersion) throws Exception {
         try (
-                final Socket socket = new Socket(serverAddress.getHost(), serverAddress.getPort());
+            final Socket socket = new Socket(serverAddress.getHost(), serverAddress.getPort());
 
-                final DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                final DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+            final DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            final DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
 
-                final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                final DataOutputStream handshakePacket = new DataOutputStream(byteArrayOutputStream)
+            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            final DataOutputStream handshakePacket = new DataOutputStream(byteArrayOutputStream)
         ) {
             socket.setTcpNoDelay(true);
             socket.setSoTimeout(TIMEOUT);

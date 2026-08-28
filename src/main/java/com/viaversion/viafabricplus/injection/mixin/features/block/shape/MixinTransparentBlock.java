@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -44,7 +45,7 @@ public abstract class MixinTransparentBlock extends HalfTransparentBlock {
 
     @Inject(method = "getVisualShape", at = @At("HEAD"), cancellable = true)
     private void useCollisionVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             cir.setReturnValue(this.getCollisionShape(state, level, pos, context));
         }
     }

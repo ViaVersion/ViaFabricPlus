@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.command;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 import com.viaversion.viaversion.api.command.ViaSubCommand;
@@ -34,7 +34,7 @@ public interface VFPSubCommand extends ViaSubCommand {
     }
 
     default UserConnection getUser() {
-        return ProtocolTranslator.getPlayStateUserConnection();
+        return ViaFabricPlus.api().userConnection();
     }
 
 }

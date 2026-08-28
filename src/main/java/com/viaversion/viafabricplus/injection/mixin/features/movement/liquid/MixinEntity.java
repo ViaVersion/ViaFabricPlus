@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.liquid;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
@@ -50,7 +51,7 @@ public abstract class MixinEntity {
 
     @Redirect(method = "getFluidInteractionBox", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;modifyPassengerFluidInteractionBox(Lnet/minecraft/world/phys/AABB;)Lnet/minecraft/world/phys/AABB;"))
     private AABB skipPassengerChanges(Entity instance, AABB passengerBox) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
             return passengerBox;
         } else {
             return modifyPassengerFluidInteractionBox(passengerBox);
@@ -59,7 +60,7 @@ public abstract class MixinEntity {
 
     @Inject(method = "isInLava", at = @At("RETURN"), cancellable = true)
     private void replaceLavaCheck1_13_2(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             final AABB aabb = this.getBoundingBox().deflate(0.1F, 0.4F, 0.1F);
             cir.setReturnValue(this.level.getBlockStatesIfLoaded(aabb).anyMatch(key -> key.getFluidState().is(FluidTags.LAVA)));
         }
@@ -67,7 +68,7 @@ public abstract class MixinEntity {
 
     @Redirect(method = "getFluidInteractionBox", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/AABB;deflate(D)Lnet/minecraft/world/phys/AABB;"))
     private AABB inflate(AABB instance, double amount) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             instance = instance.inflate(0, -0.4, 0);
         }
 
@@ -76,7 +77,7 @@ public abstract class MixinEntity {
 
     @Inject(method = "setSwimming", at = @At("HEAD"), cancellable = true)
     private void cancelSwimming(boolean swimming, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && swimming) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && swimming) {
             ci.cancel();
         }
     }

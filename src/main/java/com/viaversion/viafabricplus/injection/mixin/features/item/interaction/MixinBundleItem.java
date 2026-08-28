@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionHand;
@@ -41,13 +42,13 @@ public abstract class MixinBundleItem {
 
     @Inject(method = "use", at = @At("RETURN"), cancellable = true)
     private void dontSwing(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             final ItemStack itemStack = player.getItemInHand(hand);
             final BundleContents component = itemStack.get(DataComponents.BUNDLE_CONTENTS);
             if (component == null || component.isEmpty()) {
                 cir.setReturnValue(InteractionResult.FAIL);
             }
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             cir.setReturnValue(InteractionResult.CONSUME);
         }
     }

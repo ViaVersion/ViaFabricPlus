@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -52,25 +52,25 @@ public abstract class MixinAbstractContainerScreen extends Screen {
 
     @Redirect(method = {"mouseClicked", "mouseReleased"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/MouseButtonEvent;hasShiftDown()Z"))
     private boolean disableShiftClickItems(final MouseButtonEvent instance) {
-        return instance.hasShiftDown() && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_6_1);
+        return instance.hasShiftDown() && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_6_1);
     }
 
     // TODO: Item is supposed to go in slot on click not where mouse is released
     @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
     private void disableItemDragging(final MouseButtonEvent event, final double dx, final double dy, final CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.r1_5tor1_5_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.r1_5tor1_5_1)) {
             cir.setReturnValue(super.mouseDragged(event, dx, dy));
         }
     }
 
     @WrapWithCondition(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;slotClicked(Lnet/minecraft/world/inventory/Slot;IILnet/minecraft/world/inventory/ContainerInput;)V", ordinal = 0))
     private boolean disableItemCloning(AbstractContainerScreen<?> instance, Slot slot, int slotId, int buttonNum, ContainerInput containerInput) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
     }
 
     @Redirect(method = "checkHotbarKeyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;matches(Lnet/minecraft/client/input/KeyEvent;)Z", ordinal = 1))
     private boolean disableHotbarKeys(final KeyMapping instance, final KeyEvent event) {
-        return instance.matches(event) && ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
+        return instance.matches(event) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2);
     }
 
 }

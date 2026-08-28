@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes.sign_editor_reach;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -41,7 +42,7 @@ public abstract class MixinAbstractSignEditScreen {
 
     @Inject(method = "isValid", at = @At("HEAD"), cancellable = true)
     private void dontCloseTooFarAwaySigns(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue(this.sign.getType().isValid(this.sign.getBlockState()));
         }
     }

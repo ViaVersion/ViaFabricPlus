@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.entity.dimensions;
 
 import com.viaversion.viafabricplus.features.entity.dimensions.EntityRidingOffsetsPre1_20_2;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -43,7 +44,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "getPassengerRidingPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getPassengerAttachmentPoint(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/EntityDimensions;F)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 getPassengerRidingPos1_20_1(LivingEntity instance, Entity entity, EntityDimensions entityDimensions, float v) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
             return EntityRidingOffsetsPre1_20_2.getMountedHeightOffset(instance, entity).yRot(-instance.getYRot() * (float) (Math.PI / 180));
         } else {
             return getPassengerAttachmentPoint(entity, entityDimensions, v);

@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.movement.slowdown;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +36,7 @@ public abstract class MixinEnderEyeItem {
 
     @WrapWithCondition(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;startUsingItem(Lnet/minecraft/world/InteractionHand;)V"))
     private boolean removeItemSlowdown(Player instance, InteractionHand hand) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11);
     }
 
 }

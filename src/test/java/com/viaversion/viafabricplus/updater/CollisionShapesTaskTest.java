@@ -37,7 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import static com.viaversion.viafabricplus.save.AbstractSave.GSON;
+import static com.viaversion.viafabricplus.util.JsonSave.GSON;
 
 /**
  * Generates a file containing all collision shapes of static blocks. Can be used for game updates where Mojang refactors the collision shapes.

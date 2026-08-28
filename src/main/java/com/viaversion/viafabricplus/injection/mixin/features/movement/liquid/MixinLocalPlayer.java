@@ -24,7 +24,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.liquid;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -49,7 +50,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @WrapOperation(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/ClientInput;hasForwardImpulse()Z"))
     private boolean easierUnderwaterSprinting(ClientInput instance, Operation<Boolean> original) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return this.viaFabricPlus$isWalking1_21_4();
         } else {
             return original.call(instance);
@@ -60,17 +61,17 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
         slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/ClientInput;hasForwardImpulse()Z")),
         at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSwimming()Z", ordinal = 0))
     private boolean dontAllowSneakingWhileSwimming(LocalPlayer instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && instance.isSwimming();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_14_1) && instance.isSwimming();
     }
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z"))
     private boolean disableWaterRelatedMovement(LocalPlayer self) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && self.isInWater();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_12_2) && self.isInWater();
     }
 
     @Unique
     private boolean viaFabricPlus$isWalking1_21_4() {
-        final boolean submergedInWater = ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && isUnderWater();
+        final boolean submergedInWater = ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_14_1) && isUnderWater();
         return submergedInWater ? this.input.hasForwardImpulse() : this.input.moveVector.y >= 0.8;
     }
 

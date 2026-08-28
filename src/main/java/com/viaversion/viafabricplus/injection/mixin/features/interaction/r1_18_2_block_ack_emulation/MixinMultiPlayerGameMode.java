@@ -23,7 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.interaction.r1_18_
 
 import com.viaversion.viafabricplus.features.interaction.r1_18_2_block_ack_emulation.ClientPlayerInteractionManager1_18_2;
 import com.viaversion.viafabricplus.injection.access.interaction.r1_18_2_block_ack_emulation.IMultiPlayerGameMode;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -46,14 +47,14 @@ public abstract class MixinMultiPlayerGameMode implements IMultiPlayerGameMode {
 
     @Inject(method = "startPrediction", at = @At("HEAD"))
     private void trackPlayerAction(ClientLevel level, PredictiveAction predictiveAction, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_14_4, ProtocolVersion.v1_18_2) && predictiveAction instanceof ServerboundPlayerActionPacket playerActionC2SPacket) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_14_4, ProtocolVersion.v1_18_2) && predictiveAction instanceof ServerboundPlayerActionPacket playerActionC2SPacket) {
             this.viaFabricPlus$1_18_2InteractionManager.trackPlayerAction(playerActionC2SPacket.getAction(), playerActionC2SPacket.getPos());
         }
     }
 
     @Redirect(method = {"startDestroyBlock", "stopDestroyBlock"}, at = @At(value = "NEW", target = "(Lnet/minecraft/network/protocol/game/ServerboundPlayerActionPacket$Action;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)Lnet/minecraft/network/protocol/game/ServerboundPlayerActionPacket;"))
     private ServerboundPlayerActionPacket trackPlayerAction(ServerboundPlayerActionPacket.Action action, BlockPos pos, Direction direction) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_14_4, ProtocolVersion.v1_18_2)) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_14_4, ProtocolVersion.v1_18_2)) {
             this.viaFabricPlus$1_18_2InteractionManager.trackPlayerAction(action, pos);
         }
         return new ServerboundPlayerActionPacket(action, pos, direction);

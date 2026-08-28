@@ -34,19 +34,18 @@ public final class ClassiCubeAccount {
 
     public static void init() {
         final Path path = ViaFabricPlusImpl.impl().path().resolve("classicube.json");
-        JsonSave.read(path, jsonObject -> account = CCAccount.fromJson(jsonObject));
-
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        JsonSave.load(path, jsonObject -> account = CCAccount.fromJson(jsonObject), () -> {
             if (account != null) {
-                JsonSave.write(path, account::asJson);
+                return account.asJson();
             } else {
                 try {
                     Files.deleteIfExists(path);
                 } catch (IOException e) {
                     ViaFabricPlusImpl.impl().logger().error("Failed to delete classicube.json!", e);
                 }
+                return null;
             }
-        }));
+        });
     }
 
     public static void set(final CCAccount account) {

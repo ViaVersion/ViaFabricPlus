@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_completion;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.components.CommandSuggestions;
 import net.minecraft.client.gui.screens.inventory.AbstractCommandBlockEditScreen;
@@ -34,7 +35,7 @@ public abstract class MixinAbstractCommandBlockEditScreen {
 
     @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/CommandSuggestions;updateCommandInfo()V"))
     private void cancelAutoComplete(CommandSuggestions instance) {
-        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_13)) {
+        if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_13)) {
             instance.updateCommandInfo();
         }
     }

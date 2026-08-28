@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.disable_sequencing;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.world.disable_sequencing.PendingUpdateManager1_18_2;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.prediction.BlockStatePredictionHandler;
@@ -43,7 +44,7 @@ public abstract class MixinClientLevel {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void removePendingUpdateManager(CallbackInfo ci) {
-        if (ViaFabricPlus.api().settings().advanced().disableSequencing().isActive()) {
+        if (ViaFabricPlusImpl.impl().advanced().disableSequencing().isActive()) {
             this.blockStatePredictionHandler = new PendingUpdateManager1_18_2();
         }
     }

@@ -21,8 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.replace_block_item_use_logic;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -50,9 +51,9 @@ public abstract class MixinBlockPlaceContext extends UseOnContext {
         final BlockPlaceContext self = (BlockPlaceContext) (Object) this;
         final Player player = self.getPlayer();
 
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             final BlockPos placementPos = self.getClickedPos();
-            final double blockPosCenterFactor = ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
+            final double blockPosCenterFactor = ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_10) ? 0.5 : 0;
 
             if (Math.abs(player.getX() - (placementPos.getX() + blockPosCenterFactor)) < 2 && Math.abs(player.getZ() - (placementPos.getZ() + blockPosCenterFactor)) < 2) {
                 final double eyeY = player.getY() + player.getEyeHeight(player.getPose());
@@ -74,7 +75,7 @@ public abstract class MixinBlockPlaceContext extends UseOnContext {
 
     @Inject(method = "canPlace", at = @At("RETURN"), cancellable = true)
     private void canPlace1_12_2(CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValueZ() && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (!cir.getReturnValueZ() && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(ViaFabricPlusMappingDataLoader.getBlockMaterial(this.getLevel().getBlockState(this.getClickedPos()).getBlock()).equals("decoration") && Block.byItem(this.getItemInHand().getItem()).equals(Blocks.ANVIL));
         }
     }

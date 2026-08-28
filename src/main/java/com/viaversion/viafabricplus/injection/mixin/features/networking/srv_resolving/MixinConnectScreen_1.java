@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.srv_resolving;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.net.InetSocketAddress;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
@@ -40,7 +41,7 @@ public abstract class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getHostName()Ljava/lang/String;", remap = false))
     private String getRealAddress(InetSocketAddress instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
             return val$hostAndPort.getHost();
         } else {
             return instance.getHostName();
@@ -49,7 +50,7 @@ public abstract class MixinConnectScreen_1 {
 
     @Redirect(method = "run", at = @At(value = "INVOKE", target = "Ljava/net/InetSocketAddress;getPort()I", remap = false))
     private int getRealPort(InetSocketAddress instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17)) {
             return val$hostAndPort.getPort();
         } else {
             return instance.getPort();

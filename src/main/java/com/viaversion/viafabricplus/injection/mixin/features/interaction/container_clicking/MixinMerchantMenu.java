@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -62,7 +63,7 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
 
     @Inject(method = "tryMoveItems", at = @At("HEAD"), cancellable = true)
     private void onSwitchTo(int newTradeIndex, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             ci.cancel();
 
             if (newTradeIndex >= this.getOffers().size()) {
@@ -101,7 +102,7 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
 
     @Inject(method = "canTakeItemForPickAll", at = @At("HEAD"), cancellable = true)
     private void modifyCanInsertIntoSlot(ItemStack carried, Slot target, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             cir.setReturnValue(true);
         }
     }

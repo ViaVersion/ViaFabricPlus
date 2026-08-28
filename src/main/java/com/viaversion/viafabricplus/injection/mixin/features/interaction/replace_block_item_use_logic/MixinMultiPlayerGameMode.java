@@ -24,8 +24,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.interaction.replac
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.features.interaction.replace_block_placement_logic.ActionResultException1_12_2;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusHandItemProvider;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Objects;
 import net.minecraft.client.Minecraft;
@@ -97,7 +98,7 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Redirect(method = "performUseItemOn", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;CONSUME:Lnet/minecraft/world/InteractionResult$Success;", opcode = Opcodes.GETSTATIC))
     private InteractionResult.Success changeSpectatorAction() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return InteractionResult.SUCCESS;
         } else {
             return InteractionResult.CONSUME;
@@ -106,21 +107,21 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Inject(method = "useItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;ensureHasSentCarriedItem()V", shift = At.Shift.AFTER))
     private void sendPlayerPosPacket(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_17, ProtocolVersion.v1_20_5)) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_17, ProtocolVersion.v1_20_5)) {
             this.connection.send(new ServerboundMovePlayerPacket.PosRot(player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot(), player.onGround(), player.horizontalCollision));
         }
     }
 
     @Inject(method = "getDestroyStage", at = @At("HEAD"), cancellable = true)
     private void changeCalculation(CallbackInfoReturnable<Integer> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue((int) (this.destroyProgress * 10.0F) - 1);
         }
     }
 
     @WrapWithCondition(method = "useItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;startPrediction(Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/multiplayer/prediction/PredictiveAction;)V"))
     private boolean fixPacketOrder(MultiPlayerGameMode instance, ClientLevel level, PredictiveAction predictiveAction, Player player, InteractionHand hand) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
             this.connection.send(new ServerboundUseItemPacket(hand, 0, player.getYRot(), player.getXRot()));
             predictiveAction.predict(0);
             return false;
@@ -131,7 +132,7 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Redirect(method = {"lambda$startDestroyBlock$0", "lambda$continueDestroyBlock$0"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;destroyBlock(Lnet/minecraft/core/BlockPos;)Z"))
     private boolean checkFireBlock(MultiPlayerGameMode instance, BlockPos pos, @Local(argsOnly = true) Direction direction) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return !this.viaFabricPlus$extinguishFire(pos, direction) && instance.destroyBlock(pos);
         } else {
             return instance.destroyBlock(pos);
@@ -140,14 +141,14 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Inject(method = "destroyBlock", at = @At("TAIL"))
     private void resetBlockBreaking(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_3)) {
             this.destroyBlockPos = new BlockPos(this.destroyBlockPos.getX(), -1, this.destroyBlockPos.getZ());
         }
     }
 
     @Inject(method = "performUseItemOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z", ordinal = 2))
     private void interactBlock1_12_2(LocalPlayer player, InteractionHand hand, BlockHitResult blockHit, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             final ItemStack itemStack = player.getItemInHand(hand);
             BlockHitResult checkHitResult = blockHit;
             if (itemStack.getItem() instanceof BlockItem) {
@@ -186,21 +187,21 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Inject(method = "useItem", at = @At("HEAD"), cancellable = true)
     private void cancelOffHandItemInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && !InteractionHand.MAIN_HAND.equals(hand)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && !InteractionHand.MAIN_HAND.equals(hand)) {
             cir.setReturnValue(InteractionResult.PASS);
         }
     }
 
     @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
     private void cancelOffHandBlockPlace(LocalPlayer player, InteractionHand hand, BlockHitResult blockHit, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && !InteractionHand.MAIN_HAND.equals(hand)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && !InteractionHand.MAIN_HAND.equals(hand)) {
             cir.setReturnValue(InteractionResult.PASS);
         }
     }
 
     @Redirect(method = "lambda$useItem$0", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;use(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResult;"))
     private InteractionResult eitherSuccessOrPass(ItemStack instance, Level level, Player player, InteractionHand hand, @Local(name = "itemStack") ItemStack itemStack) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             final int count = instance.getCount();
 
             final InteractionResult actionResult = instance.use(level, player, hand);
@@ -226,7 +227,7 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Inject(method = "lambda$useItem$0", at = @At("HEAD"))
     private void trackLastUsedItem(InteractionHand hand, Player player, MutableObject<InteractionResult> interactionResult, int sequence, CallbackInfoReturnable<Packet<?>> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ViaFabricPlusHandItemProvider.lastUsedItem = player.getItemInHand(hand).copy();
         }
     }
@@ -237,7 +238,7 @@ public abstract class MixinMultiPlayerGameMode {
      */
     @Overwrite
     private Packet<?> lambda$useItemOn$0(MutableObject<InteractionResult> mutableObject, LocalPlayer clientPlayerEntity, InteractionHand hand, BlockHitResult blockHitResult, int sequence) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ViaFabricPlusHandItemProvider.lastUsedItem = clientPlayerEntity.getItemInHand(hand).copy();
         }
         try {
@@ -259,17 +260,17 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Redirect(method = "stopDestroyBlock", at = @At(value = "FIELD", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;isDestroying:Z", opcode = Opcodes.GETFIELD))
     private boolean fixMiningReset1_7(MultiPlayerGameMode instance) {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) || instance.isDestroying();
+        return ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) || instance.isDestroying();
     }
 
     @WrapWithCondition(method = "stopDestroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V"))
     private boolean preventPacketWhenNotMining1_7(ClientPacketListener instance, Packet<?> packet) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) || this.isDestroying;
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_7_6) || this.isDestroying;
     }
 
     @WrapWithCondition(method = "stopDestroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;resetAttackStrengthTicker()V"))
     private boolean preventAttackResetWhenNotMining1_7(LocalPlayer instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6) || this.isDestroying;
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_7_6) || this.isDestroying;
     }
 
     @Unique

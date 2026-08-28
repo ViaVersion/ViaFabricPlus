@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -39,7 +40,7 @@ public abstract class MixinSoulSandBlock {
 
     @Inject(method = "getBlockSupportShape", at = @At("HEAD"), cancellable = true)
     private void changeSidesShape(BlockState state, BlockGetter level, BlockPos pos, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_13, ProtocolVersion.v1_15_2)) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_13, ProtocolVersion.v1_15_2)) {
             cir.setReturnValue(Shapes.empty());
         }
     }

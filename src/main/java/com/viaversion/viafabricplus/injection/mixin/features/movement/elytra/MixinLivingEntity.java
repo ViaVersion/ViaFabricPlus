@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.elytra;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
@@ -43,12 +44,12 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "travelFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;onClimbable()Z"))
     private boolean dontStopGlidingWhenClimbing(LivingEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4) && instance.onClimbable();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21_4) && instance.onClimbable();
     }
 
     @Redirect(method = "updateFallFlyingMovement", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D", remap = false))
     private double fixCosTable(double a) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
             return Mth.cos((float) a);
         } else {
             return Math.cos(a);
@@ -57,12 +58,12 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "canGlide", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hasEffect(Lnet/minecraft/core/Holder;)Z"))
     private boolean allowElytraWhenLevitating(LivingEntity instance, Holder<MobEffect> effect) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_2) && instance.hasEffect(effect);
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_15_2) && instance.hasEffect(effect);
     }
 
     @Redirect(method = "canGlide", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isPassenger()Z"))
     private boolean allowElytraInVehicle(LivingEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && instance.isPassenger();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_14_4) && instance.isPassenger();
     }
 
 

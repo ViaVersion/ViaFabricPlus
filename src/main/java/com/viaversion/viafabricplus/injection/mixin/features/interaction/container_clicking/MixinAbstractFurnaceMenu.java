@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.item.ItemStack;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -41,12 +41,12 @@ public abstract class MixinAbstractFurnaceMenu {
 
     @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/AbstractFurnaceMenu;canSmelt(Lnet/minecraft/world/item/ItemStack;)Z"))
     private boolean disableShiftClickSmeltingSlot(AbstractFurnaceMenu instance, ItemStack itemStack) {
-        return this.canSmelt(itemStack) && ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_2_1tor1_2_3);
+        return this.canSmelt(itemStack) && ViaFabricPlus.api().targetVersion().newerThan(LegacyProtocolVersion.r1_2_1tor1_2_3);
     }
 
     @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/AbstractFurnaceMenu;isFuel(Lnet/minecraft/world/item/ItemStack;)Z"))
     private boolean disableShiftClickFuelSlot(AbstractFurnaceMenu instance, ItemStack itemStack) {
-        return this.isFuel(itemStack) && ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_2_1tor1_2_3);
+        return this.isFuel(itemStack) && ViaFabricPlus.api().targetVersion().newerThan(LegacyProtocolVersion.r1_2_1tor1_2_3);
     }
 
 }

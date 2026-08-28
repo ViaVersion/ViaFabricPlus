@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.hud_changes.chat_indicator;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.multiplayer.chat.GuiMessageTag;
@@ -34,7 +35,7 @@ public abstract class MixinChatComponent {
 
     @ModifyVariable(method = "addMessage", at = @At("HEAD"), argsOnly = true)
     private GuiMessageTag removeIndicator(GuiMessageTag tag) {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2) ? null : tag;
+        return ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2) ? null : tag;
     }
 
 }

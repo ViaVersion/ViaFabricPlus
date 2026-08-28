@@ -23,9 +23,11 @@ package com.viaversion.viafabricplus.injection.mixin.core.connection;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.injection.access.core.IConnection;
 import com.viaversion.viafabricplus.injection.access.core.ILocalSampleLogger;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslationImpl;
+import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.platform.ViaChannelInitializer;
@@ -116,10 +118,10 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
     private static void setTargetVersion(InetSocketAddress address, EventLoopGroupHolder eventLoopGroupHolder, Connection connection, CallbackInfoReturnable<ChannelFuture> cir) {
         ProtocolVersion targetVersion = ((IConnection) connection).viaFabricPlus$getTargetVersion();
         if (targetVersion == null) { // No server-specific override
-            targetVersion = ProtocolTranslator.getTargetVersion();
+            targetVersion = ViaFabricPlus.api().targetVersion();
         }
-        if (targetVersion == ProtocolTranslator.AUTO_DETECT_PROTOCOL) { // Auto-detect enabled (when pinging always use a native version). Auto-detect is resolved in ConnectScreen mixin
-            targetVersion = ProtocolTranslator.NATIVE_VERSION;
+        if (targetVersion == ProtocolVersionDetector.AUTO_DETECT_VERSION) { // Auto-detect enabled (when pinging always use a native version). Auto-detect is resolved in ConnectScreen mixin
+            targetVersion = ProtocolTranslationImpl.NATIVE_VERSION;
         }
         ((IConnection) connection).viaFabricPlus$setTargetVersion(targetVersion);
     }

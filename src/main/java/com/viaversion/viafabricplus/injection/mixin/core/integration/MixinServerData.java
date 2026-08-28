@@ -23,6 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.core.integration;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.nbt.CompoundTag;

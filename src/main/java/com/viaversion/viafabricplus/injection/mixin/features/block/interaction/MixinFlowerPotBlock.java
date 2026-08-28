@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.Block;
@@ -44,7 +45,7 @@ public abstract class MixinFlowerPotBlock {
 
     @Inject(method = "useWithoutItem", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/FlowerPotBlock;potted:Lnet/minecraft/world/level/block/Block;", ordinal = 0, opcode = Opcodes.GETFIELD), cancellable = true)
     private void alwaysConsume(CallbackInfoReturnable<InteractionResult> ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10) && potted != Blocks.AIR) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10) && potted != Blocks.AIR) {
             ci.setReturnValue(InteractionResult.CONSUME);
         }
     }

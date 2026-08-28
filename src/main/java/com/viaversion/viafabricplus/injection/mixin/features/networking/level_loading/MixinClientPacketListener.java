@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.level_loading;
 
 import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain.ILevelLoadingScreen;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
@@ -45,14 +46,14 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @Inject(method = "handleSetSpawn", at = @At("RETURN"))
     private void moveDownloadingTerrainClosing(ClientboundSetDefaultSpawnPositionPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_18_2, ProtocolVersion.v1_20_2) && this.minecraft.gui.screen() instanceof ILevelLoadingScreen mixinDownloadingTerrainScreen) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_18_2, ProtocolVersion.v1_20_2) && this.minecraft.gui.screen() instanceof ILevelLoadingScreen mixinDownloadingTerrainScreen) {
             mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
         }
     }
 
     @Inject(method = "handleMovePlayer", at = @At("RETURN"))
     private void closeDownloadingTerrain(ClientboundPlayerPositionPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18) && this.minecraft.gui.screen() instanceof ILevelLoadingScreen mixinDownloadingTerrainScreen) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18) && this.minecraft.gui.screen() instanceof ILevelLoadingScreen mixinDownloadingTerrainScreen) {
             mixinDownloadingTerrainScreen.viaFabricPlus$setReady();
         }
     }

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.remove_fuel_slot;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
@@ -39,14 +40,14 @@ public abstract class MixinBrewingStandMenu_FuelSlot extends Slot {
 
     @Inject(method = "mayPlaceItem(Lnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
     private static void removeFuelSlot(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(false);
         }
     }
 
     @Override
     public boolean isActive() {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_8);
     }
 
 }

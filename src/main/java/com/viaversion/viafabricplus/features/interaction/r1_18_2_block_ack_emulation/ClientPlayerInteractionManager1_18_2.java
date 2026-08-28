@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.features.interaction.r1_18_2_block_ack_emulation;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.client.Minecraft;
@@ -44,7 +45,7 @@ public final class ClientPlayerInteractionManager1_18_2 {
         final LocalPlayer player = Minecraft.getInstance().player;
 
         final Vec2 rotation;
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1)) {
             rotation = null;
         } else {
             rotation = new Vec2(player.getYRot(), player.getXRot());
@@ -63,9 +64,9 @@ public final class ClientPlayerInteractionManager1_18_2 {
         final Pair<Vec3, Vec2> oldPlayerState = unAckedActions.remove(Pair.of(blockPos, action));
         final BlockState actualState = world.getBlockState(blockPos);
 
-        if ((oldPlayerState == null || !allGood || action != ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK && actualState != expectedState) && (actualState != expectedState || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2))) {
+        if ((oldPlayerState == null || !allGood || action != ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK && actualState != expectedState) && (actualState != expectedState || ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2))) {
             world.setBlock(blockPos, expectedState, Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
-            if (oldPlayerState != null && (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) || (world == player.level() && player.isColliding(blockPos, expectedState)))) {
+            if (oldPlayerState != null && (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) || (world == player.level() && player.isColliding(blockPos, expectedState)))) {
                 final Vec3 oldPlayerPosition = oldPlayerState.getKey();
                 if (oldPlayerState.getValue() != null) {
                     player.absSnapTo(oldPlayerPosition.x, oldPlayerPosition.y, oldPlayerPosition.z, oldPlayerState.getValue().x, oldPlayerState.getValue().y);

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.constants;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
@@ -44,13 +45,13 @@ public abstract class MixinAvatarRenderer {
         if (state.pose == Pose.SLEEPING) {
             final Direction sleepingDir = state.bedOrientation;
             if (sleepingDir != null) {
-                if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+                if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
                     cir.setReturnValue(cir.getReturnValue().subtract(sleepingDir.getStepX() * 0.4, 0, sleepingDir.getStepZ() * 0.4));
                 }
-                if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2)) {
+                if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2)) {
                     cir.setReturnValue(cir.getReturnValue().subtract(sleepingDir.getStepX() * 0.1, 0, sleepingDir.getStepZ() * 0.1));
                 }
-                if (ProtocolTranslator.getTargetVersion().betweenInclusive(LegacyProtocolVersion.b1_6tob1_6_6, ProtocolVersion.v1_7_6)) {
+                if (ViaFabricPlus.api().targetVersion().betweenInclusive(LegacyProtocolVersion.b1_6tob1_6_6, ProtocolVersion.v1_7_6)) {
                     cir.setReturnValue(cir.getReturnValue().subtract(0, 0.3F, 0));
                 }
             }
@@ -60,7 +61,7 @@ public abstract class MixinAvatarRenderer {
     @Redirect(method = "getRenderOffset(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;)Lnet/minecraft/world/phys/Vec3;",
         at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;isCrouching:Z", opcode = Opcodes.GETFIELD))
     private boolean disableSneakPositionOffset(AvatarRenderState instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_11_1) && instance.isCrouching;
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_11_1) && instance.isCrouching;
     }
 
 }

@@ -367,5 +367,8 @@
   },
   "mixinextras": {
     "minVersion": "0.5.3"
-  }
+  },
+  "mixins": [
+    "core.MixinBuiltInRegistries"
+  ]
 }

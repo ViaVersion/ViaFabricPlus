@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.always_tick_entities;
 
 import com.viaversion.viafabricplus.injection.access.world.always_tick_entities.IEntity;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,7 +37,7 @@ public abstract class MixinEntity implements IEntity {
 
     @Override
     public boolean viaFabricPlus$isInLoadedChunkAndShouldTick() {
-        return this.viaFabricPlus$isInLoadedChunkAndShouldTick || !ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_8, ProtocolVersion.v1_17);
+        return this.viaFabricPlus$isInLoadedChunkAndShouldTick || !ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_8, ProtocolVersion.v1_17);
     }
 
     @Override

@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.config_state;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.protocols.v1_19_3to1_19_4.packet.ServerboundPackets1_19_4;
 import com.viaversion.viaversion.protocols.v1_20to1_20_2.Protocol1_20To1_20_2;
@@ -36,7 +37,7 @@ public abstract class MixinProtocol1_20To1_20_2 {
 
     @Inject(method = "lambda$queueServerboundPacket$12", at = @At("HEAD"), cancellable = true)
     private static void dontQueueConfigPackets(ServerboundPackets1_20_2 packetType, PacketWrapper wrapper, CallbackInfo ci) {
-        if (!ViaFabricPlus.api().settings().advanced().queueConfigPackets().value()) {
+        if (!ViaFabricPlusImpl.impl().advanced().queueConfigPackets().isActive()) {
             ci.cancel();
             switch (packetType) {
                 case CUSTOM_PAYLOAD -> wrapper.setPacketType(ServerboundPackets1_19_4.CUSTOM_PAYLOAD);

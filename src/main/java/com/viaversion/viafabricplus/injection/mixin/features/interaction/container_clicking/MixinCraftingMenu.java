@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.inventory.AbstractCraftingMenu;
 import net.minecraft.world.inventory.CraftingMenu;
@@ -40,7 +41,7 @@ public abstract class MixinCraftingMenu extends AbstractCraftingMenu {
 
     @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/CraftingMenu;moveItemStackTo(Lnet/minecraft/world/item/ItemStack;IIZ)Z", ordinal = 1))
     private boolean noShiftClickMoveIntoCraftingTable(CraftingMenu instance, ItemStack itemStack, int startIndex, int endIndex, boolean fromLast) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_4) && this.moveItemStackTo(itemStack, startIndex, endIndex, fromLast);
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_14_4) && this.moveItemStackTo(itemStack, startIndex, endIndex, fromLast);
     }
 
 }

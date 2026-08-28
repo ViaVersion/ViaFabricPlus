@@ -24,15 +24,9 @@ package com.viaversion.viafabricplus.api.settings.base;
 import com.google.gson.JsonObject;
 import net.minecraft.network.chat.Component;
 
-public interface Setting<T> {
+public interface Setting {
 
     Component name();
-
-    T value();
-
-    void setValue(T value);
-
-    T defaultValue();
 
     void write(final JsonObject object);
 

@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.container_clicking;
 
 import com.viaversion.viafabricplus.injection.access.interaction.container_clicking.IAbstractContainerMenu;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -44,7 +45,7 @@ public abstract class MixinAbstractContainerMenu implements IAbstractContainerMe
 
     @Redirect(method = "initializeContents", at = @At(value = "FIELD", target = "Lnet/minecraft/world/inventory/AbstractContainerMenu;carried:Lnet/minecraft/world/item/ItemStack;", opcode = Opcodes.PUTFIELD))
     private void preventUpdate(AbstractContainerMenu instance, ItemStack value) {
-        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+        if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             this.carried = value;
         }
     }

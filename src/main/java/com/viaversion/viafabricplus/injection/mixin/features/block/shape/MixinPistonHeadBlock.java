@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -92,7 +93,7 @@ public abstract class MixinPistonHeadBlock extends DirectionalBlock {
             return;
         }
         // Outline shape for piston head doesn't exist in <= 1.12.2
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(switch (state.getValue(PistonHeadBlock.FACING)) {
                 case DOWN -> viaFabricPlus$down_head_shape;
                 case UP -> viaFabricPlus$up_head_shape;
@@ -106,7 +107,7 @@ public abstract class MixinPistonHeadBlock extends DirectionalBlock {
 
     @Override
     public @NonNull VoxelShape getCollisionShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return switch (state.getValue(PistonHeadBlock.FACING)) {
                 case DOWN -> Shapes.or(viaFabricPlus$down_head_shape, viaFabricPlus$down_arm_shape_r1_8_x);
                 case UP -> Shapes.or(viaFabricPlus$up_head_shape, viaFabricPlus$up_arm_shape_r1_8_x);
@@ -115,7 +116,7 @@ public abstract class MixinPistonHeadBlock extends DirectionalBlock {
                 case WEST -> Shapes.or(viaFabricPlus$west_head_shape, viaFabricPlus$west_arm_shape_r1_8_x);
                 case EAST -> Shapes.or(viaFabricPlus$east_head_shape, viaFabricPlus$east_arm_shape_r1_8_x);
             };
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             // Collision shape for piston head in <= 1.12.2 needs to be the 1.13+ outline shape
             viaFabricPlus$selfInflicted = true;
             return getShape(state, world, pos, context);

@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.core.gui;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.settings.impl.Orientation;
 import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import net.minecraft.client.gui.components.Button;
@@ -46,7 +47,7 @@ public abstract class MixinJoinMultiplayerScreen extends Screen {
 
     @Inject(method = "repositionElements", at = @At("RETURN"))
     private void addProtocolSelectionButton(CallbackInfo ci) {
-        final Orientation orientation = ViaFabricPlus.api().settings().general().multiplayerScreenButtonOrientation().value();
+        final Orientation orientation = ViaFabricPlusImpl.impl().options().multiplayerScreenButtonOrientation().value();
         if (orientation != Orientation.NONE) {
             if (viaFabricPlus$button == null) {
                 viaFabricPlus$button = Button

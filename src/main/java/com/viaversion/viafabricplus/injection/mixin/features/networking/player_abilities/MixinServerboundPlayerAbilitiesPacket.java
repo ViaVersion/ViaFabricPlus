@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.player_abilities;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ServerboundPlayerAbilitiesPacket;
@@ -46,7 +47,7 @@ public abstract class MixinServerboundPlayerAbilitiesPacket {
 
     @Redirect(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/FriendlyByteBuf;writeByte(I)Lnet/minecraft/network/FriendlyByteBuf;"))
     private FriendlyByteBuf implementFlags(FriendlyByteBuf instance, int value) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             if (viaFabricPlus$abilities.invulnerable) value |= 1;
             if (viaFabricPlus$abilities.mayfly) value |= 4;
             if (viaFabricPlus$abilities.instabuild) value |= 8;

@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -53,7 +54,7 @@ public abstract class MixinStructureBlockEditScreen {
 
     @Inject(method = "updateMode", at = @At("RETURN"))
     private void hideStrictButton(StructureMode mode, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             strictButton.visible = false;
         }
     }
@@ -61,7 +62,7 @@ public abstract class MixinStructureBlockEditScreen {
     @WrapWithCondition(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"))
     private boolean hideStrictText(GuiGraphicsExtractor instance, Font font, Component str, int x, int y, int color) {
         if (str == STRICT_LABEL) {
-            return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4);
+            return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21_4);
         } else {
             return true;
         }
@@ -69,7 +70,7 @@ public abstract class MixinStructureBlockEditScreen {
 
     @Inject(method = "init", at = @At("TAIL"))
     private void changeInputNameMaxLength(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2)) {
             this.nameEdit.setMaxLength(64);
         }
     }

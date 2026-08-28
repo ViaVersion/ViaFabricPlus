@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -46,18 +47,18 @@ public abstract class MixinEquippable {
 
     @Redirect(method = "swapWithEquipmentSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isCreative()Z"))
     private boolean removeCreativeCondition(Player instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20) && instance.isCreative();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_20) && instance.isCreative();
     }
 
     @Inject(method = "swapWithEquipmentSlot", at = @At("HEAD"), cancellable = true)
     private void cancelArmorSwap(ItemStack inHand, Player player, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             final ItemStack targetItem = player.getItemBySlot(this.slot);
             if (!targetItem.isEmpty()) {
                 cir.setReturnValue(InteractionResult.FAIL);
             }
         }
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
             cir.setReturnValue(InteractionResult.FAIL);
         }
     }

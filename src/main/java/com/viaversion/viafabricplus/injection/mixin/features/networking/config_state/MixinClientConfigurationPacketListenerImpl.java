@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.config_state;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
@@ -43,14 +44,14 @@ public abstract class MixinClientConfigurationPacketListenerImpl extends ClientC
 
     @Inject(method = "handleConfigurationFinished", at = @At("HEAD"))
     private void disableAutoRead(ClientboundFinishConfigurationPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             this.connection.channel.config().setAutoRead(false);
         }
     }
 
     @Inject(method = "handleConfigurationFinished", at = @At("RETURN"))
     private void enableAutoRead(ClientboundFinishConfigurationPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             this.connection.channel.config().setAutoRead(true);
         }
     }

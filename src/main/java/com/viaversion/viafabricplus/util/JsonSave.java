@@ -37,6 +37,11 @@ public final class JsonSave {
 
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+    public static void load(final Path path, final Consumer<JsonObject> reader, final Supplier<JsonObject> writer) {
+        read(path, reader);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> write(path, writer)));
+    }
+
     public static void read(final Path path, final Consumer<JsonObject> consumer) {
         if (Files.exists(path)) {
             try (final BufferedReader reader = Files.newBufferedReader(path)) {
@@ -53,10 +58,13 @@ public final class JsonSave {
     }
 
     public static void write(final Path path, final Supplier<JsonObject> supplier) {
-        try (final BufferedWriter writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
-            GSON.toJson(supplier.get(), writer);
-        } catch (Exception e) {
-            ViaFabricPlusImpl.impl().logger().error("Failed to write file: {}!", path.getFileName(), e);
+        final JsonObject object = supplier.get();
+        if (object != null) {
+            try (final BufferedWriter writer = Files.newBufferedWriter(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+                GSON.toJson(object, writer);
+            } catch (Exception e) {
+                ViaFabricPlusImpl.impl().logger().error("Failed to write file: {}!", path.getFileName(), e);
+            }
         }
     }
 

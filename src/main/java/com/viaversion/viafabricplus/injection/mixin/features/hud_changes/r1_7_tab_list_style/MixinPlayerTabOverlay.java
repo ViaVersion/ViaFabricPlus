@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.hud_changes.r1_7_t
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.r1_7_tab_list_style.IPlayerInfo;
 import com.viaversion.viafabricplus.injection.access.r1_7_tab_list_style.IPlayerTabOverlay;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public abstract class MixinPlayerTabOverlay implements IPlayerTabOverlay {
 
     @Inject(method = "getPlayerInfos", at = @At("HEAD"), cancellable = true)
     private void collectPlayerEntries(CallbackInfoReturnable<List<PlayerInfo>> result) {
-        if (ViaFabricPlus.api().settings().visual().enableLegacyTablist().isActive()) {
+        if (ViaFabricPlusImpl.impl().visuals().enableLegacyTablist().isActive()) {
             result.setReturnValue(this.minecraft.player.connection.getListedOnlinePlayers().stream()
                 .sorted(viaFabricPlus$FIFO_COMPARATOR)
                 .limit(viaFabricPlus$maxSlots)

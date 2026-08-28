@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.limitation;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -59,7 +60,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @ModifyConstant(method = "getFrictionInfluencedSpeed", constant = @Constant(doubleValue = 0.6))
     private double allowFrictionLessThan(double constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
             return Double.MIN_VALUE;
         } else {
             return constant;
@@ -68,7 +69,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "computeModifiedFriction", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;clamp(FFF)F"))
     private static float dontClampFriction(float value, float min, float max) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
             return value;
         } else {
             return Mth.clamp(value, min, max);
@@ -77,7 +78,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;is(Ljava/lang/Object;)Z"))
     private boolean useEuclideanDistanceCalculation(LivingEntity instance, Object o) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return false;
         } else {
             return instance.is((EntityType<?>) o);
@@ -86,7 +87,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Inject(method = "getFrictionInfluencedSpeed", at = @At("HEAD"), cancellable = true)
     private void modifyFrictionInfluencedSpeed(float blockFriction, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             float drag = this.onGround() ? blockFriction * 0.91F : 0.91F;
             float accel = 0.16277136F / (drag * drag * drag);
             cir.setReturnValue(this.onGround() ? this.getSpeed() * accel : this.getFlyingSpeed());
@@ -95,7 +96,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "travelInAir", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;hasChunkAt(Lnet/minecraft/core/BlockPos;)Z"))
     private boolean modifyLoadedCheck(Level instance, BlockPos blockPos) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return instance.hasChunkAt(blockPos) && instance.getChunkSource().hasChunk(blockPos.getX() >> 4, blockPos.getZ() >> 4);
         } else {
             return instance.hasChunkAt(blockPos);
@@ -105,7 +106,7 @@ public abstract class MixinLivingEntity extends Entity {
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;resetFallDistance()V"))
     private void dontResetLevitationFallDistance(LivingEntity instance) {
         // Only needed when mods calculate the fall distance on the clientside
-        if (this.hasEffect(MobEffects.SLOW_FALLING) || ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2)) {
+        if (this.hasEffect(MobEffects.SLOW_FALLING) || ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_12_2)) {
             instance.resetFallDistance();
         }
     }

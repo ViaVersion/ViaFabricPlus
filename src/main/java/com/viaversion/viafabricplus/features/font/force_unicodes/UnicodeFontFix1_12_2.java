@@ -22,6 +22,10 @@
 package com.viaversion.viafabricplus.features.font.force_unicodes;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
@@ -35,7 +39,7 @@ public final class UnicodeFontFix1_12_2 {
     private static Runnable task = null;
 
     public static void init() {
-        ViaFabricPlus.api().addChangeProtocolVersionEvent((_, newVersion) -> {
+        ViaFabricPlus.api().protocolTranslation().addChangeProtocolVersionListener((_, newVersion) -> {
             updateUnicodeFontOverride(newVersion);
         });
 
@@ -50,7 +54,7 @@ public final class UnicodeFontFix1_12_2 {
     public static void updateUnicodeFontOverride(final ProtocolVersion version) {
         final OptionInstance<Boolean> option = Minecraft.getInstance().options.forceUnicodeFont();
 
-        if (ViaFabricPlus.api().settings().visual().forceUnicodeFontForNonAsciiLanguages().isActive(version)) {
+        if (ViaFabricPlusImpl.impl().visuals().forceUnicodeFontForNonAsciiLanguages().isActive(version)) {
             if (Language.getInstance() instanceof ClientLanguage storage) {
                 enabled = LanguageUtil.isUnicodeFont1_12_2(storage.storage);
                 task = () -> option.set(enabled);

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.world.entity_distance;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.renderer.extract.LevelExtractor;
@@ -35,7 +36,7 @@ public abstract class MixinLevelExtractor {
 
     @Redirect(method = "extractVisibleEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/OptionInstance;get()Ljava/lang/Object;"))
     private @Coerce Object removeDistanceScaling(OptionInstance<Double> instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return 1.0D;
         } else {
             return instance.get();

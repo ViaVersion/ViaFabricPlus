@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.protocoltranslator.netty;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.settings.impl.PacketTranslationError;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -47,7 +48,7 @@ public final class ViaFabricPlusDecoder extends ViaDecodeHandler {
                 return;
             }
 
-            final PacketTranslationError mode = ViaFabricPlus.api().settings().general().ignorePacketTranslationErrors().value();
+            final PacketTranslationError mode = ViaFabricPlusImpl.impl().options().ignorePacketTranslationErrors().value();
             if (mode != PacketTranslationError.KICK) {
                 ViaFabricPlusImpl.impl().logger().error("Error occurred while decoding packet in ViaFabricPlus decoder", e);
                 if (mode == PacketTranslationError.CANCEL_AND_NOTIFY) {

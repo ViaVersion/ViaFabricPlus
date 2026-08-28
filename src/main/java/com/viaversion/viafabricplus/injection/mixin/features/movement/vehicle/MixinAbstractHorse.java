@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.movement.vehicle;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
@@ -34,7 +35,7 @@ public abstract class MixinAbstractHorse {
 
     @WrapWithCondition(method = "addPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;absSnapRotationTo(FF)V"))
     private boolean dontSetPassengerRotation(Entity instance, float yRot, float xRot) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_7);
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21_7);
     }
 
 }

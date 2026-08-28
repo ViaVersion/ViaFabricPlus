@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
@@ -37,7 +38,7 @@ public abstract class MixinLeadItem {
 
     @Inject(method = "useOn", at = @At("RETURN"), cancellable = true)
     private void swingHand(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             if (context.getLevel().getBlockState(context.getClickedPos()).is(BlockTags.FENCES)) {
                 cir.setReturnValue(InteractionResult.SUCCESS);
             }

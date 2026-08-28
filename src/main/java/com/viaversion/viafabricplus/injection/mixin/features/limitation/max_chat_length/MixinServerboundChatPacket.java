@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.limitation.max_chat_length;
 
-import com.viaversion.viafabricplus.features.limitation.max_chat_length.MaxChatLength;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.network.protocol.game.ServerboundChatPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -32,7 +32,7 @@ public abstract class MixinServerboundChatPacket {
 
     @ModifyConstant(method = "write", constant = @Constant(intValue = 256))
     private int modifyChatLength(int maxLength) {
-        return MaxChatLength.getChatLength();
+        return ViaFabricPlus.api().limitations().maxChatLength();
     }
 
 }

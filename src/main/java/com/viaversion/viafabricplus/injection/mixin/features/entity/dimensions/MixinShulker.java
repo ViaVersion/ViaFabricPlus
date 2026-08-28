@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.dimensions;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -43,7 +44,7 @@ public abstract class MixinShulker extends AbstractGolem { // ???????????????
 
     @Inject(method = "getDefaultDimensions", at = @At("HEAD"), cancellable = true)
     private void keepDefaultDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
             cir.setReturnValue(super.getDefaultDimensions(pose));
         }
     }

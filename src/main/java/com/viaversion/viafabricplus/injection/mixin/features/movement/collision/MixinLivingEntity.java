@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -58,7 +59,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "handleRelativeFrictionAndCalculateMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;wasInPowderSnow:Z", opcode = Opcodes.GETFIELD))
     private boolean dontCheckLastTick(LivingEntity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return this.getInBlockState().is(Blocks.POWDER_SNOW);
         } else {
             return instance.wasInPowderSnow;
@@ -67,21 +68,21 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Inject(method = "pushEntities", at = @At("HEAD"), cancellable = true)
     private void preventEntityPush(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.cancel();
         }
     }
 
     @Inject(method = "trapdoorUsableAsLadder", at = @At("HEAD"), cancellable = true)
     private void disableCrawling(CallbackInfoReturnable<Boolean> ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             ci.setReturnValue(false);
         }
     }
 
     @Inject(method = "onClimbable", at = @At("RETURN"), cancellable = true)
     private void allowGappedLadderClimb(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThan(LegacyProtocolVersion.b1_5tob1_5_2) && !cir.getReturnValueZ() && !this.isSpectator()) {
+        if (ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.b1_5tob1_5_2) && !cir.getReturnValueZ() && !this.isSpectator()) {
             final BlockPos blockPos = this.blockPosition().above();
             final BlockState blockState = this.level().getBlockState(blockPos);
             if (blockState.is(BlockTags.CLIMBABLE)) {

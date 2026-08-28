@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.core.connection;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslationImpl;
 import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.Connection;
@@ -40,11 +41,11 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;initiateServerboundPlayConnection(Ljava/lang/String;ILnet/minecraft/network/protocol/login/ClientLoginPacketListener;)V"))
     private void disableProtocolTranslator(LevelStorageSource.LevelStorageAccess levelSourceAccess, PackRepository packRepository, WorldStem worldStem, Optional<GameRules> gameRules, boolean newWorld, CallbackInfo ci, @Local(name = "connection") Connection connection) {
-        ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION, true);
+        ViaFabricPlusImpl.impl().protocolTranslation().setTargetVersion(ProtocolTranslationImpl.NATIVE_VERSION, true);
         if (connection.isConnected()) {
-            ProtocolTranslator.injectPreviousVersionReset(connection.channel);
+            ViaFabricPlusImpl.impl().protocolTranslation().injectionPreviousVersionHandler(connection.channel);
         } else {
-            connection.pendingActions.add(c -> ProtocolTranslator.injectPreviousVersionReset(c.channel));
+            connection.pendingActions.add(c -> ViaFabricPlusImpl.impl().protocolTranslation().injectionPreviousVersionHandler(c.channel));
         }
     }
 

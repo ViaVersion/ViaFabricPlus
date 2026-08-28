@@ -27,7 +27,8 @@ import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -79,12 +80,12 @@ public abstract class MixinEntity {
 
     @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;horizontalCollision:Z", ordinal = 2, opcode = Opcodes.GETFIELD))
     private boolean removeVerticalCheck(Entity instance) {
-        return instance.horizontalCollision || (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1) && this.verticalCollision);
+        return instance.horizontalCollision || (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1) && this.verticalCollision);
     }
 
     @Redirect(method = "restituteMovementAfterCollisions", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;verticalCollisionBelow:Z", opcode = Opcodes.GETFIELD))
     private boolean fixBelowCollisionCheck(Entity instance) {
-        return instance.verticalCollisionBelow || ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1);
+        return instance.verticalCollisionBelow || ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1);
     }
 
     @Definition(id = "y", field = "Lnet/minecraft/world/phys/Vec3;y:D")
@@ -92,7 +93,7 @@ public abstract class MixinEntity {
     @Expression("-currentMovement.y < ?")
     @ModifyExpressionValue(method = "restituteMovementAfterCollisions", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean fixGravityCheck(boolean original, @Local(name = "currentMovement") Vec3 currentMovement) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
             return !(currentMovement.y < 0.0);
         } else {
             return original;
@@ -101,19 +102,19 @@ public abstract class MixinEntity {
 
     @Redirect(method = "restituteMovementAfterCollisions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;with(Lnet/minecraft/core/Direction$Axis;D)Lnet/minecraft/world/phys/Vec3;", ordinal = 2))
     private Vec3 fixRestitution(Vec3 instance, Direction.Axis axis, double value, @Local(name = "restitution") double restitution) {
-        return instance.with(axis, ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1) ? -this.getDeltaMovement().y * restitution : value);
+        return instance.with(axis, ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1) ? -this.getDeltaMovement().y * restitution : value);
     }
 
     @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;addMovementThisTick(Lnet/minecraft/world/entity/Entity$Movement;)V"))
     private boolean removeExtraCollisionChecks(Entity instance, Entity.Movement movement) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_5);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_5);
     }
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;lengthSqr()D", ordinal = 1), slice = @Slice(
         from = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;collide(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;")
     ))
     private double allowSmallValues(Vec3 instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return Double.MAX_VALUE;
         } else {
             return instance.lengthSqr();
@@ -122,7 +123,7 @@ public abstract class MixinEntity {
 
     @Inject(method = "collide(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
     private void use1_20_6StepCollisionCalculation(Vec3 movement, CallbackInfoReturnable<Vec3> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             final Entity thiz = (Entity) (Object) this;
             final AABB box = this.getBoundingBox();
             final List<VoxelShape> collisions = this.level().getEntityCollisions(thiz, box.expandTowards(movement));
@@ -142,7 +143,7 @@ public abstract class MixinEntity {
                 }
 
                 if (vec3d2.horizontalDistanceSqr() > adjustedMovement.horizontalDistanceSqr()) {
-                    adjustedMovement = vec3d2.add(Entity.collideBoundingBox(thiz, new Vec3(0D, -vec3d2.y + (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2) ? 0 : movement.y), 0D), box.move(vec3d2), this.level(), collisions));
+                    adjustedMovement = vec3d2.add(Entity.collideBoundingBox(thiz, new Vec3(0D, -vec3d2.y + (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2) ? 0 : movement.y), 0D), box.move(vec3d2), this.level(), collisions));
                 }
             }
 
@@ -152,9 +153,9 @@ public abstract class MixinEntity {
 
     @Inject(method = "getOnPos(F)Lnet/minecraft/core/BlockPos;", at = @At("HEAD"), cancellable = true)
     private void modifyPosWithYOffset(float offset, CallbackInfoReturnable<BlockPos> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             int i = Mth.floor(this.position.x);
-            int j = Mth.floor(this.position.y - (double) (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
+            int j = Mth.floor(this.position.y - (double) (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18_2) && offset == 1.0E-5F ? 0.2F : offset));
             int k = Mth.floor(this.position.z);
             BlockPos blockPos = new BlockPos(i, j, k);
             if (this.level.getBlockState(blockPos).isAir()) {
@@ -172,7 +173,7 @@ public abstract class MixinEntity {
 
     @Inject(method = "getBlockPosBelowThatAffectsMyMovement", at = @At("HEAD"), cancellable = true)
     private void modifyVelocityAffectingPos(CallbackInfoReturnable<BlockPos> cir) {
-        final ProtocolVersion target = ProtocolTranslator.getTargetVersion();
+        final ProtocolVersion target = ViaFabricPlus.api().targetVersion();
 
         if (target.olderThanOrEqualTo(ProtocolVersion.v1_19_4)) {
             cir.setReturnValue(BlockPos.containing(position.x, getBoundingBox().minY - (target.olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1 : 0.5000001), position.z));
@@ -181,7 +182,7 @@ public abstract class MixinEntity {
 
     @Redirect(method = {"collideWithShapes(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;Ljava/util/List;)Lnet/minecraft/world/phys/Vec3;", "checkInsideBlocks(Ljava/util/List;Lnet/minecraft/world/entity/InsideBlockEffectApplier$StepBasedCollector;)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/core/Direction;axisStepOrder(Lnet/minecraft/world/phys/Vec3;)Lcom/google/common/collect/ImmutableList;"))
     private static ImmutableList<Direction.Axis> alwaysSortYXZ(Vec3 movement) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return Direction.YXZ_AXIS_ORDER;
         } else {
             return Direction.axisStepOrder(movement);
@@ -190,7 +191,7 @@ public abstract class MixinEntity {
 
     @Redirect(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;equal(DD)Z"))
     private static boolean horizontalExactCollisionEqualness(double a, double b) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             return a == b;
         } else {
             return Mth.equal(a, b);

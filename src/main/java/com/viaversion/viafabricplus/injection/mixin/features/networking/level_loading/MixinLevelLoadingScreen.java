@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.level_loading;
 
 import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain.ILevelLoadingScreen;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
@@ -65,15 +66,15 @@ public abstract class MixinLevelLoadingScreen extends Screen implements ILevelLo
             return;
         }
 
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             ci.cancel();
 
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
+            if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
                 if (this.viaFabricPlus$ready) {
                     this.onClose();
                 }
 
-                if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
+                if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_1)) {
                     this.viaFabricPlus$tickCounter++;
                     if (this.viaFabricPlus$tickCounter % 20 == 0) {
                         this.minecraft.getConnection().send(new ServerboundKeepAlivePacket(0));
@@ -92,7 +93,7 @@ public abstract class MixinLevelLoadingScreen extends Screen implements ILevelLo
                             this.onClose();
                         }
                     } else {
-                        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+                        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
                             this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready || System.currentTimeMillis() > this.viaFabricPlus$loadStartTime + 2000;
                         } else {
                             this.viaFabricPlus$closeOnNextTick = this.viaFabricPlus$ready;

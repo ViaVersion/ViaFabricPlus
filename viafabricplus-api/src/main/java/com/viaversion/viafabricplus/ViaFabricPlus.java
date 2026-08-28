@@ -23,7 +23,24 @@ package com.viaversion.viafabricplus;
 
 import com.google.common.base.Preconditions;
 import com.viaversion.viafabricplus.api.ViaFabricPlusAPI;
+import com.viaversion.viafabricplus.api.ViaFabricPlusBase;
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.api.minecraft.item.Item;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import io.netty.channel.Channel;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.core.Holder;
+import net.minecraft.network.Connection;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+import java.nio.file.Path;
+import java.util.List;
 
 public final class ViaFabricPlus {
 
@@ -45,9 +62,12 @@ public final class ViaFabricPlus {
         return api;
     }
 
+    // -----
+
+    private static final ViaFabricPlusBase legacy = new ViaFabricPlusBase() {};
     @Deprecated
-    public static ViaFabricPlusAPI getImpl() {
-        return api();
+    public static ViaFabricPlusBase getImpl() {
+        return legacy;
     }
 
 }

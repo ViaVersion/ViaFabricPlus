@@ -23,7 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.LinkedHashSet;
 import java.util.OptionalInt;
@@ -104,7 +105,7 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @Redirect(method = "handleMoveVehicle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;distanceTo(Lnet/minecraft/world/phys/Vec3;)D"))
     private double allowSmallValues(Vec3 instance, Vec3 vec) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_2)) {
             return Integer.MAX_VALUE;
         } else {
             return instance.distanceTo(vec);
@@ -113,7 +114,7 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @WrapWithCondition(method = "handleMovePlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;send(Lnet/minecraft/network/protocol/Packet;)V", ordinal = 0))
     private boolean changePacketOrder(Connection instance, Packet<?> packet) {
-        final boolean cancel = ProtocolTranslator.getTargetVersion().equalTo(ProtocolVersion.v1_21_2);
+        final boolean cancel = ViaFabricPlus.api().targetVersion().equalTo(ProtocolVersion.v1_21_2);
         if (cancel) {
             this.viaFabricPlus$teleportConfirmPacket = packet;
         }
@@ -130,17 +131,17 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @WrapWithCondition(method = "handleMoveEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/protocol/game/VecDeltaCodec;setBase(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 0))
     private boolean dontHandleEntityPositionChange(VecDeltaCodec instance, Vec3 base) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_2);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21_2);
     }
 
     @Redirect(method = "handleTeleportEntity", at = @At(value = "INVOKE", target = "Ljava/util/OptionalInt;isPresent()Z"))
     private boolean dontHandleRemovedVehiclePositionChange(OptionalInt instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21) && instance.isPresent();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21) && instance.isPresent();
     }
 
     @Redirect(method = "handleOpenSignEditor", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false))
     private void openEmptySignEditor(Logger instance, String format, Object arg1, Object arg2, @Local(argsOnly = true) ClientboundOpenSignEditorPacket packet) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             final BlockPos pos = packet.getPos();
 
             final SignBlockEntity emptySignBlockEntity = new SignBlockEntity(pos, this.level.getBlockState(pos));
@@ -153,12 +154,12 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @WrapWithCondition(method = "handleRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/attributes/AttributeMap;assignBaseValues(Lnet/minecraft/world/entity/ai/attributes/AttributeMap;)V"))
     private boolean dontApplyBaseValues(AttributeMap instance, AttributeMap other) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21);
     }
 
     @Redirect(method = "handleGameEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;setScreen(Lnet/minecraft/client/gui/screens/Screen;)V", ordinal = 0))
     private void handleWinGameState0(Gui instance, Screen screen, @Local(name = "param") int param) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             if (param == 0) {
                 this.minecraft.player.connection.send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.PERFORM_RESPAWN));
                 instance.setScreen(new LevelLoadingScreen(this.levelLoadTracker, LevelLoadingScreen.Reason.END_PORTAL));
@@ -172,12 +173,12 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @WrapWithCondition(method = "handleConfigurationStart", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;sendChatAcknowledgement()V"))
     private boolean dontSendChatAck(ClientPacketListener instance) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_5);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_5);
     }
 
     @Redirect(method = "handleOpenBook", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen$BookAccess;fromItem(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/client/gui/screens/inventory/BookViewScreen$BookAccess;"))
     private BookViewScreen.BookAccess dontOpenWriteableBookScreen(ItemStack itemStack) {
-        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_5) || itemStack.is(Items.WRITTEN_BOOK)) {
+        if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_5) || itemStack.is(Items.WRITTEN_BOOK)) {
             return BookViewScreen.BookAccess.fromItem(itemStack);
         } else {
             return null;
@@ -186,34 +187,34 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @WrapWithCondition(method = "handleRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;startWaitingForNewLevel(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/gui/screens/LevelLoadingScreen$Reason;)V"))
     private boolean checkDimensionChange(ClientPacketListener instance, LocalPlayer player, ClientLevel level, LevelLoadingScreen.Reason reason, @Local(name = "dimensionKey") ResourceKey<Level> dimensionKey) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_3) || dimensionKey != this.minecraft.player.level().dimension();
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_3) || dimensionKey != this.minecraft.player.level().dimension();
     }
 
     @WrapWithCondition(method = "handlePlayerChat", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
     private boolean removeChatPacketError(Logger instance, String s, Object o) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_2);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_2);
     }
 
     @Redirect(method = "applyPlayerInfoUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;onGameModeChanged(Lnet/minecraft/world/level/GameType;)V"))
     private void dontResetVelocity(LocalPlayer instance, GameType gameType) {
-        if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20)) {
+        if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20)) {
             instance.onGameModeChanged(gameType);
         }
     }
 
     @WrapWithCondition(method = "initializeChatSession", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;)V", remap = false))
     private boolean removeInvalidSignatureWarning(Logger instance, String s, Object o) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_4);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_4);
     }
 
     @WrapWithCondition(method = "handlePlayerInfoUpdate", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false))
     private boolean removeUnknownPlayerListEntryWarning(Logger instance, String s, Object object1, Object object2) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_3);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_3);
     }
 
     @Redirect(method = {"handleEntityPositionSync", "handleMoveEntity"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isLocalInstanceAuthoritative()Z"))
     private boolean allowPlayerToBeMovedByEntityPackets(Entity instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             return instance.getControllingPassenger() instanceof Player player ? player.isLocalPlayer() : !instance.level().isClientSide();
         } else {
             return instance.isLocalInstanceAuthoritative();
@@ -222,14 +223,14 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void fixPlayerListOrdering(Minecraft minecraft, Connection connection, CommonListenerCookie cookie, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             this.listedPlayers = new LinkedHashSet<>();
         }
     }
 
     @ModifyConstant(method = "handleSetEntityPassengersPacket", constant = @Constant(classValue = AbstractBoat.class))
     private boolean dontChangeYawWhenMountingBoats(Object entity, Class<?> boatClass) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
             return false;
         } else {
             return boatClass.isInstance(entity);
@@ -238,15 +239,15 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @Inject(method = "handleSetChunkCacheRadius", at = @At("RETURN"))
     private void emulateSimulationDistance(ClientboundSetChunkCacheRadiusPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_17_1)) {
             this.handleSetSimulationDistance(new ClientboundSetSimulationDistancePacket(packet.getRadius()));
         }
     }
 
     @Redirect(method = "setValuesFromPositionPacket", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;moveOrInterpolateTo(Lnet/minecraft/world/phys/Vec3;FF)V"))
     private static void cancelSmallChanges(Entity instance, Vec3 position, float yRot, float xRot) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) && Math.abs(instance.getX() - position.x) < 0.03125 && Math.abs(instance.getY() - position.y) < 0.015625 && Math.abs(instance.getZ() - position.z) < 0.03125) {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && instance.getInterpolation() != null) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1) && Math.abs(instance.getX() - position.x) < 0.03125 && Math.abs(instance.getY() - position.y) < 0.015625 && Math.abs(instance.getZ() - position.z) < 0.03125) {
+            if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && instance.getInterpolation() != null) {
                 instance.getInterpolation().setInterpolationLength(0);
             }
             instance.moveOrInterpolateTo(instance.position(), yRot, xRot);

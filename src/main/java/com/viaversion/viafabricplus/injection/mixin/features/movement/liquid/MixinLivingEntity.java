@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.liquid;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
@@ -55,7 +56,7 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Redirect(method = "isInShallowFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidHeight(Lnet/minecraft/tags/TagKey;)D"))
     private double dontApplyLavaMovement(LivingEntity instance, TagKey<Fluid> tagKey) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && tagKey == FluidTags.LAVA) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && tagKey == FluidTags.LAVA) {
             return Double.MAX_VALUE;
         } else {
             return instance.getFluidHeight(tagKey);
@@ -66,22 +67,22 @@ public abstract class MixinLivingEntity extends Entity {
         slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/world/effect/MobEffects;DOLPHINS_GRACE:Lnet/minecraft/core/Holder;", opcode = Opcodes.GETSTATIC)),
         at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;horizontalCollision:Z", ordinal = 0, opcode = Opcodes.GETFIELD))
     private boolean disableClimbing(LivingEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && instance.horizontalCollision;
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_13_2) && instance.horizontalCollision;
     }
 
     @ModifyVariable(method = "getFluidFallingAdjustedMovement", at = @At("HEAD"), argsOnly = true)
     private boolean modifyMovingDown(boolean isFalling) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_13_2) && isFalling;
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_13_2) && isFalling;
     }
 
     @Redirect(method = "travelInWater", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSprinting()Z", ordinal = 0))
     private boolean modifySwimSprintSpeed(LivingEntity instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_12_2) && instance.isSprinting();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_12_2) && instance.isSprinting();
     }
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getFluidHeight(Lnet/minecraft/tags/TagKey;)D"))
     private double redirectFluidHeight(LivingEntity instance, TagKey<Fluid> tagKey) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && tagKey == FluidTags.WATER && this.isInWater()) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && tagKey == FluidTags.WATER && this.isInWater()) {
             return 1;
         } else {
             return instance.getFluidHeight(tagKey);
@@ -90,14 +91,14 @@ public abstract class MixinLivingEntity extends Entity {
 
     @Inject(method = "getFluidFallingAdjustedMovement", at = @At("HEAD"), cancellable = true)
     private void modifySwimSprintFallSpeed(double baseGravity, boolean isFalling, Vec3 movement, CallbackInfoReturnable<Vec3> ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !this.isNoGravity()) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !this.isNoGravity()) {
             ci.setReturnValue(new Vec3(movement.x, movement.y - 0.02, movement.z));
         }
     }
 
     @ModifyConstant(method = "travelInWater", constant = @Constant(floatValue = 0.9F))
     private float modifySwimFriction(float constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return this.getWaterSlowDown();
         } else {
             return constant;

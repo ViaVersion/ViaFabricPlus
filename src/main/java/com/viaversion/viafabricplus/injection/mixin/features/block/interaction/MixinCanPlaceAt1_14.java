@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.interaction;
 
 import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
@@ -41,7 +42,7 @@ public abstract class MixinCanPlaceAt1_14 {
 
     @Inject(method = "canSurvive", at = @At(value = "RETURN"), cancellable = true)
     private void canPlaceAt1_14(BlockState state, LevelReader level, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14)) {
 
             final Block block = level.getBlockState(pos).getBlock();
             if (Block1_14.isExceptBlockForAttachWithPiston(block)) {

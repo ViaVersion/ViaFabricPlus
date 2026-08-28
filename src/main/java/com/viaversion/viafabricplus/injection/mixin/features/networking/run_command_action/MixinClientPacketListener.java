@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.run_command_action;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,7 +38,7 @@ public abstract class MixinClientPacketListener {
 
     @Redirect(method = "sendUnattendedCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;verifyCommand(Ljava/lang/String;)Lnet/minecraft/client/multiplayer/ClientPacketListener$CommandCheckResult;"))
     private ClientPacketListener.CommandCheckResult dontOpenConfirmationScreens(ClientPacketListener instance, String command) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
             final ClientPacketListener.CommandCheckResult result = verifyCommand(command);
             return result == ClientPacketListener.CommandCheckResult.PARSE_ERRORS || result == ClientPacketListener.CommandCheckResult.PERMISSIONS_REQUIRED ? ClientPacketListener.CommandCheckResult.NO_ISSUES : result;
         } else {

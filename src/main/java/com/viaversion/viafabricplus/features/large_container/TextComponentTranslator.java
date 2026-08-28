@@ -22,8 +22,9 @@
 package com.viaversion.viafabricplus.features.large_container;
 
 import com.viaversion.nbt.tag.Tag;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslationImpl;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.Direction;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
@@ -35,7 +36,7 @@ import com.viaversion.viaversion.protocols.v1_13_2to1_14.packet.ClientboundPacke
 
 public final class TextComponentTranslator {
 
-    private static final UserConnection DUMMY_USER_CONNECTION = ProtocolTranslator.createDummyUserConnection(ProtocolTranslator.NATIVE_VERSION, ProtocolVersion.v1_14);
+    private static final UserConnection DUMMY_USER_CONNECTION = ViaFabricPlus.api().conversions().createDummyUserConnection(ProtocolTranslationImpl.NATIVE_VERSION, ProtocolVersion.v1_14);
 
     /**
      * Converts a ViaVersion 1.14 text component to a native text component, both in JSON format

@@ -19,22 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.item.negative_item_count;
+package com.viaversion.viafabricplus.injection.mixin.core;
 
-import com.viaversion.viafabricplus.protocoltranslator.util.ItemUtil;
-import com.viaversion.viaversion.protocols.v1_10to1_11.Protocol1_10To1_11;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.ItemStack;
+import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusEntrypoint;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.registries.BuiltInRegistries;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-public final class NegativeItemUtil {
+@Mixin(BuiltInRegistries.class)
+public abstract class MixinBuiltInRegistries {
 
-    public static int getCount(final ItemStack stack) {
-        final CompoundTag tag = ItemUtil.getTagOrNull(stack);
-        if (tag != null) {
-            return tag.getIntOr(ItemUtil.vvNbtName(Protocol1_10To1_11.class), stack.getCount());
-        } else {
-            return stack.getCount();
-        }
+    @Inject(method = "bootStrap", at = @At(value = "INVOKE", target = "Lnet/minecraft/core/registries/BuiltInRegistries;createContents()V"))
+    private static void callPostRegistryLoad(CallbackInfo ci) {
+        FabricLoader.getInstance().invokeEntrypoints("viafabricplus", ViaFabricPlusEntrypoint.class, ViaFabricPlusEntrypoint::onPostRegistryLoading);
     }
 
 }

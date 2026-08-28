@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
@@ -36,7 +37,7 @@ public abstract class MixinBoneMealItem {
 
     @Inject(method = "useOn", at = @At(value = "RETURN", ordinal = 1), cancellable = true)
     private void dontSwingHand(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().equalTo(ProtocolVersion.v26_1)) {
+        if (ViaFabricPlus.api().targetVersion().equalTo(ProtocolVersion.v26_1)) {
             cir.setReturnValue(InteractionResult.PASS);
         }
     }

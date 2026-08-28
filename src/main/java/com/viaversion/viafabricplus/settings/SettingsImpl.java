@@ -22,23 +22,20 @@
 package com.viaversion.viafabricplus.settings;
 
 import com.google.gson.JsonObject;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.api.events.LoadingCycleEvent;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusEntrypoint;
 import com.viaversion.viafabricplus.api.settings.Settings;
 import com.viaversion.viafabricplus.api.settings.base.SettingGroup;
-import com.viaversion.viafabricplus.api.settings.impl.AdvancedSettings;
-import com.viaversion.viafabricplus.api.settings.impl.GeneralSettings;
-import com.viaversion.viafabricplus.api.settings.impl.VisualSettings;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslationImpl;
 import com.viaversion.viafabricplus.settings.base.SettingGroupImpl;
 import com.viaversion.viafabricplus.settings.impl.AdvancedSettingsImpl;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettingsImpl;
 import com.viaversion.viafabricplus.settings.impl.VisualSettingsImpl;
 import com.viaversion.viafabricplus.util.JsonSave;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import net.fabricmc.loader.api.FabricLoader;
 
 public final class SettingsImpl implements Settings {
 
@@ -56,52 +53,50 @@ public final class SettingsImpl implements Settings {
 
     private String selectedProtocolVersion;
 
-    public void init(final ViaFabricPlusImpl impl) {
-        impl.runLoadingCycleEvents(LoadingCycleEvent.LoadingCycle.PRE_SETTINGS_LOAD);
-        final Path path = impl.path().resolve("settings.json");
-        JsonSave.read(path, jsonObject -> {
+    public void init() {
+        JsonSave.load(ViaFabricPlus.api().path().resolve("settings.json"), jsonObject -> {
             for (final SettingGroup group : this.groups) {
                 group.read(jsonObject);
             }
             this.selectedProtocolVersion = jsonObject.get("selected_protocol_version").getAsString();
-        });
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> JsonSave.write(path, () -> {
+        }, () -> {
             final JsonObject object = new JsonObject();
             for (final SettingGroup group : this.groups) {
                 group.write(object);
             }
-            object.addProperty("selected_protocol_version", ProtocolTranslator.getTargetVersion().getName());
+            object.addProperty("selected_protocol_version", ViaFabricPlus.api().targetVersion().getName());
             return object;
-        })));
-        impl.runLoadingCycleEvents(LoadingCycleEvent.LoadingCycle.POST_SETTINGS_LOAD);
+        });
+
+        FabricLoader.getInstance().invokeEntrypoints("viafabricplus", ViaFabricPlusEntrypoint.class, ViaFabricPlusEntrypoint::onPostSettingsLoading);
     }
 
     public void postInit() {
         // Set target version AFTER protocol loading, so we can reach all versions
         if (this.selectedProtocolVersion != null) {
-            if (this.general.saveSelectedProtocolVersion().value()) {
+            if (this.general.saveSelectedProtocolVersion().isActive()) {
                 final ProtocolVersion protocolVersion = ProtocolVersion.getClosest(this.selectedProtocolVersion);
                 if (protocolVersion != null) {
-                    ProtocolTranslator.setTargetVersion(protocolVersion);
+                    ViaFabricPlus.api().setTargetVersion(protocolVersion);
                 }
             } else {
-                ProtocolTranslator.setTargetVersion(ProtocolTranslator.NATIVE_VERSION);
+                ViaFabricPlus.api().setTargetVersion(ProtocolTranslationImpl.NATIVE_VERSION);
             }
         }
     }
 
     @Override
-    public GeneralSettings general() {
+    public GeneralSettingsImpl general() {
         return this.general;
     }
 
     @Override
-    public VisualSettings visual() {
+    public VisualSettingsImpl visual() {
         return this.visual;
     }
 
     @Override
-    public AdvancedSettings advanced() {
+    public AdvancedSettingsImpl advanced() {
         return this.advanced;
     }
 

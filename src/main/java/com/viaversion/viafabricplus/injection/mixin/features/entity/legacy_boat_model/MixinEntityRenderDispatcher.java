@@ -23,7 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.entity.legacy_boat
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.features.entity.legacy_boat_model.BoatRenderer1_8;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -52,7 +53,7 @@ public abstract class MixinEntityRenderDispatcher {
     @SuppressWarnings("unchecked")
     @Inject(method = "getRenderer(Lnet/minecraft/client/renderer/entity/state/EntityRenderState;)Lnet/minecraft/client/renderer/entity/EntityRenderer;", at = @At("HEAD"), cancellable = true)
     private <S extends EntityRenderState> void useBoatRenderer1_8(S entityRenderState, CallbackInfoReturnable<EntityRenderer<?, ? super S>> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && entityRenderState instanceof BoatRenderState) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8) && entityRenderState instanceof BoatRenderState) {
             cir.setReturnValue((EntityRenderer<?, ? super S>) viaFabricPlus$boatRenderer);
         }
     }

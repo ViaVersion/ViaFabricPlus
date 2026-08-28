@@ -34,7 +34,7 @@ import net.minecraft.network.chat.Component;
 
 public class SettingGroupImpl implements SettingGroup {
 
-    private final List<Setting<?>> settings = new ArrayList<>();
+    private final List<Setting> settings = new ArrayList<>();
     private final String key;
     private final Component component;
 
@@ -44,7 +44,7 @@ public class SettingGroupImpl implements SettingGroup {
     }
 
     @Override
-    public BooleanSetting registerBoolean(final String key, final Boolean defaultValue) {
+    public BooleanSetting registerBoolean(final String key, final boolean defaultValue) {
         final BooleanSetting setting = new BooleanSettingImpl(key, this.settingsName(key), defaultValue);
         this.settings.add(setting);
         return setting;
@@ -58,7 +58,7 @@ public class SettingGroupImpl implements SettingGroup {
     }
 
     @Override
-    public VersionedBooleanSetting registerVersionedBoolean(final String key, final ProtocolVersionRange versionRange, final Boolean defaultValue) {
+    public VersionedBooleanSetting registerVersionedBoolean(final String key, final ProtocolVersionRange versionRange, final boolean defaultValue) {
         final VersionedBooleanSetting setting = new VersionedBooleanSettingImpl(key, this.settingsName(key), versionRange, defaultValue);
         this.settings.add(setting);
         return setting;
@@ -71,7 +71,7 @@ public class SettingGroupImpl implements SettingGroup {
     @Override
     public void write(final JsonObject object) {
         final JsonObject settings = new JsonObject();
-        for (final Setting<?> setting : this.settings) {
+        for (final Setting setting : this.settings) {
             setting.write(settings);
         }
         object.add(this.key, settings);
@@ -80,7 +80,7 @@ public class SettingGroupImpl implements SettingGroup {
     @Override
     public void read(final JsonObject object) {
         final JsonObject settings = object.getAsJsonObject(this.key);
-        for (final Setting<?> setting : this.settings) {
+        for (final Setting setting : this.settings) {
             setting.read(settings);
         }
     }
@@ -91,7 +91,7 @@ public class SettingGroupImpl implements SettingGroup {
     }
 
     @Override
-    public List<Setting<?>> settings() {
+    public List<Setting> settings() {
         return new ArrayList<>(this.settings);
     }
 

@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.swinging;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -46,12 +47,12 @@ public abstract class MixinMinecraft {
 
     @WrapWithCondition(method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"))
     private boolean disableSwing(LocalPlayer instance, InteractionHand hand) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
 
     @Redirect(method = "startUseItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/InteractionResult$Success;swingSource()Lnet/minecraft/world/InteractionResult$SwingSource;", ordinal = 0))
     private InteractionResult.SwingSource disableSwing(InteractionResult.Success instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return InteractionResult.SwingSource.NONE;
         } else {
             return instance.swingSource();
@@ -60,7 +61,7 @@ public abstract class MixinMinecraft {
 
     @Redirect(method = "startUseItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/InteractionResult$Success;swingSource()Lnet/minecraft/world/InteractionResult$SwingSource;", ordinal = 2))
     private InteractionResult.SwingSource disableSwing2(InteractionResult.Success instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             return InteractionResult.SwingSource.NONE;
         } else {
             return instance.swingSource();
@@ -69,14 +70,14 @@ public abstract class MixinMinecraft {
 
     @Inject(method = "startAttack", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;hitResult:Lnet/minecraft/world/phys/HitResult;", ordinal = 0, opcode = Opcodes.GETFIELD))
     private void fixSwingPacketOrder(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             this.player.swing(InteractionHand.MAIN_HAND);
         }
     }
 
     @WrapWithCondition(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"))
     private boolean fixSwingPacketOrder(LocalPlayer instance, InteractionHand hand) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8);
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_8);
     }
 
 }

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.world.petrified_oak_slab_model;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.core.component.DataComponentType;
@@ -42,7 +43,7 @@ public abstract class MixinItemRenderer {
 
     @Redirect(method = "appendItemLayers", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;get(Lnet/minecraft/core/component/DataComponentType;)Ljava/lang/Object;"))
     private Object removeModel(ItemStack instance, DataComponentType<?> componentType) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(LegacyProtocolVersion.r1_3_1tor1_3_2, ProtocolVersion.v1_12_2) && instance.is(Items.PETRIFIED_OAK_SLAB)) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(LegacyProtocolVersion.r1_3_1tor1_3_2, ProtocolVersion.v1_12_2) && instance.is(Items.PETRIFIED_OAK_SLAB)) {
             return viaFabricPlus$missingIdentifier;
         } else {
             return instance.get(componentType);

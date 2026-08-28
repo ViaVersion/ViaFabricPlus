@@ -21,7 +21,10 @@
 
 package com.viaversion.viafabricplus.features.entity.dimensions;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -72,7 +75,7 @@ public final class EntityRidingOffsetsPre1_20_2 {
             case AbstractBoat abstractBoatEntity -> {
                 if (!abstractBoatEntity.hasPassenger(passenger)) return Vec3.ZERO;
 
-                if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+                if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                     yOffset = -0.3F;
                     final double xOffset = Mth.cos(abstractBoatEntity.getYRot() * Mth.PI / 180F);
                     final double zOffset = Mth.sin(abstractBoatEntity.getYRot() * Mth.PI / 180F);
@@ -156,7 +159,7 @@ public final class EntityRidingOffsetsPre1_20_2 {
 
     public static double getHeightOffset(final Entity entity) {
         if (entity instanceof Allay || entity instanceof Vex) {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+            if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
                 return 0D;
             } else {
                 return 0.4D;

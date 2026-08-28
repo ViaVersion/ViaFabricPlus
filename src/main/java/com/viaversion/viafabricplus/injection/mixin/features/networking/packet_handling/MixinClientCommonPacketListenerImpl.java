@@ -23,7 +23,9 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.net.URL;
 import java.nio.file.Path;
@@ -74,19 +76,19 @@ public abstract class MixinClientCommonPacketListenerImpl {
 
     @Inject(method = "storeDisconnectionReport", at = @At("HEAD"), cancellable = true)
     private void dontCreatePacketErrorCrashReports(CallbackInfoReturnable<Optional<Path>> cir) {
-        if (ViaFabricPlus.api().settings().advanced().dontCreatePacketErrorCrashReports().isActive()) {
+        if (ViaFabricPlusImpl.impl().advanced().dontCreatePacketErrorCrashReports().isActive()) {
             cir.setReturnValue(Optional.empty());
         }
     }
 
     @WrapWithCondition(method = "onPacketError", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;disconnect(Lnet/minecraft/network/DisconnectionDetails;)V"))
     private boolean dontDisconnectOnPacketException(Connection instance, DisconnectionDetails details) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_3);
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_20_3);
     }
 
     @Inject(method = "handleResourcePackPush", at = @At("HEAD"), cancellable = true)
     private void validateUrlInNetworkThread(ClientboundResourcePackPushPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_2)) {
             if (parseResourcePackUrl(packet.url()) == null) {
                 this.connection.send(new ServerboundResourcePackPacket(packet.id(), ServerboundResourcePackPacket.Action.INVALID_URL));
                 ci.cancel();
@@ -96,7 +98,7 @@ public abstract class MixinClientCommonPacketListenerImpl {
 
     @Redirect(method = "handleKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientCommonPacketListenerImpl;sendWhen(Lnet/minecraft/network/protocol/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
     private void forceSendKeepAlive(ClientCommonPacketListenerImpl instance, Packet<? extends ServerboundPacketListener> packet, BooleanSupplier condition, Duration expireAfterDuration) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_3)) {
             send(packet);
         } else {
             sendWhen(packet, condition, expireAfterDuration);
@@ -105,7 +107,7 @@ public abstract class MixinClientCommonPacketListenerImpl {
 
     @Inject(method = "handlePing", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/protocol/PacketUtils;ensureRunningOnSameThread(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketListener;Lnet/minecraft/network/PacketProcessor;)V", shift = At.Shift.AFTER), cancellable = true)
     private void addMissingConditions(ClientboundPingPacket packet, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             final short inventoryId = (short) ((packet.getId() >> 16) & 0xFF);
             if (inventoryId != 0 && inventoryId != minecraft.player.containerMenu.containerId) {
                 ci.cancel();

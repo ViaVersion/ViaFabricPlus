@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.elytra;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -44,7 +45,7 @@ public abstract class MixinPlayer extends LivingEntity {
 
     @Inject(method = "tryToStartFallFlying", at = @At("HEAD"), cancellable = true)
     private void replaceGlidingCondition(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             if (!this.onGround() && this.getDeltaMovement().y < 0D && !this.isFallFlying()) {
                 final ItemStack itemStack = this.getItemBySlot(EquipmentSlot.CHEST);
                 if (itemStack.is(Items.ELYTRA) && canGlideUsing(itemStack, EquipmentSlot.CHEST)) {

@@ -25,8 +25,9 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.mojang.authlib.GameProfile;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.packet.ServerboundPackets1_21_5;
@@ -118,7 +119,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Inject(method = "isSprintingPossible", at = @At("HEAD"), cancellable = true)
     private void isSprintingPossible1_21_10(boolean allowedInShallowWater, CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
             cir.setReturnValue(!this.isMobilityRestricted() && this.viaFabricPlus$hasEnoughFoodToSprint1_19_1()
                 && (!this.isPassenger() || this.vehicleCanSprint(this.getVehicle())) && (allowedInShallowWater || !this.isInShallowWater()));
         }
@@ -126,14 +127,14 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;tick()V", shift = At.Shift.AFTER))
     private void sendSneakingPacket(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_21_2, ProtocolVersion.v1_21_5)) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_21_2, ProtocolVersion.v1_21_5)) {
             this.viaFabricPlus$sendSneakingPacket();
         }
     }
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V", ordinal = 0))
     private void skipVVProtocol(ClientPacketListener instance, Packet<?> packet) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof ServerboundPlayerInputPacket(
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5) && packet instanceof ServerboundPlayerInputPacket(
             Input i
         )) {
             // Directly send the player input packet to bypass the code in the 1.21.5->1.21.6 protocol.
@@ -146,7 +147,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Redirect(method = "applyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;modifyInput(Lnet/minecraft/world/phys/Vec2;)Lnet/minecraft/world/phys/Vec2;"))
     private Vec2 moveMovementSpeedFactors(LocalPlayer instance, Vec2 input) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return input;
         } else {
             return this.modifyInput(input);
@@ -155,7 +156,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Redirect(method = "modifyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;modifyInputSpeedForSquareMovement(Lnet/minecraft/world/phys/Vec2;)Lnet/minecraft/world/phys/Vec2;"))
     private Vec2 moveMovementSpeedFactors(Vec2 vec) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return vec;
         } else {
             return modifyInputSpeedForSquareMovement(vec);
@@ -164,7 +165,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Redirect(method = "modifyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec2;scale(F)Lnet/minecraft/world/phys/Vec2;", ordinal = 0))
     private Vec2 moveMovementSpeedFactors(Vec2 instance, float s) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return instance;
         } else {
             return instance.scale(s);
@@ -174,22 +175,22 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/Tutorial;onInput(Lnet/minecraft/client/player/ClientInput;)V", shift = At.Shift.AFTER))
     private void moveMovementSpeedFactors(CallbackInfo ci) {
         //... and also add this hotfix back
-        if (ProtocolTranslator.getTargetVersion().equals(ProtocolVersion.v1_21_4) && this.shouldStopRunSprinting()) {
+        if (ViaFabricPlus.api().targetVersion().equals(ProtocolVersion.v1_21_4) && this.shouldStopRunSprinting()) {
             this.setSprinting(false);
         }
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             this.input.moveVector = this.modifyInput(this.input.moveVector);
         }
     }
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Input;backward()Z"))
     private boolean dontResetDoubleTapTicks(Input instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4) && instance.backward();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21_4) && instance.backward();
     }
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;shouldStopRunSprinting()Z"))
     private boolean changeStopSprintingConditions(LocalPlayer instance) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             return this.viaFabricPlus$shouldCancelSprinting() || this.horizontalCollision && !this.minorHorizontalCollision || !this.viaFabricPlus$canWaterSprint();
         } else {
             return this.shouldStopRunSprinting();
@@ -198,21 +199,21 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Inject(method = "sendPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;sendIsSprintingIfNeeded()V", shift = At.Shift.AFTER))
     private void sendSneakingAfterSprinting(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             this.viaFabricPlus$sendSneakingPacket();
         }
     }
 
     @Inject(method = "aiStep", at = @At("HEAD"))
     private void storeSprintingSneakingState(CallbackInfo ci, @Share("sneakSprint") LocalBooleanRef ref) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             ref.set(!this.input.keyPresses.shift() && !this.viaFabricPlus$isWalking1_21_4());
         }
     }
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;canStartSprinting()Z"))
     private boolean changeCanStartSprintingConditions(LocalPlayer instance, @Share("sneakSprint") LocalBooleanRef ref) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             final boolean canStartSprinting = this.canStartSprinting();
             final boolean onGround = this.isPassenger() ? this.getVehicle().onGround() : this.onGround();
             if ((onGround || this.isUnderWater()) && ref.get() && canStartSprinting) {
@@ -234,7 +235,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Inject(method = "canStartSprinting", at = @At("HEAD"), cancellable = true)
     private void changeCanStartSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
-        final ProtocolVersion version = ProtocolTranslator.getTargetVersion();
+        final ProtocolVersion version = ViaFabricPlus.api().targetVersion();
         if (version.olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
             cir.setReturnValue(!this.isSprinting()
                 && (version.olderThanOrEqualTo(ProtocolVersion.v1_21_4) ? this.viaFabricPlus$isWalking1_21_4() : this.input.hasForwardImpulse())
@@ -251,9 +252,9 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     @Inject(method = "shouldStopSwimSprinting", at = @At("HEAD"), cancellable = true)
     private void changeStopSwimSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
         // Not needed, but for consistency and in case a mod uses this method
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             cir.setReturnValue(!this.onGround() && !this.input.keyPresses.shift() && this.viaFabricPlus$shouldCancelSprinting() || !this.isInWater());
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
             cir.setReturnValue(this.isMobilityRestricted() || this.isPassenger() && !this.vehicleCanSprint(this.getVehicle())
                 || !this.isInWater() || !this.input.hasForwardImpulse() && !this.onGround() && !this.input.keyPresses.shift() || !this.viaFabricPlus$hasEnoughFoodToSprint1_19_1());
         }
@@ -261,22 +262,22 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Inject(method = "shouldStopRunSprinting", at = @At("HEAD"), cancellable = true)
     private void changeStopSprintingConditions(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             final boolean ridingCamel = getVehicle() != null && getVehicle().getType() == EntityTypes.CAMEL;
             cir.setReturnValue(this.isFallFlying() || this.isMobilityRestricted() || this.isMovingSlowly() || this.isPassenger() && !ridingCamel || this.isUsingItem() && !this.isPassenger() && !this.isUnderWater());
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_7)) {
             cir.setReturnValue(this.isMobilityRestricted() || this.isPassenger() && !this.vehicleCanSprint(this.getVehicle()) || !this.input.hasForwardImpulse() || !this.viaFabricPlus$hasEnoughFoodToSprint1_19_1() || this.horizontalCollision && !this.minorHorizontalCollision || this.isInWater() && !this.isUnderWater());
         }
     }
 
     @WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;sendIsSprintingIfNeeded()V"))
     private boolean removeSprintingPacket(LocalPlayer instance) {
-        return ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_3);
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_19_3);
     }
 
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/ClientInput;tick()V"))
     private void removeSneakingConditions(CallbackInfo ci) { // Allows sneaking while flying, inside blocks and vehicles
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             this.crouching = this.isShiftKeyDown() && !this.isSleeping();
         }
     }
@@ -288,7 +289,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
             return;
         }
 
-        final PacketWrapper sneakingPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_COMMAND, ProtocolTranslator.getPlayStateUserConnection());
+        final PacketWrapper sneakingPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_COMMAND, ViaFabricPlus.api().userConnection());
         sneakingPacket.write(Types.VAR_INT, getId());
         sneakingPacket.write(Types.VAR_INT, sneaking ? 0 : 1);
         sneakingPacket.write(Types.VAR_INT, 0); // No data
@@ -307,14 +308,14 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
         flags = (byte) (flags | (playerInput.shift() ? 0x20 : 0));
         flags = (byte) (flags | (playerInput.sprint() ? 0x40 : 0));
 
-        final PacketWrapper inputPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_INPUT, ProtocolTranslator.getPlayStateUserConnection());
+        final PacketWrapper inputPacket = PacketWrapper.create(ServerboundPackets1_21_5.PLAYER_INPUT, ViaFabricPlus.api().userConnection());
         inputPacket.write(Types.BYTE, flags);
         inputPacket.scheduleSendToServer(Protocol1_21_5To1_21_6.class);
     }
 
     @Unique
     private boolean viaFabricPlus$shouldCancelSprinting() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_1)) {
             return !(this.input.moveVector.y >= 0.8F) || !this.viaFabricPlus$hasEnoughFoodToSprint1_19_1(); // Disables sprint sneaking
         } else {
             return !this.input.hasForwardImpulse() || !this.viaFabricPlus$hasEnoughFoodToSprint1_19_1();
@@ -323,18 +324,18 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Unique
     private boolean viaFabricPlus$hasEnoughFoodToSprint1_19_1() {
-        return (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_19_1) && this.isPassenger()) || this.hasEnoughFoodToDoExhaustiveManoeuvres();
+        return (ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_19_1) && this.isPassenger()) || this.hasEnoughFoodToDoExhaustiveManoeuvres();
     }
 
     @Unique
     private boolean viaFabricPlus$isWalking1_21_4() {
-        final boolean submergedInWater = ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_14_1) && isUnderWater();
+        final boolean submergedInWater = ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_14_1) && isUnderWater();
         return submergedInWater ? this.input.hasForwardImpulse() : this.input.moveVector.y >= 0.8;
     }
 
     @Unique
     private boolean viaFabricPlus$canWaterSprint() {
-        return ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || (!this.isInWater() || this.isUnderWater());
+        return ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) || (!this.isInWater() || this.isUnderWater());
     }
 
 }

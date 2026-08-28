@@ -25,7 +25,8 @@ import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -43,7 +44,7 @@ public abstract class MixinEntityFluidInteraction {
 
     @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getEyeY()D"))
     private double subtractMagicOffset(Entity instance) {
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_16, ProtocolVersion.v1_20_3)) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_16, ProtocolVersion.v1_20_3)) {
             return instance.getEyeY() - 0.11111111F;
         } else {
             return instance.getEyeY();
@@ -55,7 +56,7 @@ public abstract class MixinEntityFluidInteraction {
     @Expression("eyeY <= fluidTop")
     @ModifyExpressionValue(method = "update", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean addMagicOffset(boolean original, @Local(name = "eyeY") double eyeY, @Local(name = "fluidBottom") double fluidBottom, @Local(name = "level") BlockGetter level, @Local(name = "fluidState") FluidState fluidState, @Local(name = "mutablePos") BlockPos.MutableBlockPos mutablePos) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             return eyeY <= (fluidBottom + (fluidState.getHeight(level, mutablePos) + (0.11111111F * 2F)));
         } else {
             return original;
@@ -68,7 +69,7 @@ public abstract class MixinEntityFluidInteraction {
     @Expression("fluidTop < box.minY")
     @ModifyExpressionValue(method = "update", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean removeConditional(boolean original) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) ) {
             return false; // Equates to true due to the negation in the original code
         } else {
             return original;
@@ -77,7 +78,7 @@ public abstract class MixinEntityFluidInteraction {
 
     @Redirect(method = "update", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
     private double adjustHeightCalculation(double a, double b) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return Math.max(a + 0.4, b);
         } else {
             return Math.max(a, b);
@@ -86,7 +87,7 @@ public abstract class MixinEntityFluidInteraction {
 
     @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 dontScaleCurrent(Vec3 instance, double scale) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return instance;
         } else {
             return instance.scale(scale);

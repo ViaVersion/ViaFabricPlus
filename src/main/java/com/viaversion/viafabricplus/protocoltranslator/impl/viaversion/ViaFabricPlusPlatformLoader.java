@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.protocoltranslator.impl.viaversion;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.api.events.LoadingCycleEvent;
+import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusEntrypoint;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicWorldHeightProvider;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusEncryptionProvider;
@@ -47,6 +47,7 @@ import com.viaversion.viaversion.protocols.v1_18_2to1_19.provider.AckSequencePro
 import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.provider.PickItemProvider;
 import com.viaversion.viaversion.protocols.v1_8to1_9.provider.CompressionProvider;
 import com.viaversion.viaversion.protocols.v1_8to1_9.provider.HandItemProvider;
+import net.fabricmc.loader.api.FabricLoader;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.ClassicMpPassProvider;
 import net.raphimc.vialegacy.protocol.classic.c0_28_30toa1_0_15.provider.ClassicWorldHeightProvider;
 import net.raphimc.vialegacy.protocol.release.r1_2_4_5tor1_3_1_2.provider.OldAuthProvider;
@@ -74,7 +75,7 @@ public final class ViaFabricPlusPlatformLoader implements ViaPlatformLoader {
         providers.use(GameProfileFetcher.class, new ViaFabricPlusGameProfileFetcher());
         providers.use(ClassicMpPassProvider.class, new ViaFabricPlusClassicMPPassProvider());
 
-        ViaFabricPlusImpl.impl().runLoadingCycleEvents(LoadingCycleEvent.LoadingCycle.POST_VIAVERSION_LOAD);
+        FabricLoader.getInstance().invokeEntrypoints("viafabricplus", ViaFabricPlusEntrypoint.class, ViaFabricPlusEntrypoint::onPostProtocolTranslationLoading);
     }
 
     @Override

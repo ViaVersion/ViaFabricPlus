@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.platform;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.settings.base.SettingGroup;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslationImpl;
 import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusConfig;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
 import com.viaversion.viafabricplus.protocoltranslator.util.JLoggerToSLF4J;
@@ -94,8 +94,8 @@ public final class ViaFabricPlusViaVersionPlatform extends UserConnectionViaVers
     public JsonObject getDump() {
         final JsonObject platformDump = new JsonObject();
         platformDump.addProperty("impl_version", ViaFabricPlus.api().implVersion());
-        platformDump.addProperty("native_version", ProtocolTranslator.NATIVE_VERSION.toString());
-        platformDump.addProperty("target_version", ProtocolTranslator.getTargetVersion().toString());
+        platformDump.addProperty("native_version", ProtocolTranslationImpl.NATIVE_VERSION.toString());
+        platformDump.addProperty("target_version", ViaFabricPlus.api().targetVersion().toString());
         platformDump.addProperty("in_world", Minecraft.getInstance().level != null);
 
         final Collection<ModContainer> allMods = FabricLoader.getInstance().getAllMods();

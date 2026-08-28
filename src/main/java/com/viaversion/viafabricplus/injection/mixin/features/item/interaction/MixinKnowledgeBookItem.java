@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,7 +38,7 @@ public abstract class MixinKnowledgeBookItem {
 
     @Redirect(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;consume(ILnet/minecraft/world/entity/LivingEntity;)V"))
     private void removeFullStack(ItemStack instance, int amount, LivingEntity owner, @Local(argsOnly = true) InteractionHand hand) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_5)) {
             if (!owner.hasInfiniteMaterials()) {
                 owner.setItemInHand(hand, ItemStack.EMPTY);
             }

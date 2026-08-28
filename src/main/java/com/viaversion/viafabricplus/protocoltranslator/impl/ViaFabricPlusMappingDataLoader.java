@@ -21,8 +21,9 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.data.MappingDataLoader;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;
@@ -67,7 +68,7 @@ public final class ViaFabricPlusMappingDataLoader extends MappingDataLoader {
     }
 
     public static String getBlockMaterial(final Block block) {
-        return getBlockMaterial(block, ProtocolTranslator.getTargetVersion());
+        return getBlockMaterial(block, ViaFabricPlus.api().targetVersion());
     }
 
     public static String getBlockMaterial(final Block block, ProtocolVersion version) {

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -61,7 +62,7 @@ public abstract class MixinFarmlandBlock extends Block {
             return;
         }
 
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
             cir.setReturnValue(Shapes.block());
         }
     }
@@ -73,7 +74,7 @@ public abstract class MixinFarmlandBlock extends Block {
             return super.getOcclusionShape(state);
         }
 
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_9_3)) {
             return SHAPE;
         } else {
             return super.getOcclusionShape(state);

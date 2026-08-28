@@ -22,7 +22,10 @@
 package com.viaversion.viafabricplus.features.entity.dimensions;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.libs.gson.JsonObject;
 import java.util.HashMap;
@@ -66,7 +69,7 @@ public final class EntityDimensionDiff {
             ENTITY_DIMENSIONS.put(entityType, dimensionMap);
         }
 
-        ViaFabricPlus.api().addChangeProtocolVersionEvent((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
+        ViaFabricPlus.api().protocolTranslation().addChangeProtocolVersionListener((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> ENTITY_DIMENSIONS.forEach((entityType, dimensionMap) -> {
             for (Map.Entry<ProtocolVersion, EntityDimensions> entry : dimensionMap.entrySet()) {
                 final ProtocolVersion version = entry.getKey();
                 final EntityDimensions dimensions = entry.getValue();

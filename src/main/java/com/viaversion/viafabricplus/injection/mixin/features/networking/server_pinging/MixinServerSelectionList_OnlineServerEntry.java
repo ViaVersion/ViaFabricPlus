@@ -26,8 +26,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -70,10 +72,10 @@ public abstract class MixinServerSelectionList_OnlineServerEntry {
     private Future<?> disableServerPinging(ThreadPoolExecutor instance, Runnable runnable, Operation<Future<?>> original) {
         ProtocolVersion version = ((IServerData) serverData).viaFabricPlus$forcedVersion();
         if (version == null) {
-            version = ProtocolTranslator.getTargetVersion();
+            version = ViaFabricPlus.api().targetVersion();
         }
 
-        viaFabricPlus$disableServerPinging = ViaFabricPlus.api().settings().visual().disableServerPinging().isActive(version);
+        viaFabricPlus$disableServerPinging = ViaFabricPlusImpl.impl().visuals().disableServerPinging().isActive(version);
         if (viaFabricPlus$disableServerPinging) {
             this.serverData.version = Component.nullToEmpty(version.getName()); // Show target version
             return null;

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -47,7 +48,7 @@ public abstract class MixinEntity {
 
     @Redirect(method = "interact", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;CONSUME:Lnet/minecraft/world/InteractionResult$Success;", opcode = Opcodes.GETSTATIC))
     private InteractionResult.Success swingHand() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
             return InteractionResult.SUCCESS;
         } else {
             return InteractionResult.CONSUME;
@@ -57,7 +58,7 @@ public abstract class MixinEntity {
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
     private void removeLeashActions(Player player, InteractionHand hand, Vec3 location, CallbackInfoReturnable<InteractionResult> cir) {
         // Removes shearing of equipment & snipping all leashes + condition changes
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_5)) {
             final ItemStack itemStack = player.getItemInHand(hand);
             if (this.isAlive() && this instanceof final Leashable leashable) {
                 if (leashable.getLeashHolder() != player) {

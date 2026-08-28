@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.constants;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -38,9 +39,9 @@ public abstract class MixinEntity {
 
     @ModifyConstant(method = "checkInsideBlocks(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/entity/InsideBlockEffectApplier$StepBasedCollector;Lit/unimi/dsi/fastutil/longs/LongSet;I)I", constant = @Constant(doubleValue = 9.999999747378752E-6))
     private double fixBlockCollisionMargin(double constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19_1)) {
             return 1E-3;
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             return 1E-7;
         } else {
             return constant;
@@ -49,7 +50,7 @@ public abstract class MixinEntity {
 
     @Inject(method = "getInputVector", at = @At("HEAD"), cancellable = true)
     private static void getInputVector1_13_2(Vec3 input, float speed, float yRot, CallbackInfoReturnable<Vec3> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             float x = (float) input.x;
             float z = (float) input.z;
 
@@ -74,7 +75,7 @@ public abstract class MixinEntity {
 
     @Inject(method = "getPickRadius", at = @At("HEAD"), cancellable = true)
     private void expandHitBox(CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             cir.setReturnValue(0.1F);
         }
     }

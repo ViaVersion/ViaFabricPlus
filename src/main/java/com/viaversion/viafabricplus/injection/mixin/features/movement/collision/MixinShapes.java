@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
@@ -38,7 +39,7 @@ public abstract class MixinShapes {
 
     @Inject(method = "collide", at = @At("HEAD"), cancellable = true)
     private static void calculateMaxOffset1_12_2(Direction.Axis axis, AABB moving, Iterable<VoxelShape> shapes, double maxDist, CallbackInfoReturnable<Double> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             for (final VoxelShape shape : shapes) {
                 for (final AABB shapeBox : shape.toAabbs()) {
                     maxDist = switch (axis) {

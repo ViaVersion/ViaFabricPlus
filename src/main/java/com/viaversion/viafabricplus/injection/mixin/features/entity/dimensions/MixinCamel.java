@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.entity.dimensions;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -49,7 +50,7 @@ public abstract class MixinCamel extends AbstractHorse {
 
     @ModifyConstant(method = "getBodyAnchorAnimationYOffset", constant = @Constant(doubleValue = 0.375))
     private double scaleSitOffset(double constant, @Local(ordinal = 1, argsOnly = true) float scale) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
             return constant * scale;
         } else {
             return constant;
@@ -58,24 +59,24 @@ public abstract class MixinCamel extends AbstractHorse {
 
     @Redirect(method = "getBodyAnchorAnimationYOffset", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/camel/Camel;isBaby()Z"))
     private boolean removeBabySitOffset(Camel instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v26_1) && instance.isBaby();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v26_1) && instance.isBaby();
     }
 
     @Redirect(method = "getDefaultDimensions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/camel/Camel;isBaby()Z"))
     private boolean dontChangeScale(Camel instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v26_1) && instance.isBaby();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v26_1) && instance.isBaby();
     }
 
     @Inject(method = "getAgeScale", at = @At("HEAD"), cancellable = true)
     private void changeBabyScale(CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11) && this.isBaby()) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11) && this.isBaby()) {
             cir.setReturnValue(0.45F);
         }
     }
 
     @Override
     public void onPassengerTurned(@NonNull Entity passenger) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && this.getControllingPassenger() != passenger) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && this.getControllingPassenger() != passenger) {
             this.viaFabricPlus$clampPassengerYaw1_20_1(passenger);
         }
     }
@@ -84,7 +85,7 @@ public abstract class MixinCamel extends AbstractHorse {
     protected void positionRider(@NonNull Entity passenger, @NonNull MoveFunction positionUpdater) {
         super.positionRider(passenger, positionUpdater);
 
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
             this.viaFabricPlus$clampPassengerYaw1_20_1(passenger);
         }
     }

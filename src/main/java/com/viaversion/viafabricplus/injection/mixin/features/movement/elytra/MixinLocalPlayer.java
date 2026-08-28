@@ -23,7 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.elytra;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.authlib.GameProfile;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -40,7 +41,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;onClimbable()Z"))
     private boolean allowElytraWhenClimbing(boolean original) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_15_1) && original;
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_15_1) && original;
     }
 
 }

@@ -25,11 +25,12 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.core.IConnection;
 import com.viaversion.viafabricplus.injection.access.networking.legacy_chat_signature.IProfilePublicKey_Data;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_0;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_1;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.security.PrivateKey;
 import java.util.UUID;
@@ -55,7 +56,7 @@ public abstract class MixinConnectScreen_1 {
     private void setupChatSessions(CallbackInfo ci, @Local Connection clientConnection) {
         final UserConnection connection = ((IConnection) clientConnection).viaFabricPlus$getUserConnection();
 
-        if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_19, ProtocolVersion.v1_19_1)) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_19, ProtocolVersion.v1_19_1)) {
             final ProfileKeyPair keyPair = Minecraft.getInstance().getProfileKeyPairManager().prepareKeyPair().join().orElse(null);
             if (keyPair != null) {
                 final ProfilePublicKey.Data publicKeyData = keyPair.publicKey().data();
@@ -65,7 +66,7 @@ public abstract class MixinConnectScreen_1 {
                 final UUID uuid = this.val$minecraft.getUser().getProfileId();
 
                 connection.put(new ChatSession1_19_1(uuid, privateKey, new ProfileKey(expiresAt, publicKey, publicKeyData.keySignature())));
-                if (ProtocolTranslator.getTargetVersion() == ProtocolVersion.v1_19) {
+                if (ViaFabricPlus.api().targetVersion() == ProtocolVersion.v1_19) {
                     final byte[] legacyKeySignature = ((IProfilePublicKey_Data) (Object) publicKeyData).viafabricplus$getLegacyPublicKeySignature();
                     if (legacyKeySignature != null) {
                         connection.put(new ChatSession1_19_0(uuid, privateKey, new ProfileKey(expiresAt, publicKey, legacyKeySignature)));

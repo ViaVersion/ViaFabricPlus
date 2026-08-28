@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.allow_duplicated_uuid;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import java.util.Map;
@@ -45,12 +46,12 @@ public abstract class MixinEntityLookup<T extends EntityAccess> {
 
     @Redirect(method = "add", at = @At(value = "INVOKE", target = "Ljava/util/Map;containsKey(Ljava/lang/Object;)Z", remap = false))
     private boolean allowDuplicateUuid(Map<UUID, T> instance, Object o) {
-        return instance.containsKey(o) && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_16_4);
+        return instance.containsKey(o) && ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_16_4);
     }
 
     @Inject(method = "count", at = @At("HEAD"), cancellable = true)
     private void returnRealSize(CallbackInfoReturnable<Integer> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(this.byId.size());
         }
     }

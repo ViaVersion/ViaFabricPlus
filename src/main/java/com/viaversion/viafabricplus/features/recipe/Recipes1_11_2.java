@@ -24,8 +24,9 @@ package com.viaversion.viafabricplus.features.recipe;
 import com.mojang.datafixers.util.Pair;
 import com.viaversion.viafabricplus.features.recipe.custom.AddBannerPatternRecipe;
 import com.viaversion.viafabricplus.features.recipe.custom.ShulkerBoxColoringRecipe;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import com.viaversion.viaversion.libs.gson.JsonArray;
@@ -112,7 +113,7 @@ public final class Recipes1_11_2 {
             // Regular recipes
             for (int i = 0; i < LEGACY_RECIPES.size(); i++) {
                 final Pair<LegacyRecipe, ProtocolVersionRange> legacyRecipe = LEGACY_RECIPES.get(i);
-                if (legacyRecipe.getSecond().contains(ProtocolTranslator.getTargetVersion())) {
+                if (legacyRecipe.getSecond().contains(ViaFabricPlus.api().targetVersion())) {
                     final ResourceKey<Recipe<?>> key = ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath("viafabricplus", "recipe/" + i));
                     switch (legacyRecipe.getFirst()) {
                         case LegacyShapedRecipe legacyShapedRecipe -> {
@@ -165,7 +166,7 @@ public final class Recipes1_11_2 {
 
             // Special recipes
             final List<CraftingRecipe> specialRecipes = new ArrayList<>();
-            if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
+            if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_2)) {
                 specialRecipes.add(createDyeRecipe(registryAccess, Items.LEATHER_HELMET));
                 specialRecipes.add(createDyeRecipe(registryAccess, Items.LEATHER_CHESTPLATE));
                 specialRecipes.add(createDyeRecipe(registryAccess, Items.LEATHER_LEGGINGS));
@@ -174,22 +175,22 @@ public final class Recipes1_11_2 {
                 specialRecipes.add(new TransmuteRecipe(RecipeBuilder.createCraftingCommonInfo(true), RecipeBuilder.createCraftingBookInfo(RecipeCategory.MISC, "map_cloning"), Ingredient.of(Items.FILLED_MAP), Ingredient.of(Items.MAP), TransmuteRecipe.FULL_RANGE_MATERIAL_COUNT, new ItemStackTemplate(Items.FILLED_MAP), true));
                 specialRecipes.add(new MapExtendingRecipe(Ingredient.of(Items.FILLED_MAP), Ingredient.of(Items.PAPER), new ItemStackTemplate(Items.FILLED_MAP)));
             }
-            if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
+            if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
                 specialRecipes.add(new FireworkRocketRecipe(Ingredient.of(Items.PAPER), Ingredient.of(Items.GUNPOWDER), Ingredient.of(Items.FIREWORK_STAR), new ItemStackTemplate(Items.FIREWORK_ROCKET, 3)));
             }
-            if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11)) {
+            if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11)) {
                 specialRecipes.add(new ShulkerBoxColoringRecipe());
             }
-            if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_9)) {
+            if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_9)) {
                 specialRecipes.add(new ImbueRecipe(RecipeBuilder.createCraftingCommonInfo(true), RecipeBuilder.createCraftingBookInfo(RecipeCategory.MISC, "tipped_arrow"), Ingredient.of(Items.LINGERING_POTION), Ingredient.of(Items.ARROW), new ItemStackTemplate(Items.TIPPED_ARROW, 8)));
                 specialRecipes.add(new ShieldDecorationRecipe(Ingredient.of(registryAccess.getOrThrow(ItemTags.BANNERS)), Ingredient.of(Items.SHIELD), new ItemStackTemplate(Items.SHIELD)));
             }
-            if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_8)) {
+            if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_8)) {
                 specialRecipes.add(new RepairItemRecipe());
                 Items.BANNER.forEach(item -> specialRecipes.add(new BannerDuplicateRecipe(Ingredient.of(item), new ItemStackTemplate(item))));
                 specialRecipes.add(new AddBannerPatternRecipe());
             }
-            if (ProtocolTranslator.getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_7_2)) {
+            if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_7_2)) {
                 specialRecipes.add(new BookCloningRecipe(Ingredient.of(Items.WRITTEN_BOOK), Ingredient.of(Items.WRITABLE_BOOK), BookCloningRecipe.DEFAULT_BOOK_GENERATION_RANGES, new ItemStackTemplate(Items.WRITTEN_BOOK)));
             }
             int index = 0;

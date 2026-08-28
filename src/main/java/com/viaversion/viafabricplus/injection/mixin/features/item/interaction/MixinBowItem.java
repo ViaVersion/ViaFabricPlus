@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -40,21 +40,21 @@ public abstract class MixinBowItem {
 
     @Inject(method = "getUseDuration", at = @At("HEAD"), cancellable = true)
     private void makeInstantUsable_Time(CallbackInfoReturnable<Integer> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             cir.setReturnValue(0);
         }
     }
 
     @Inject(method = "getUseAnimation", at = @At("HEAD"), cancellable = true)
     private void makeInstantUsable_Action(CallbackInfoReturnable<ItemUseAnimation> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             cir.setReturnValue(ItemUseAnimation.NONE);
         }
     }
 
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void makeInstantUsable(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             final ItemStack arrowStack = player.getProjectile(player.getItemInHand(hand));
             if (arrowStack.isEmpty()) {
                 cir.setReturnValue(InteractionResult.FAIL);

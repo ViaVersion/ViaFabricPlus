@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.scoreboard;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -46,7 +47,7 @@ public abstract class MixinPlayerTeam {
     @Inject(method = "getFormattedName(Lnet/minecraft/network/chat/Component;)Lnet/minecraft/network/chat/MutableComponent;", at = @At("HEAD"), cancellable = true)
     private void decorateName1_12_2(Component teamMemberName, CallbackInfoReturnable<MutableComponent> cir) {
         // All components were legacy strings prior to 1.13, meaning their styles are not separated but used across the whole component.
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             final Style prefixStyle = viaFabricPlus$getLastStyle(this.playerPrefix);
             final Component nameWithStyle = viaFabricPlus$fillStyle(teamMemberName, prefixStyle);
             final Style nameStyle = viaFabricPlus$getLastStyle(nameWithStyle);

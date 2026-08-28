@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.protocoltranslator.protocol;
 
 import com.google.common.collect.Lists;
 import com.viaversion.viafabricplus.features.entity.metadata.WolfHealthTracker1_14_4;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslationImpl;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
@@ -32,6 +32,8 @@ import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.packet.provider.PacketTypesProvider;
 import com.viaversion.viaversion.api.protocol.packet.provider.SimplePacketTypesProvider;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Type;
 import com.viaversion.viaversion.api.type.Types;
@@ -81,7 +83,7 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
         ITEM_TYPES.put(ProtocolVersion.v26_1, new ItemTypes(VersionedTypes.V26_1.item, VersionedTypes.V26_1.lengthPrefixedItem));
         ITEM_TYPES.put(ProtocolVersion.v26_2, new ItemTypes(VersionedTypes.V26_2.item, VersionedTypes.V26_2.lengthPrefixedItem));
 
-        if (!ITEM_TYPES.containsKey(ProtocolTranslator.NATIVE_VERSION)) {
+        if (!ITEM_TYPES.containsKey(ProtocolTranslationImpl.NATIVE_VERSION)) {
             throw new IllegalStateException("Missing item type for native version");
         }
     }
@@ -116,7 +118,8 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
     public void init(UserConnection connection) {
         super.init(connection);
 
-        final ProtocolVersion serverVersion = ProtocolTranslator.getTargetVersion(connection.getChannel()); // UserConnection#getProtocolInfo is not initialized yet
+        // UserConnection#getProtocolInfo is not initialized yet
+        final ProtocolVersion serverVersion = ViaFabricPlus.api().protocolTranslation().targetVersion(connection.getChannel());
         if (serverVersion.olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             connection.put(new WolfHealthTracker1_14_4());
         }

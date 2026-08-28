@@ -61,11 +61,11 @@ public final class SettingsScreen extends VFPScreen {
             for (final SettingGroup group : ViaFabricPlusImpl.impl().settings().groups()) {
                 this.addEntry(new TitleEntry(group.name()));
 
-                for (final Setting<?> setting : group.settings()) {
+                for (final Setting setting : group.settings()) {
                     switch (setting) {
+                        case final VersionedBooleanSetting versionedBooleanSetting -> this.addEntry(new VersionedBooleanListEntry(versionedBooleanSetting));
                         case final BooleanSetting booleanSetting -> this.addEntry(new BooleanListEntry(booleanSetting));
                         case final EnumSetting<?> enumSetting -> this.addEntry(new EnumListEntry<>(enumSetting));
-                        case final VersionedBooleanSetting versionedBooleanSetting -> this.addEntry(new VersionedBooleanListEntry(versionedBooleanSetting));
                         default -> ViaFabricPlusImpl.impl().logger().warn("Unknown setting type: {}", setting.getClass().getName());
                     }
                 }

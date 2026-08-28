@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_signed_commands;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.time.Instant;
 import java.util.List;
@@ -52,12 +53,12 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
 
     @Redirect(method = "sendCommand", at = @At(value = "INVOKE", target = "Ljava/util/List;isEmpty()Z"))
     private boolean alwaysSignCommands(List<?> instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20_3) && instance.isEmpty();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_20_3) && instance.isEmpty();
     }
 
     @Redirect(method = "sendUnattendedCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V"))
     private void alwaysSignCommands(ClientPacketListener instance, Packet<?> packet, @Local(argsOnly = true) String command) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             this.send(new ServerboundChatCommandSignedPacket(command, Instant.now(), 0L, ArgumentSignatures.EMPTY, this.lastSeenMessages.generateAndApplyUpdate().update()));
         } else {
             instance.send(packet);

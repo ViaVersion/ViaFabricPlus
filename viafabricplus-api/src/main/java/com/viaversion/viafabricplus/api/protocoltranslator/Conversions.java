@@ -21,9 +21,11 @@
 
 package com.viaversion.viafabricplus.api.protocoltranslator;
 
+import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface Conversions {
@@ -44,6 +46,17 @@ public interface Conversions {
      * @param sourceVersion The source version of the item (e.g., b1.8) {@link ProtocolVersion}
      * @return The Minecraft item stack for the source version {@link ItemStack}
      */
-    @Nullable ItemStack translateItem(final Item item, final ProtocolVersion sourceVersion);
+    @NotNull ItemStack translateItem(final Item item, final ProtocolVersion sourceVersion);
+
+    /**
+     * Creates a dummy user connection for the given client and server versions. Packets passed through this
+     * will not send any outgoing packets to the actual connection. Useful for when implementing translators using
+     * existing Minecraft packets.
+     *
+     * @param clientVersion The client version
+     * @param serverVersion The server version
+     * @return The dummy user connection
+     */
+    UserConnection createDummyUserConnection(final ProtocolVersion clientVersion, final ProtocolVersion serverVersion);
 
 }

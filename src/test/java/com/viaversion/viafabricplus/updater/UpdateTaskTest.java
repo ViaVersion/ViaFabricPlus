@@ -21,8 +21,9 @@
 
 package com.viaversion.viafabricplus.updater;
 
-import com.viaversion.viafabricplus.features.item.filter_creative_tabs.VersionedRegistries;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import com.viaversion.viaversion.libs.gson.Gson;
 import com.viaversion.viaversion.libs.gson.GsonBuilder;
@@ -40,11 +41,13 @@ import net.minecraft.server.packs.metadata.pack.PackFormat;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraft.world.level.block.entity.BannerPatterns;
 import org.junit.jupiter.api.Test;
 
-import static com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator.NATIVE_VERSION;
+import static com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslationImpl.NATIVE_VERSION;
 
 public final class UpdateTaskTest {
 
@@ -64,8 +67,6 @@ public final class UpdateTaskTest {
     }
 
     private static void updateVersionedRegistries() {
-        VersionedRegistries.init(); // Make sure they are loaded before editing
-
         final JsonObject data = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("versioned-registries.json");
         addMissingItems(data.getAsJsonObject("items"));
         addMissingEnchantments(data.getAsJsonObject("enchantments"));
@@ -77,7 +78,7 @@ public final class UpdateTaskTest {
 
     private static void addMissingItems(final JsonObject items) {
         for (final Item item : BuiltInRegistries.ITEM) {
-            if (VersionedRegistries.ITEM_DIFF.containsKey(item) || item == Items.AIR) {
+            if (ViaFabricPlus.api().limitations().itemExists(item, ProtocolVersion.unknown) || item == Items.AIR) {
                 continue;
             }
 
@@ -87,8 +88,8 @@ public final class UpdateTaskTest {
 
     private static void addMissingEnchantments(final JsonObject enchantments) {
         RStream.of(Enchantments.class).fields().forEach(fieldWrapper -> {
-            final ResourceKey registryKey = fieldWrapper.get();
-            if (VersionedRegistries.ENCHANTMENT_DIFF.containsKey(registryKey)) {
+            final ResourceKey<Enchantment> registryKey = fieldWrapper.get();
+            if (ViaFabricPlus.api().limitations().enchantmentExists(registryKey, ProtocolVersion.unknown)) {
                 return;
             }
 
@@ -98,8 +99,8 @@ public final class UpdateTaskTest {
 
     private static void addMissingPatterns(final JsonObject patterns) {
         RStream.of(BannerPatterns.class).fields().forEach(fieldWrapper -> {
-            final ResourceKey registryKey = fieldWrapper.get();
-            if (VersionedRegistries.PATTERN_DIFF.containsKey(registryKey)) {
+            final ResourceKey<BannerPattern> registryKey = fieldWrapper.get();
+            if (ViaFabricPlus.api().limitations().bannerPatternExists(registryKey, ProtocolVersion.unknown)) {
                 return;
             }
 
@@ -109,7 +110,7 @@ public final class UpdateTaskTest {
 
     private static void addMissingEffects(final JsonObject effects) {
         for (final MobEffect effect : BuiltInRegistries.MOB_EFFECT) {
-            if (VersionedRegistries.EFFECT_DIFF.containsKey(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect))) {
+            if (ViaFabricPlus.api().limitations().effectExists(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect), ProtocolVersion.unknown)) {
                 continue;
             }
 

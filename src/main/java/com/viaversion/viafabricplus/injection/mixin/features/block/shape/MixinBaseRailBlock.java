@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
@@ -57,11 +58,11 @@ public abstract class MixinBaseRailBlock extends Block {
 
     @Redirect(method = "getShape", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/BaseRailBlock;SHAPE_SLOPE:Lnet/minecraft/world/phys/shapes/VoxelShape;", opcode = Opcodes.GETSTATIC))
     private VoxelShape changeOutlineShape() {
-        if (ProtocolTranslator.getTargetVersion().equalTo(ProtocolVersion.v1_10)) {
+        if (ViaFabricPlus.api().targetVersion().equalTo(ProtocolVersion.v1_10)) {
             return viaFabricPlus$ascending_shape_r1_10_x;
-        } else if (ProtocolTranslator.getTargetVersion().betweenInclusive(ProtocolVersion.v1_9, ProtocolVersion.v1_9_3)) {
+        } else if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_9, ProtocolVersion.v1_9_3)) {
             return viaFabricPlus$ascending_shape_r1_9_x;
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return viaFabricPlus$ascending_shape_r1_8_x;
         } else {
             return SHAPE_SLOPE;

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.screen.impl;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.screen.base.VFPList;
 import com.viaversion.viafabricplus.screen.base.VFPListEntry;
 import com.viaversion.viafabricplus.screen.base.VFPScreen;
@@ -94,12 +94,12 @@ public final class ProtocolSelectionScreen extends VFPScreen {
                 return;
             }
 
-            ProtocolTranslator.setTargetVersion(this.protocolVersion);
+            ViaFabricPlus.api().setTargetVersion(this.protocolVersion);
         }
 
         @Override
         public void extractContent(final @NonNull GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
-            final boolean isSelected = ProtocolTranslator.getTargetVersion().equals(protocolVersion);
+            final boolean isSelected = ViaFabricPlus.api().targetVersion().equals(protocolVersion);
 
             Color color = isSelected ? Color.GREEN : Color.RED;
             if (Minecraft.getInstance().getConnection() != null) {

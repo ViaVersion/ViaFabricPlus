@@ -21,16 +21,21 @@
 
 package com.viaversion.viafabricplus.api.entrypoint;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.api.ViaFabricPlusAPI;
-import com.viaversion.viafabricplus.api.events.LoadingCycleEvent;
+public interface ViaFabricPlusEntrypoint {
 
-/**
- * Called as soon as the {@link ViaFabricPlus#api()} field has been initialized. Required to use {@link LoadingCycleEvent}.
- */
-@FunctionalInterface
-public interface BootstrapEntrypoint {
+    default void onPreLoading() {
+    }
 
-    void onInitialize(final ViaFabricPlusAPI api);
+    default void onPostSettingsLoading() {
+    }
+
+    default void onPostProtocolTranslationLoading() {
+    }
+
+    default void onPostRegistryLoading() {
+    }
+
+    default void onPostGameLoading() {
+    }
 
 }

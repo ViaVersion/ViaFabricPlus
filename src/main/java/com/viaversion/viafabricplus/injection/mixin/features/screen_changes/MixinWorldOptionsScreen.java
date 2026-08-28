@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.options.WorldOptionsScreen;
@@ -35,7 +36,7 @@ public abstract class MixinWorldOptionsScreen {
 
     @Inject(method = "createGameRulesButton", at = @At("RETURN"))
     private void disableGameRules(CallbackInfoReturnable<Button> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
             cir.getReturnValue().active = false;
         }
     }

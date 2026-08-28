@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.srv_resolving;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Optional;
 import net.minecraft.client.multiplayer.resolver.ResolvedServerAddress;
@@ -44,7 +45,7 @@ public abstract class MixinServerNameResolver {
 
     @Inject(method = "resolveAddress", at = @At("HEAD"), cancellable = true)
     private void oldResolveBehaviour(ServerAddress address, CallbackInfoReturnable<Optional<ResolvedServerAddress>> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             cir.setReturnValue(this.resolver.resolve(address));
         }
     }

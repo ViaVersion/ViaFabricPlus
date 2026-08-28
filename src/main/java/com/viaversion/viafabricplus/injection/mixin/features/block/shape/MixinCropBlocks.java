@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CarrotBlock;
 import net.minecraft.world.level.block.CropBlock;
@@ -41,7 +42,7 @@ public abstract class MixinCropBlocks {
 
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(CallbackInfoReturnable<VoxelShape> cir) {
-        if (ViaFabricPlus.api().settings().visual().legacyCropOutlines().isActive()) {
+        if (ViaFabricPlusImpl.impl().visuals().legacyCropOutlines().isActive()) {
             cir.setReturnValue(viaFabricPlus$shape_r1_8_x);
         }
     }

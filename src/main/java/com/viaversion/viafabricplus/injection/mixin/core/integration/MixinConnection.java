@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.core.integration;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.platform.ViaChannelInitializer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -41,7 +42,7 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"))
     private void printNetworkingErrors(ChannelHandlerContext ctx, Throwable cause, CallbackInfo ci) {
-        if (ViaFabricPlus.api().settings().advanced().printNetworkingErrorsToLogs().value()) {
+        if (ViaFabricPlusImpl.impl().advanced().printNetworkingErrorsToLogs().isActive()) {
             if (cause instanceof SocketException || cause instanceof ConnectException) {
                 // Thrown when server is not reachable
                 return;

@@ -23,11 +23,14 @@ package com.viaversion.viafabricplus.injection.mixin.core.integration;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslationImpl;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.ChannelFuture;
 import java.net.ConnectException;
@@ -70,12 +73,12 @@ public abstract class MixinConnectScreen_1 {
         final InetSocketAddress address = (InetSocketAddress) original.call(instance);
         final IServerData mixinServerInfo = (IServerData) this.val$server;
 
-        ProtocolVersion targetVersion = ProtocolTranslator.getTargetVersion();
+        ProtocolVersion targetVersion = ViaFabricPlus.api().targetVersion();
         if (mixinServerInfo.viaFabricPlus$forcedVersion() != null && !mixinServerInfo.viaFabricPlus$passedDirectConnectScreen()) {
             targetVersion = mixinServerInfo.viaFabricPlus$forcedVersion();
             mixinServerInfo.viaFabricPlus$passDirectConnectScreen(false); // reset state
         }
-        if (targetVersion == ProtocolTranslator.AUTO_DETECT_PROTOCOL) {
+        if (targetVersion == ProtocolVersionDetector.AUTO_DETECT_VERSION) {
             // If the server got already pinged, try to use that version if it's valid. Otherwise, perform auto-detect
             final boolean serverPinged = this.val$server.state() == ServerData.State.SUCCESSFUL || this.val$server.state() == ServerData.State.INCOMPATIBLE;
             if (serverPinged) {
@@ -84,13 +87,13 @@ public abstract class MixinConnectScreen_1 {
             if (!serverPinged || !targetVersion.isKnown()) {
                 this.this$0.updateStatus(Component.translatable("base.viafabricplus.detecting_server_version"));
                 try {
-                    targetVersion = ProtocolVersionDetector.get(this.val$hostAndPort, address, ProtocolTranslator.NATIVE_VERSION);
+                    targetVersion = ProtocolVersionDetector.get(this.val$hostAndPort, address, ProtocolTranslationImpl.NATIVE_VERSION);
                 } catch (final ConnectException ignored) {
                     // Don't let this one through as not relevant
                 }
             }
         }
-        ProtocolTranslator.setTargetVersion(targetVersion, true);
+        ViaFabricPlus.api().protocolTranslation().setTargetVersion(targetVersion, true);
         this.viaFabricPlus$useClassiCubeAccount = ViaFabricPlusClassicMPPassProvider.classicubeMPPass != null;
 
         return address;
@@ -99,7 +102,7 @@ public abstract class MixinConnectScreen_1 {
     @WrapOperation(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/Connection;connect(Ljava/net/InetSocketAddress;Lnet/minecraft/server/network/EventLoopGroupHolder;Lnet/minecraft/network/Connection;)Lio/netty/channel/ChannelFuture;"))
     private ChannelFuture resetProtocolVersionAfterDisconnect(InetSocketAddress address, EventLoopGroupHolder eventLoopGroupHolder, Connection connection, Operation<ChannelFuture> original) {
         final ChannelFuture future = original.call(address, eventLoopGroupHolder, connection);
-        ProtocolTranslator.injectPreviousVersionReset(future.channel());
+        ViaFabricPlusImpl.impl().protocolTranslation().injectionPreviousVersionHandler(future.channel());
         return future;
     }
 

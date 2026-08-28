@@ -46,18 +46,18 @@ public final class BooleanListEntry extends VFPListEntry {
 
     @Override
     public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-        this.value.setValue(!this.value.value());
+        this.value.setActive(!this.value.isActive());
     }
 
     @Override
     public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         final Font textRenderer = Minecraft.getInstance().font;
 
-        final Component text = this.value.value() ? Component.translatable("base.viafabricplus.on") : Component.translatable("base.viafabricplus.off");
+        final Component text = this.value.isActive() ? Component.translatable("base.viafabricplus.on") : Component.translatable("base.viafabricplus.off");
 
         final int offset = textRenderer.width(text) + 2;
         renderScrollableText(this.value.name().copy().withStyle(ChatFormatting.GRAY), offset);
-        context.text(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, this.value.value() ? Color.GREEN.getRGB() : Color.RED.getRGB());
+        context.text(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, this.value.isActive() ? Color.GREEN.getRGB() : Color.RED.getRGB());
     }
 
 }

@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.movement.constants;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,7 +36,7 @@ public abstract class MixinLivingEntity {
 
     @ModifyExpressionValue(method = "tickEffects", at = @At(value = "CONSTANT", args = "intValue=4"))
     private int changeParticleDensity(int original) {
-        if (ProtocolTranslator.getTargetVersion().olderThan(ProtocolVersion.v1_20_5)) {
+        if (ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_20_5)) {
             return 2;
         } else {
             return original;
@@ -44,7 +45,7 @@ public abstract class MixinLivingEntity {
 
     @ModifyConstant(method = "aiStep", constant = @Constant(doubleValue = 0.003D))
     private double modifyVelocityZero(double constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 0.005D;
         } else {
             return constant;

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.constants;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Final;
@@ -40,7 +41,7 @@ public abstract class MixinMth {
 
     @Inject(method = "sin", at = @At("HEAD"), cancellable = true)
     private static void changeSinScaling(double i, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
             final float index = (float) i; // Convert back as float; the game still passes the same types
             cir.setReturnValue(SIN[(int) (index * 10430.378F) & 65535]);
         }
@@ -48,7 +49,7 @@ public abstract class MixinMth {
 
     @Inject(method = "cos", at = @At("HEAD"), cancellable = true)
     private static void changeCosScaling(double i, CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_9)) {
             final float index = (float) i;
             cir.setReturnValue(SIN[(int) (index * 10430.378F + 16384.0F) & 65535]);
         }

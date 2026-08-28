@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.classic.walking_animation;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
@@ -47,7 +48,7 @@ public abstract class MixinHumanoidModel<T extends HumanoidRenderState> {
 
     @Inject(method = "setupAnim(Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/model/geom/ModelPart;zRot:F", ordinal = 1, shift = At.Shift.AFTER, opcode = Opcodes.PUTFIELD))
     private void addOldWalkAnimation(T state, CallbackInfo ci) {
-        if (ViaFabricPlus.api().settings().visual().oldWalkingAnimation().isActive()) {
+        if (ViaFabricPlusImpl.impl().visuals().oldWalkingAnimation().isActive()) {
             final float limbSwingAnimationProgress = state.walkAnimationPos;
             final float limbSwingAmplitude = state.walkAnimationSpeed;
 

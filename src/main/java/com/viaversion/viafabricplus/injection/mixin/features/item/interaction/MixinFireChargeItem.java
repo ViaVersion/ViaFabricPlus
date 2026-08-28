@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.interaction;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.FireChargeItem;
@@ -36,7 +37,7 @@ public abstract class MixinFireChargeItem {
 
     @Inject(method = "useOn", at = @At("HEAD"), cancellable = true)
     private void disableClientSideUsage(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && context.getLevel().isClientSide()) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4) && context.getLevel().isClientSide()) {
             cir.setReturnValue(InteractionResult.SUCCESS);
         }
     }

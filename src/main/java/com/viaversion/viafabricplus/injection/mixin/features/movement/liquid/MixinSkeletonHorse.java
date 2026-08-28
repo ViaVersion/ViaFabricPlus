@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.liquid;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.equine.AbstractHorse;
@@ -41,7 +42,7 @@ public abstract class MixinSkeletonHorse extends AbstractHorse {
 
     @Inject(method = "getWaterSlowDown", at = @At("HEAD"), cancellable = true)
     private void modifyBaseWaterMovementSpeedMultiplier(CallbackInfoReturnable<Float> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             cir.setReturnValue(super.getWaterSlowDown());
         }
     }

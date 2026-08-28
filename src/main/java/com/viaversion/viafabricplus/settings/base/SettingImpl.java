@@ -24,18 +24,14 @@ package com.viaversion.viafabricplus.settings.base;
 import com.viaversion.viafabricplus.api.settings.base.Setting;
 import net.minecraft.network.chat.Component;
 
-public abstract class SettingImpl<T> implements Setting<T> {
+public abstract class SettingImpl implements Setting {
 
     private final String key;
     private final Component component;
-    private final T defaultValue;
-    private T value;
 
-    public SettingImpl(final String key, final Component component, final T defaultValue) {
+    public SettingImpl(final String key, final Component component) {
         this.key = key;
         this.component = component;
-        this.defaultValue = defaultValue;
-        this.value = defaultValue;
     }
 
     protected String key() {
@@ -45,21 +41,6 @@ public abstract class SettingImpl<T> implements Setting<T> {
     @Override
     public Component name() {
         return this.component;
-    }
-
-    @Override
-    public T value() {
-        return this.value;
-    }
-
-    @Override
-    public void setValue(final T value) {
-        this.value = value;
-    }
-
-    @Override
-    public T defaultValue() {
-        return this.defaultValue;
     }
 
 }

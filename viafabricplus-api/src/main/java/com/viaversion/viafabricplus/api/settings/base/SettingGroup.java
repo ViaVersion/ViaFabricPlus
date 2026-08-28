@@ -30,13 +30,13 @@ public interface SettingGroup {
 
     Component name();
 
-    List<Setting<?>> settings();
+    List<Setting> settings();
 
-    BooleanSetting registerBoolean(final String key, final Boolean defaultValue);
+    BooleanSetting registerBoolean(final String key, final boolean defaultValue);
 
     <T extends Enum<T> & EnumSetting.EnumValue> EnumSetting<T> registerEnum(final String key, final T defaultValue);
 
-    VersionedBooleanSetting registerVersionedBoolean(final String key, final ProtocolVersionRange versionRange, final Boolean defaultValue);
+    VersionedBooleanSetting registerVersionedBoolean(final String key, final ProtocolVersionRange versionRange, final boolean defaultValue);
 
     void write(final JsonObject object);
 

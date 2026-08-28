@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.registry_validation;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
 import net.minecraft.core.Holder;
@@ -44,7 +45,7 @@ public abstract class MixinHolderSet_Named {
 
     @Inject(method = "contents", at = @At("HEAD"))
     private void preventNullableEntries(CallbackInfoReturnable<List<Holder<?>>> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             // Previously didn't have unbounded entries
             if (this.contents == null) {
                 this.bind(List.of());
@@ -54,7 +55,7 @@ public abstract class MixinHolderSet_Named {
 
     @Inject(method = "isBound", at = @At("HEAD"), cancellable = true)
     private void alwaysBound(CallbackInfoReturnable<Boolean> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             // Previously didn't exist
             cir.setReturnValue(true);
         }

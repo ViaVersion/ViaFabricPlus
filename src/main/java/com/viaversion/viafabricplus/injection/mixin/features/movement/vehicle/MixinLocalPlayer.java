@@ -23,9 +23,10 @@ package com.viaversion.viafabricplus.injection.mixin.features.movement.vehicle;
 
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.injection.access.core.IConnection;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_20_3to1_20_5.packet.ServerboundPackets1_20_5;
@@ -64,12 +65,12 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z", ordinal = 0))
     private boolean removeVehicleRequirement(LocalPlayer instance) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_20) && instance.isPassenger();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_20) && instance.isPassenger();
     }
 
     @Inject(method = "startRiding", at = @At("RETURN"))
     private void setRotationsWhenInBoat(Entity entity, boolean force, boolean sendEventAndTriggers, CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValueZ() && entity instanceof Boat && ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
+        if (cir.getReturnValueZ() && entity instanceof Boat && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_18)) {
             this.yRotO = entity.getYRot();
             this.setYRot(entity.getYRot());
             this.setYHeadRot(entity.getYRot());
@@ -78,7 +79,7 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Redirect(method = "tick", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z")), at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V", ordinal = 0))
     private void modifyPositionPacket(ClientPacketListener instance, Packet<?> packet) {
-        if (ProtocolTranslator.getTargetVersion().newerThan(LegacyProtocolVersion.r1_5_2)) {
+        if (ViaFabricPlus.api().targetVersion().newerThan(LegacyProtocolVersion.r1_5_2)) {
             instance.send(packet);
             return;
         }

@@ -22,6 +22,8 @@
 package com.viaversion.viafabricplus.injection.access.core;
 
 import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 
 public interface IConnection {

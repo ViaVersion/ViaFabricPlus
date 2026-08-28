@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.movement.elytra;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FireworkRocketItem;
@@ -34,7 +35,7 @@ public abstract class MixinFireworkRocketItem {
 
     @Redirect(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isFallFlying()Z", ordinal = 0))
     private boolean disableFireworkElytraBoost(Player player) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_11) && player.isFallFlying();
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_11) && player.isFallFlying();
     }
 
 }

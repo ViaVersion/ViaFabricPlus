@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.world.entity_distance;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ClientLevel;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +34,7 @@ public abstract class MixinClientLevel {
 
     @ModifyConstant(method = "doAddParticle", constant = @Constant(doubleValue = 1024.0))
     private double lowerParticleRenderDistance(double constant) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return 256.0;
         } else {
             return constant;

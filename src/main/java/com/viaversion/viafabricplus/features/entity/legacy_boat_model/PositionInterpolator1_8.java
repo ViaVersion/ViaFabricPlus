@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.features.entity.legacy_boat_model;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.injection.access.entity.legacy_boat_model.IAbstractBoat;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.InterpolationHandler;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
@@ -40,7 +40,7 @@ public final class PositionInterpolator1_8 extends InterpolationHandler {
     @Override
     public void interpolateTo(final Vec3 pos, final float yaw, final float pitch) {
         final IAbstractBoat mixinBoatEntity = (IAbstractBoat) this.boatEntity;
-        if (/*interpolate &&*/ boatEntity.isVehicle() && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_7_6)) {
+        if (/*interpolate &&*/ boatEntity.isVehicle() && ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_7_6)) {
             boatEntity.xo = pos.x;
             boatEntity.yo = pos.y;
             boatEntity.zo = pos.z;

@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.networking.registry_validation;
 
 import com.mojang.serialization.DataResult;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
@@ -38,7 +39,7 @@ public abstract class MixinHolderSetCodec {
 
     @Inject(method = "lookupTag", at = @At("RETURN"), cancellable = true)
     private static void workaroundValidation(HolderGetter<?> registry, TagKey<?> key, CallbackInfoReturnable<DataResult<HolderSet<?>>> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
             // The client now throws if the server references tags, which weren't previously sent via protocol,
             // instead of implementing verification on protocol level, we just skip the error and return an empty registry list
             if (cir.getReturnValue().isError()) {

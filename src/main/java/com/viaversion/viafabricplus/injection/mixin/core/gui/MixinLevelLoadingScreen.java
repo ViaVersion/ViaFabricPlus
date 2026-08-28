@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.core.gui;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.util.ChatUtil;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -43,26 +43,13 @@ public abstract class MixinLevelLoadingScreen extends Screen {
 
     @Inject(method = "extractRenderState", at = @At("RETURN"))
     private void renderClassicProgress(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a, CallbackInfo ci) {
-        // Check if ViaVersion is translating
-        final UserConnection connection = ProtocolTranslator.getPlayStateUserConnection();
-        if (connection == null) {
-            return;
+        final UserConnection connection = ViaFabricPlus.api().userConnection();
+        if (connection != null) {
+            final ClassicProgressStorage storage = connection.get(ClassicProgressStorage.class);
+            if (storage != null) {
+                graphics.centeredText(minecraft.font, ChatUtil.prefixText(storage.getStatus()), width / 2, height / 2 - 30, -1);
+            }
         }
-
-        // Check if the client is connecting to a classic server
-        final ClassicProgressStorage classicProgressStorage = connection.get(ClassicProgressStorage.class);
-        if (classicProgressStorage == null) {
-            return;
-        }
-
-        // Draw the classic loading progress
-        graphics.centeredText(
-            minecraft.font,
-            ChatUtil.prefixText(classicProgressStorage.getStatus()),
-            width / 2,
-            height / 2 - 30,
-            -1
-        );
     }
 
 }

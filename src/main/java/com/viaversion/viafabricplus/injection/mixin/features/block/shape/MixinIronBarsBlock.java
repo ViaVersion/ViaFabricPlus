@@ -22,8 +22,10 @@
 package com.viaversion.viafabricplus.injection.mixin.features.block.shape;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.block.shape.ICrossCollisionBlock;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -57,7 +59,7 @@ public abstract class MixinIronBarsBlock extends CrossCollisionBlock implements 
 
     @Inject(method = "getVisualShape", at = @At("HEAD"), cancellable = true)
     private void useCollisionVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
             cir.setReturnValue(this.getCollisionShape(state, level, pos, context));
         }
     }
@@ -120,7 +122,7 @@ public abstract class MixinIronBarsBlock extends CrossCollisionBlock implements 
 
     @Override
     public @NonNull VoxelShape getShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
-        if (ViaFabricPlus.api().settings().visual().legacyPaneOutlines().isActive()) {
+        if (ViaFabricPlusImpl.impl().visuals().legacyPaneOutlines().isActive()) {
             return this.viaFabricPlus$shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getShape(state, world, pos, context);
@@ -129,7 +131,7 @@ public abstract class MixinIronBarsBlock extends CrossCollisionBlock implements 
 
     @Override
     public @NonNull VoxelShape getCollisionShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             return this.viaFabricPlus$shape_r1_8[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getCollisionShape(state, world, pos, context);

@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes.filter_game_mode_selections;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,11 +59,11 @@ public abstract class MixinGameModeSwitcherScreen extends Screen {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void fixUIWidth(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             final List<GameModeSwitcherScreen.GameModeIcon> selections = new ArrayList<>(Arrays.stream(GameModeSwitcherScreen.GameModeIcon.values()).toList());
 
             selections.remove(GameModeSwitcherScreen.GameModeIcon.SPECTATOR);
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
+            if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
                 selections.remove(GameModeSwitcherScreen.GameModeIcon.ADVENTURE);
             }
 
@@ -73,7 +74,7 @@ public abstract class MixinGameModeSwitcherScreen extends Screen {
 
     @Redirect(method = "init", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screens/debug/GameModeSwitcherScreen$GameModeIcon;VALUES:[Lnet/minecraft/client/gui/screens/debug/GameModeSwitcherScreen$GameModeIcon;", opcode = Opcodes.GETSTATIC))
     private GameModeSwitcherScreen.GameModeIcon[] removeNewerGameModes() {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6)) {
             return viaFabricPlus$unwrappedGameModes;
         } else {
             return GameModeSwitcherScreen.GameModeIcon.values();
@@ -82,7 +83,7 @@ public abstract class MixinGameModeSwitcherScreen extends Screen {
 
     @Inject(method = "init", at = @At("HEAD"))
     private void disableInClassic(CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) { // survival mode was added in a1.0.15
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) { // survival mode was added in a1.0.15
             this.onClose();
         }
     }

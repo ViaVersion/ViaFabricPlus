@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.run_command_action;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -44,13 +45,13 @@ public abstract class MixinScreen {
 
     @Inject(method = "clickCommandAction", at = @At("HEAD"), cancellable = true)
     private static void changeCommandHandling(LocalPlayer player, String command, Screen screenAfterCommand, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_21_4)) {
+        if (ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21_4)) {
             return;
         }
 
         if (!command.startsWith("/")) {
             ci.cancel();
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
+            if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_19)) {
                 player.connection.sendChat(command);
             }
         }

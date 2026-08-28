@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.limitation.max_chat_length;
 
-import com.viaversion.viafabricplus.features.limitation.max_chat_length.MaxChatLength;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,8 +39,8 @@ public abstract class MixinChatScreen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void changeChatLength(CallbackInfo ci) {
-        if (this.input.getMaxLength() == MaxChatLength.MAX_CHAT_LENGTH_LATEST) {
-            this.input.setMaxLength(MaxChatLength.getChatLength());
+        if (this.input.getMaxLength() == SharedConstants.MAX_CHAT_LENGTH) {
+            this.input.setMaxLength(ViaFabricPlus.api().limitations().maxChatLength());
         }
     }
 

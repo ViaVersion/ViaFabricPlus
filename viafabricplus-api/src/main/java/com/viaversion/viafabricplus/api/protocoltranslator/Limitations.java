@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.api.protocoltranslator;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -32,11 +33,20 @@ import net.minecraft.world.level.block.entity.BannerPattern;
 public interface Limitations {
 
     /**
+     * Calculates the maximum chat length for the current target version.
+     *
+     * @return The maximum chat length
+     */
+    default int maxChatLength() {
+        return maxChatLength(ViaFabricPlus.api().targetVersion());
+    }
+
+    /**
      * Calculates the maximum chat length for given {@link ProtocolVersion} instance.
      *
      * @return The maximum chat length
      */
-    int getMaxChatLength(final ProtocolVersion version);
+    int maxChatLength(final ProtocolVersion version);
 
     /**
      * @param item    The item to check

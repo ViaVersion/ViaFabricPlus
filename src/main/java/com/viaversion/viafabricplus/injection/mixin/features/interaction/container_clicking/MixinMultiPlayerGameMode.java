@@ -23,9 +23,11 @@ package com.viaversion.viafabricplus.injection.mixin.features.interaction.contai
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.interaction.container_clicking.IAbstractContainerMenu;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.api.type.types.version.VersionedTypes;
@@ -78,11 +80,11 @@ public abstract class MixinMultiPlayerGameMode {
     private boolean handleWindowClick(ClientPacketListener instance, Packet<?> packet) {
         final ServerboundContainerClickPacket clickSlotPacket = (ServerboundContainerClickPacket) packet;
 
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_4)) {
             // Contains item before modification and not the actual item
             viaFabricPlus$clickSlot1_16_5(clickSlotPacket);
             return false;
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
             // Contains the actual item and not only the item hash
             viaFabricPlus$clickSlot1_21_4(clickSlotPacket);
             return false;
@@ -93,19 +95,19 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Inject(method = "handleContainerInput", at = @At("HEAD"), cancellable = true)
     private void removeClickActions(int containerId, int slotNum, int buttonNum, ContainerInput containerInput, Player player, CallbackInfo ci) {
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !containerInput.equals(ContainerInput.PICKUP)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !containerInput.equals(ContainerInput.PICKUP)) {
             ci.cancel();
-        } else if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !containerInput.equals(ContainerInput.PICKUP) && !containerInput.equals(ContainerInput.QUICK_MOVE) && !containerInput.equals(ContainerInput.SWAP) && !containerInput.equals(ContainerInput.CLONE)) {
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !containerInput.equals(ContainerInput.PICKUP) && !containerInput.equals(ContainerInput.QUICK_MOVE) && !containerInput.equals(ContainerInput.SWAP) && !containerInput.equals(ContainerInput.CLONE)) {
             ci.cancel();
         }
-        if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && containerInput == ContainerInput.SWAP && buttonNum == 40) { // Pressing 'F' in inventory
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && containerInput == ContainerInput.SWAP && buttonNum == 40) { // Pressing 'F' in inventory
             ci.cancel();
         }
     }
 
     @Unique
     private void viaFabricPlus$clickSlot1_21_4(final ServerboundContainerClickPacket packet) {
-        final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_21_4.CONTAINER_CLICK, ProtocolTranslator.getPlayStateUserConnection());
+        final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_21_4.CONTAINER_CLICK, ViaFabricPlus.api().userConnection());
         containerClick.write(Types.VAR_INT, packet.containerId());
         containerClick.write(Types.VAR_INT, packet.stateId());
         containerClick.write(Types.SHORT, packet.slotNum());
@@ -136,7 +138,7 @@ public abstract class MixinMultiPlayerGameMode {
             slotItemBeforeModification = viaFabricPlus$oldItems.get(packet.slotNum());
         }
 
-        final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ProtocolTranslator.getPlayStateUserConnection());
+        final PacketWrapper containerClick = PacketWrapper.create(ServerboundPackets1_16_2.CONTAINER_CLICK, ViaFabricPlus.api().userConnection());
         containerClick.write(Types.BYTE, (byte) packet.containerId());
         containerClick.write(Types.SHORT, packet.slotNum());
         containerClick.write(Types.BYTE, packet.buttonNum());
@@ -158,7 +160,7 @@ public abstract class MixinMultiPlayerGameMode {
         if (type == ContainerInput.THROW) return true;
 
         // quick move always uses empty stack for verification since 1.12
-        if (type == ContainerInput.QUICK_MOVE && ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_11_1))
+        if (type == ContainerInput.QUICK_MOVE && ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_11_1))
             return true;
 
         // pickup with slot -999 (outside window) to throw items always uses empty stack for verification

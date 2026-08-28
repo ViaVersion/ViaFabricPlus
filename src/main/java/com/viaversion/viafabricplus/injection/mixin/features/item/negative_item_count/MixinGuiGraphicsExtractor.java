@@ -21,7 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.negative_item_count;
 
-import com.viaversion.viafabricplus.features.item.negative_item_count.NegativeItemUtil;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +35,7 @@ public abstract class MixinGuiGraphicsExtractor {
 
     @Redirect(method = "itemCount", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getCount()I"))
     private int handleNegativeItemCount(ItemStack instance) {
-        return NegativeItemUtil.getCount(instance);
+        return ViaFabricPlus.api().limitations().getStackCount(instance);
     }
 
     @Redirect(method = "itemCount", at = @At(value = "INVOKE", target = "Ljava/lang/String;valueOf(I)Ljava/lang/String;", remap = false))

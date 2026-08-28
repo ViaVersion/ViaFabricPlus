@@ -22,7 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.duplicated_sounds;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -40,7 +41,7 @@ public abstract class MixinButtonBlock {
         method = "playSound",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/LevelAccessor;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;)V"))
     private boolean disableClickSounds(LevelAccessor instance, Entity except, BlockPos pos, SoundEvent soundEvent, SoundSource source) {
-        return ProtocolTranslator.getTargetVersion().newerThan(ProtocolVersion.v1_8); // Sent by the server in older versions
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_8); // Sent by the server in older versions
     }
 
 }

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.features.classic.cpe_extension;
 
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
@@ -47,6 +47,11 @@ public final class CPEAdditions {
     private static boolean snowing = false;
 
     public static void init() {
+        allowExtension(ClassicProtocolExtension.ENV_WEATHER_TYPE);
+        EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
+    }
+
+    public static void postInit() {
         EXTENDED_CLASSIC_ITEMS.add(Items.COBBLESTONE_SLAB);
         EXTENDED_CLASSIC_ITEMS.add(Items.DEAD_BUSH);
         EXTENDED_CLASSIC_ITEMS.add(Items.SANDSTONE);
@@ -59,13 +64,10 @@ public final class CPEAdditions {
         EXTENDED_CLASSIC_ITEMS.add(Items.QUARTZ_PILLAR);
         EXTENDED_CLASSIC_ITEMS.add(Items.JUKEBOX);
         EXTENDED_CLASSIC_ITEMS.add(Items.STONE_BRICKS);
-
-        allowExtension(ClassicProtocolExtension.ENV_WEATHER_TYPE);
-        EXT_WEATHER_TYPE = createNewPacket(ClassicProtocolExtension.ENV_WEATHER_TYPE, 31, (user, buf) -> buf.readByte());
     }
 
     public static boolean isSnowing() {
-        return ProtocolTranslator.getTargetVersion().equals(LegacyProtocolVersion.c0_30cpe) && snowing;
+        return ViaFabricPlus.api().targetVersion().equals(LegacyProtocolVersion.c0_30cpe) && snowing;
     }
 
     public static void setSnowing(boolean snowing) {

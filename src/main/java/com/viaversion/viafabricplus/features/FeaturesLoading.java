@@ -31,11 +31,11 @@ import com.viaversion.viafabricplus.features.entity.attribute.EnchantmentAttribu
 import com.viaversion.viafabricplus.features.entity.dimensions.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.font.filter_glyphs.FontCacheReload;
 import com.viaversion.viafabricplus.features.font.filter_glyphs.RenderableGlyphDiff;
-import com.viaversion.viafabricplus.features.item.filter_creative_tabs.VersionedRegistries;
 import com.viaversion.viafabricplus.features.networking.armor_hud.ArmorHudEmulation1_8;
 import com.viaversion.viafabricplus.features.networking.resource_pack_header.ResourcePackHeaderDiff;
 import com.viaversion.viafabricplus.features.recipe.Recipes1_11_2;
 import com.viaversion.viafabricplus.features.world.footstep_particle.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.util.network.SyncTasks;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.attribute.EnvironmentAttributes;
@@ -43,15 +43,11 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 public final class FeaturesLoading {
 
-    // Initialize various data classes required for feature mixins
-    public static void init() {
-        ResourcePackHeaderDiff.init();
-        RenderableGlyphDiff.init();
-        FootStepParticle1_12_2.init();
+    public static void onPreLoading() {
+        SyncTasks.init();
         CPEAdditions.init();
-        ClassiCubeAccount.init();
 
-        ViaFabricPlus.api().addChangeProtocolVersionEvent((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> {
+        ViaFabricPlus.api().protocolTranslation().addChangeProtocolVersionListener((oldVersion, newVersion) -> Minecraft.getInstance().execute(() -> {
             CollisionShapes.reloadBlockShapes();
 
             if (oldVersion.equals(AprilFoolsProtocolVersion.s3d_shareware) || newVersion.equals(AprilFoolsProtocolVersion.s3d_shareware)) {
@@ -72,13 +68,19 @@ public final class FeaturesLoading {
         }));
     }
 
-    // Make sure this is called *after* ViaVersion has been initialized
-    public static void postInit() {
-        VersionedRegistries.init();
+    public static void onPostRegistryLoading() {
+        ResourcePackHeaderDiff.init();
+        RenderableGlyphDiff.init();
+        ClassiCubeAccount.init();
+        FootStepParticle1_12_2.init();
+    }
+
+    public static void onPostGameLoading() {
         EntityDimensionDiff.init();
         EnchantmentAttributesEmulation1_20_6.init();
         Recipes1_11_2.init();
         ArmorHudEmulation1_8.init();
+        CPEAdditions.postInit();
     }
 
 }

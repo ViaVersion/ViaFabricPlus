@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.features.networking.armor_hud;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -46,15 +46,12 @@ public final class ArmorHudEmulation1_8 {
 
     public static void init() {
         ClientTickEvents.START_LEVEL_TICK.register(_ -> {
-            if (ProtocolTranslator.getTargetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
                 if (Minecraft.getInstance().player != null) {
-                    final UserConnection connection = ProtocolTranslator.getPlayStateUserConnection();
-                    if (connection != null) {
-                        try {
-                            sendArmorUpdate(connection);
-                        } catch (Throwable t) {
-                            ViaFabricPlusImpl.impl().logger().error("Error sending armor update", t);
-                        }
+                    try {
+                        sendArmorUpdate(ViaFabricPlus.api().userConnection());
+                    } catch (Throwable t) {
+                        ViaFabricPlusImpl.impl().logger().error("Error sending armor update", t);
                     }
                 } else {
                     previousArmorPoints = 0;

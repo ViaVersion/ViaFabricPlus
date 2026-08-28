@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.features.world.item_picking;
 
 import com.mojang.logging.LogUtils;
-import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslator;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_21_2to1_21_4.Protocol1_21_2To1_21_4;
@@ -120,7 +120,7 @@ public final class ItemPick1_21_3 {
                 return;
             }
 
-            final PacketWrapper pickFromInventory = PacketWrapper.create(ServerboundPackets1_21_2.PICK_ITEM, ProtocolTranslator.getPlayStateUserConnection());
+            final PacketWrapper pickFromInventory = PacketWrapper.create(ServerboundPackets1_21_2.PICK_ITEM, ViaFabricPlus.api().userConnection());
             pickFromInventory.write(Types.VAR_INT, index);
             pickFromInventory.scheduleSendToServer(Protocol1_21_2To1_21_4.class);
         }
