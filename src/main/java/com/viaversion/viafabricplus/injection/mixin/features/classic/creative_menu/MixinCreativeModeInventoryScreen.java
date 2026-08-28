@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.classic.creative_menu;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.classic.creative_menu.GridItemSelectionScreen;
 import net.minecraft.client.Minecraft;

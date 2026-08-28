@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.core.integration;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.raphimc.vialegacy.ViaLegacyConfig;
 import org.spongepowered.asm.mixin.Mixin;

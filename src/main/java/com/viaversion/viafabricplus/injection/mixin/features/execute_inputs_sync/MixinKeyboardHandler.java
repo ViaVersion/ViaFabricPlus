@@ -21,13 +21,11 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.execute_inputs_sync;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseKeyboardHandlers;
-
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Final;

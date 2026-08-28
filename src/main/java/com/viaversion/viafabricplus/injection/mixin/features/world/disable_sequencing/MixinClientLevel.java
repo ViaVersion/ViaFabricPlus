@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.world.disable_sequencing;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.world.disable_sequencing.PendingUpdateManager1_18_2;
 import net.minecraft.client.multiplayer.ClientLevel;

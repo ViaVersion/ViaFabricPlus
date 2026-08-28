@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.features.recipe.custom;
 
 import com.mojang.serialization.MapCodec;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;

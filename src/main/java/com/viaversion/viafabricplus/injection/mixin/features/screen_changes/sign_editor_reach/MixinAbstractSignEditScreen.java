@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes.sign_editor_reach;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
 import net.minecraft.world.level.block.entity.SignBlockEntity;

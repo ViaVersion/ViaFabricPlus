@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.features.interaction.r1_18_2_block_ack_emulation;
 
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;

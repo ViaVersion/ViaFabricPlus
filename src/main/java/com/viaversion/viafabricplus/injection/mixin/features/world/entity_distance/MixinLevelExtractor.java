@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.entity_distance;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.renderer.extract.LevelExtractor;

@@ -25,8 +25,6 @@ import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.font.filter_glyphs.BuiltinEmptyGlyph1_12_2;
 import com.viaversion.viafabricplus.features.font.filter_glyphs.RenderableGlyphDiff;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.font.FontSet;

@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import org.objectweb.asm.Opcodes;

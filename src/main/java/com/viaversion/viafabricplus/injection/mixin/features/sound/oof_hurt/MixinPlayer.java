@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.sound.oof_hurt;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;

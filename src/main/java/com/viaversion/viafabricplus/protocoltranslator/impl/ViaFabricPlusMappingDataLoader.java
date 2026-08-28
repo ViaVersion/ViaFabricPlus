@@ -21,9 +21,8 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl;
 
-import com.viaversion.viaversion.api.data.MappingDataLoader;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viaversion.api.data.MappingDataLoader;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.libs.gson.JsonElement;
 import com.viaversion.viaversion.libs.gson.JsonObject;

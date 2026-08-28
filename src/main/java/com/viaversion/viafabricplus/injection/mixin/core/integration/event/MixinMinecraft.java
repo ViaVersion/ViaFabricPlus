@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.core.integration.event;
 
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusEntrypoint;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;

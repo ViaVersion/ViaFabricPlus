@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_completion;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

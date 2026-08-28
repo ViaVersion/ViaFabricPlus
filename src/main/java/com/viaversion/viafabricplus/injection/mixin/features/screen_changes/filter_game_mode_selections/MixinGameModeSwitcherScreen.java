@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.screen_changes.filter_game_mode_selections;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -21,9 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.open_inventory_packet;
 
-import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_11_1to1_12.Protocol1_11_1To1_12;

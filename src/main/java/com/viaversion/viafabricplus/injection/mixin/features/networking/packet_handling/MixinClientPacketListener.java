@@ -24,7 +24,6 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.packet_
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.LinkedHashSet;
 import java.util.OptionalInt;

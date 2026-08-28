@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.instant_sneaking;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;

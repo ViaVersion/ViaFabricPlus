@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.registr
 
 import com.mojang.serialization.DataResult;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;

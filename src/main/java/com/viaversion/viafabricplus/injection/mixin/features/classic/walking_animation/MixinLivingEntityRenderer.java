@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.classic.walking_animation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;

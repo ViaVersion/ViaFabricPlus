@@ -22,9 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.entity.legacy_boat_model;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.viaversion.viafabricplus.features.entity.legacy_boat_model.BoatRenderer1_8;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.features.entity.legacy_boat_model.BoatRenderer1_8;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;

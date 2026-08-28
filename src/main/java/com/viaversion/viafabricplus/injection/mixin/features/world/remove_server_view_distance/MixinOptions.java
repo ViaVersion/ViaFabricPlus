@@ -22,9 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.remove_server_view_distance;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Options;
 import org.spongepowered.asm.mixin.Mixin;

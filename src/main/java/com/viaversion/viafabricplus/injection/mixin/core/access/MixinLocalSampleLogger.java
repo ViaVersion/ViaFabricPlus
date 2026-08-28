@@ -22,8 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.core.access;
 
 import com.viaversion.viafabricplus.injection.access.core.ILocalSampleLogger;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.util.debugchart.LocalSampleLogger;
 import org.spongepowered.asm.mixin.Mixin;

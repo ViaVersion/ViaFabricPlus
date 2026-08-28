@@ -21,9 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.srv_resolving;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import java.util.Optional;
 import javax.naming.directory.DirContext;
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.multiplayer.resolver.ServerAddress;
 import net.minecraft.client.multiplayer.resolver.ServerRedirectHandler;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;

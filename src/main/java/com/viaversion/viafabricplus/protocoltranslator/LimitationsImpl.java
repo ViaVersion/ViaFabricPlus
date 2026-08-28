@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.protocoltranslator;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.protocoltranslator.Limitations;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
 import com.viaversion.viafabricplus.protocoltranslator.util.ItemUtil;

@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.r1_18_2_block_ack_emulation;
 
-import com.viaversion.viafabricplus.injection.access.interaction.r1_18_2_block_ack_emulation.IMultiPlayerGameMode;
 import com.viaversion.viafabricplus.features.interaction.r1_18_2_block_ack_emulation.BlockStateTranslator;
+import com.viaversion.viafabricplus.injection.access.interaction.r1_18_2_block_ack_emulation.IMultiPlayerGameMode;
 import com.viaversion.viafabricplus.util.network.SyncTasks;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.type.Types;

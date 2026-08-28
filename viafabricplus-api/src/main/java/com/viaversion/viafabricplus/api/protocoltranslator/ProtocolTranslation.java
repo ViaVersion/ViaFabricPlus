@@ -24,10 +24,10 @@ package com.viaversion.viafabricplus.api.protocoltranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.Channel;
+import java.util.function.BiConsumer;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.Connection;
 import org.jetbrains.annotations.Nullable;
-import java.util.function.BiConsumer;
 
 public interface ProtocolTranslation {
 

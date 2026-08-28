@@ -21,9 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.world.item_picking;
 
-import com.viaversion.viafabricplus.features.world.item_picking.ItemPick1_21_3;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.features.world.item_picking.ItemPick1_21_3;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;

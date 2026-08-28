@@ -21,10 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.entity.legacy_boat_model;
 
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.features.entity.legacy_boat_model.PositionInterpolator1_8;
 import com.viaversion.viafabricplus.injection.access.entity.legacy_boat_model.IAbstractBoat;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

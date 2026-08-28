@@ -22,11 +22,10 @@
 package com.viaversion.viafabricplus.features.recipe;
 
 import com.mojang.datafixers.util.Pair;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.features.recipe.custom.AddBannerPatternRecipe;
 import com.viaversion.viafabricplus.features.recipe.custom.ShulkerBoxColoringRecipe;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import com.viaversion.viaversion.libs.gson.JsonArray;

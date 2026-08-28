@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.hud_changes.beta;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import org.spongepowered.asm.mixin.Mixin;

@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.entity.allow_duplicated_uuid;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import java.util.Map;

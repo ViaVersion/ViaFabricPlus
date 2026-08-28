@@ -22,8 +22,6 @@ package com.viaversion.viafabricplus.protocoltranslator.util;
 
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.util.JsonSave;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.VersionType;
 import java.io.ByteArrayOutputStream;

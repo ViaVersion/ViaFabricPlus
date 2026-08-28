@@ -21,9 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_signed_commands;
 
-import com.viaversion.viafabricplus.features.networking.remove_signed_commands.SignedCommands1_21_6;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.features.networking.remove_signed_commands.SignedCommands1_21_6;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.multiplayer.ClientPacketListener;

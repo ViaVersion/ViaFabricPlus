@@ -21,9 +21,8 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.item.attack_damage;
 
-import com.viaversion.viafabricplus.injection.access.item.attack_damage.IDisplayDefault;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.injection.access.item.attack_damage.IDisplayDefault;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.attributes.Attribute;

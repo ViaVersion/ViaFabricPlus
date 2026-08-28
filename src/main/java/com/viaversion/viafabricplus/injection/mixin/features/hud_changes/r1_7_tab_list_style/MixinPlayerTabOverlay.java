@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.hud_changes.r1_7_tab_list_style;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.r1_7_tab_list_style.IPlayerInfo;
 import com.viaversion.viafabricplus.injection.access.r1_7_tab_list_style.IPlayerTabOverlay;

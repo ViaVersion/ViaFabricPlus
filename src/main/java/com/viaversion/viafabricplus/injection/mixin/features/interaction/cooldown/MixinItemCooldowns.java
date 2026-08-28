@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.interaction.cooldown;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.item.ItemCooldowns;
 import org.spongepowered.asm.mixin.Mixin;

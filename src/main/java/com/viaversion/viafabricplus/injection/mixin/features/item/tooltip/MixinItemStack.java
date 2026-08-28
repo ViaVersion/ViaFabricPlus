@@ -22,10 +22,9 @@
 package com.viaversion.viafabricplus.injection.mixin.features.item.tooltip;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.features.item.r1_14_4_enchantment_tooltip.Enchantments1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.util.ItemUtil;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.Protocol1_21_4To1_21_5;
 import java.util.Optional;

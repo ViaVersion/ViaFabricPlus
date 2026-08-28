@@ -24,8 +24,6 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.remove_
 import com.viaversion.viafabricplus.protocoltranslator.util.NotificationUtil;
 import com.viaversion.viaversion.api.minecraft.GameMode;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.packet.ClientboundPacket1_21_5;

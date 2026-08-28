@@ -21,8 +21,6 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.netty;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.settings.impl.PacketTranslationError;
 import com.viaversion.viafabricplus.util.ChatUtil;

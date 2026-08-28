@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.item.potion_glint;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Item;

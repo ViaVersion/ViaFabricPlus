@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.world.petrified_oak_slab_model;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.core.component.DataComponentType;

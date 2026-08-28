@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.font.strike_through_offset;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.Font;
 import org.spongepowered.asm.mixin.Mixin;

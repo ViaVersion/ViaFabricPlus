@@ -21,7 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.networking.server_pinging;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
 import net.minecraft.client.multiplayer.ServerData;

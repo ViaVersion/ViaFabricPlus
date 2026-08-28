@@ -24,7 +24,6 @@ package com.viaversion.viafabricplus.injection.mixin.features.skin_loading;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;

@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.movement.collision;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;

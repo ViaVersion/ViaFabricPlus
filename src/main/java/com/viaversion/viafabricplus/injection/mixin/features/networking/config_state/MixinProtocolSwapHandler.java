@@ -24,7 +24,6 @@ package com.viaversion.viafabricplus.injection.mixin.features.networking.config_
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import io.netty.channel.ChannelConfig;
 import net.minecraft.network.ProtocolSwapHandler;

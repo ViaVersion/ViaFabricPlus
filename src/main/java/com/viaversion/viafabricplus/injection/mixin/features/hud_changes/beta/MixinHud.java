@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.hud_changes.beta;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Hud;

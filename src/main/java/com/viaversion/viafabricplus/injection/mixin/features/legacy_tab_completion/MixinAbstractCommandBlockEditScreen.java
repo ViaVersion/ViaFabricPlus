@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.legacy_tab_completion;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.components.CommandSuggestions;
 import net.minecraft.client.gui.screens.inventory.AbstractCommandBlockEditScreen;

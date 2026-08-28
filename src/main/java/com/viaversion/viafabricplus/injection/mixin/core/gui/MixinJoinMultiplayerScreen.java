@@ -24,7 +24,6 @@ package com.viaversion.viafabricplus.injection.mixin.core.gui;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.settings.impl.Orientation;
-import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
