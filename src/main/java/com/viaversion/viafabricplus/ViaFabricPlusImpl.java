@@ -113,6 +113,11 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusAPI, ViaFabricPlusE
     }
 
     @Override
+    public Logger logger() {
+        return this.logger;
+    }
+
+    @Override
     public SettingsImpl settings() {
         return this.settings;
     }
@@ -147,10 +152,6 @@ public final class ViaFabricPlusImpl implements ViaFabricPlusAPI, ViaFabricPlusE
     @Override
     public ScreensImpl screens() {
         return this.screens;
-    }
-
-    public Logger logger() {
-        return this.logger;
     }
 
     public static ViaFabricPlusImpl impl() {

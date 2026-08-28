@@ -27,6 +27,9 @@ import com.viaversion.viafabricplus.api.settings.impl.GeneralSettings;
 import com.viaversion.viafabricplus.api.settings.impl.VisualSettings;
 import java.util.List;
 
+/**
+ * The settings lookup of the mod.
+ */
 public interface Settings {
 
     GeneralSettings general();

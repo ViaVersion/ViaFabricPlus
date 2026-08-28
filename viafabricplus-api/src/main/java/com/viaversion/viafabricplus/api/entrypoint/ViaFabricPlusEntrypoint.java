@@ -21,20 +21,41 @@
 
 package com.viaversion.viafabricplus.api.entrypoint;
 
+import com.viaversion.viafabricplus.api.settings.Settings;
+
+/**
+ * Entrypoint for ViaFabricPlus. Registered in the fabric.mod.json via the "viafabricplus" key. Can be used to hook
+ * custom settings via {@link Settings}.
+ */
 public interface ViaFabricPlusEntrypoint {
 
+    /**
+     * Preloading hook. Called before Minecraft is loaded.
+     */
     default void onPreLoading() {
     }
 
+    /**
+     * Called after the settings have been loaded and registered.
+     */
     default void onPostSettingsLoading() {
     }
 
+    /**
+     * Called after all ViaVersion components have been loaded.
+     */
     default void onPostProtocolTranslationLoading() {
     }
 
+    /**
+     * Called after Minecraft has filled its registries. Can be used to hook custom registry elements.
+     */
     default void onPostRegistryLoading() {
     }
 
+    /**
+     * Called after the game has finished loading.
+     */
     default void onPostGameLoading() {
     }
 

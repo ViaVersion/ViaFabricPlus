@@ -23,6 +23,9 @@ package com.viaversion.viafabricplus.api.screen;
 
 import net.minecraft.client.gui.screens.Screen;
 
+/**
+ * ViaFabricPlus screens.
+ */
 public interface Screens {
 
     /**

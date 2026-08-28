@@ -26,20 +26,68 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 
+/**
+ * A group of settings.
+ *
+ * @see Setting
+ */
 public interface SettingGroup {
 
+    /**
+     * The name of the group. Used for displaying the group in the settings menu.
+     *
+     * @return The name of the group
+     */
     Component name();
 
+    /**
+     * All settings in the group.
+     *
+     * @return All settings in the group
+     */
     List<Setting> settings();
 
+    /**
+     * Registers a new setting.
+     *
+     * @param key          The translation key of the setting. Requires all settings to be prefixed with this key as well.
+     * @param defaultValue The default value of the setting.
+     * @return The newly created setting
+     */
     BooleanSetting registerBoolean(final String key, final boolean defaultValue);
 
+    /**
+     * Registers a new enum setting.
+     *
+     * @param key          The translation key of the setting. Requires all settings to be prefixed with this key as well.
+     * @param defaultValue The default value of the setting.
+     * @param <T>          The type of the enum
+     * @return The newly created enum setting
+     */
     <T extends Enum<T> & EnumSetting.EnumValue> EnumSetting<T> registerEnum(final String key, final T defaultValue);
 
+    /**
+     * Registers a new versioned boolean setting.
+     *
+     * @param key          The translation key of the setting. Requires all settings to be prefixed with this key as well.
+     * @param versionRange The version range the setting is valid for.
+     * @param defaultValue The default value of the setting.
+     * @return The newly created versioned boolean setting
+     */
     VersionedBooleanSetting registerVersionedBoolean(final String key, final ProtocolVersionRange versionRange, final boolean defaultValue);
 
+    /**
+     * Writes the settings to the given JsonObject.
+     *
+     * @param object The JsonObject to write to
+     */
     void write(final JsonObject object);
 
+    /**
+     * Reads the settings from the given JsonObject.
+     *
+     * @param object The JsonObject to read from
+     */
     void read(final JsonObject object);
 
 }

@@ -24,12 +24,34 @@ package com.viaversion.viafabricplus.api.settings.base;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersionRange;
 
+/**
+ * Boolean setting that can be enabled or disabled for specific protocol versions.
+ *
+ * @see BooleanSetting
+ * @see Setting
+ */
 public interface VersionedBooleanSetting extends BooleanSetting {
 
+    /**
+     * The version range the setting is valid for.
+     *
+     * @return the version range
+     */
     ProtocolVersionRange versionRange();
 
+    /**
+     * Checks if the setting is active for the given protocol version.
+     *
+     * @param version the protocol version
+     * @return true if the setting is active, false otherwise
+     */
     boolean isActive(final ProtocolVersion version);
 
+    /**
+     * The value of the setting.
+     *
+     * @return the value of the setting
+     */
     boolean value();
 
 }

@@ -21,12 +21,32 @@
 
 package com.viaversion.viafabricplus.api.settings.base;
 
+/**
+ * Base boolean setting class.
+ *
+ * @see Setting
+ */
 public interface BooleanSetting extends Setting {
 
+    /**
+     * Whether the setting is active.
+     *
+     * @return true if the setting is active, false otherwise
+     */
     boolean isActive();
 
+    /**
+     * Sets the active state of the setting.
+     *
+     * @param value the new active state of the setting
+     */
     void setActive(boolean value);
 
+    /**
+     * The default value of the setting.
+     *
+     * @return the default value of the setting
+     */
     boolean defaultValue();
 
 }

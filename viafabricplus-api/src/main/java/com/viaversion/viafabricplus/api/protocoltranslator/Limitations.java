@@ -30,6 +30,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.entity.BannerPattern;
 
+/**
+ * Version-dependent limitations.
+ */
 public interface Limitations {
 
     /**

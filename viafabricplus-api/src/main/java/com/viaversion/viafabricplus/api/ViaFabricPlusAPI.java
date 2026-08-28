@@ -31,6 +31,7 @@ import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.nio.file.Path;
 import java.util.function.BiConsumer;
+import org.apache.logging.log4j.Logger;
 
 /**
  * General API point for mods. Get an instance via {@link ViaFabricPlus#api()}.
@@ -68,30 +69,75 @@ public interface ViaFabricPlusAPI {
      */
     Path path();
 
+    /**
+     * The logger of the mod.
+     *
+     * @return The logger of the mod
+     */
+    Logger logger();
+
+    /**
+     * The settings of the mod. Allows accessing and registering settings.
+     *
+     * @return The settings of the mod
+     */
     Settings settings();
 
+    /**
+     * The protocol translation instance. Manages the injection of new connections and the translation of packets.
+     *
+     * @return The protocol translation instance
+     */
     ProtocolTranslation protocolTranslation();
 
+    /**
+     * @see ProtocolTranslation#targetVersion()
+     */
     default ProtocolVersion targetVersion() {
         return this.protocolTranslation().targetVersion();
     }
 
+    /**
+     * @see ProtocolTranslation#setTargetVersion(ProtocolVersion)
+     */
     default void setTargetVersion(final ProtocolVersion targetVersion) {
         this.protocolTranslation().setTargetVersion(targetVersion);
     }
 
+    /**
+     * @see ProtocolTranslation#addChangeProtocolVersionListener(BiConsumer)
+     */
     default void addChangeProtocolVersionListener(final BiConsumer<ProtocolVersion, ProtocolVersion> listener) {
         this.protocolTranslation().addChangeProtocolVersionListener(listener);
     }
 
+    /**
+     * @see ProtocolTranslation#userConnection()
+     */
     default UserConnection userConnection() {
         return this.protocolTranslation().userConnection();
     }
 
+    /**
+     * Protocol translation conversions. Can be used to convert Items and other data types between versions and
+     * Minecraft<->ViaVersion formats.
+     *
+     * @return Protocol translation conversions
+     */
     Conversions conversions();
 
+    /**
+     * Version-dependent limitations. Can be used to check if a certain feature is supported by the current version.
+     *
+     * @return Version-dependent limitations
+     */
     Limitations limitations();
 
+    /**
+     * Screen handling. Allows accessing ViaFabricPlus screens.
+     *
+     * @return Screen handling
+     */
     Screens screens();
 
 }

@@ -24,12 +24,34 @@ package com.viaversion.viafabricplus.api.settings.base;
 import com.google.gson.JsonObject;
 import net.minecraft.network.chat.Component;
 
+/**
+ * Base setting class.
+ *
+ * @see SettingGroup
+ * @see BooleanSetting
+ * @see EnumSetting
+ */
 public interface Setting {
 
+    /**
+     * The name of the setting. This is the name displayed in the settings menu.
+     *
+     * @return The name of the setting
+     */
     Component name();
 
+    /**
+     * Writes the setting to the given JsonObject.
+     *
+     * @param object The JsonObject to write to
+     */
     void write(final JsonObject object);
 
+    /**
+     * Reads the setting from the given JsonObject.
+     *
+     * @param object The JsonObject to read from
+     */
     void read(final JsonObject object);
 
 }

@@ -29,6 +29,9 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.Connection;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Protocol translator.
+ */
 public interface ProtocolTranslation {
 
     /**
