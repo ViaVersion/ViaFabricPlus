@@ -84,7 +84,7 @@ includeTransitiveJijDependencies()
 
 fun configureBedrockDependencies() {
     dependencies {
-        shade("net.raphimc:MinecraftAuth:5.0.1") {
+        shade("net.raphimc:MinecraftAuth:5.0.2") {
             exclude(group = "com.google.code.gson", module = "gson")
         }
         shade("dev.kastle.netty:netty-transport-raknet:1.7.0") {
