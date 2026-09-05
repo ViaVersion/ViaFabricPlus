@@ -114,8 +114,8 @@ public final class LimitationsImpl implements Limitations {
         if (ViaFabricPlus.api().targetVersion().equals(LegacyProtocolVersion.c0_30cpe)) {
             if (ViaFabricPlus.api().userConnection() != null) {
                 final ExtensionProtocolMetadataStorage storage = ViaFabricPlus.api().userConnection().get(ExtensionProtocolMetadataStorage.class);
-                if (storage.hasServerExtension(ClassicProtocolExtension.CUSTOM_BLOCKS, 1) && !EXTENDED_CLASSIC_ITEMS.contains(item)) {
-                    return false;
+                if (storage.hasServerExtension(ClassicProtocolExtension.CUSTOM_BLOCKS, 1) && EXTENDED_CLASSIC_ITEMS.contains(item)) {
+                    return true;
                 }
             }
         }
