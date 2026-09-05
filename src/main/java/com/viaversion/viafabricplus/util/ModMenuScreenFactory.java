@@ -29,7 +29,7 @@ public final class ModMenuScreenFactory implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return screen -> ViaFabricPlusImpl.impl().screens().protocolSelectionScreen().get(screen);
+        return screen -> ViaFabricPlusImpl.impl().screens().viaFabricPlusScreen().get(screen);
     }
 
 }

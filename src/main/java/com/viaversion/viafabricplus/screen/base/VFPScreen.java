@@ -38,13 +38,16 @@ import org.jspecify.annotations.NonNull;
 
 public abstract class VFPScreen extends Screen {
 
-    protected static final int TITLE_COLOR = 0xFF58A6FF;
+    public static final int ACCENT_COLOR = 0xFF58A6FF;
 
     protected static final Component SEARCH_TITLE = Component.translatable("base.viafabricplus.search");
 
     protected static final int SEARCH_TOP = 36; // Below the title
     protected static final int SEARCH_HEIGHT = 20;
     protected static final int SEARCH_MARGIN = 4;
+
+    // Everything a screen puts below the search bar starts here
+    protected static final int CONTENT_TOP = SEARCH_TOP + SEARCH_HEIGHT + SEARCH_MARGIN;
 
     protected static final int FOOTER_HEIGHT = 30;
 
@@ -55,6 +58,7 @@ public abstract class VFPScreen extends Screen {
     private static final SystemToast.SystemToastId TOAST_ID = new SystemToast.SystemToastId();
 
     private static final int TITLE_Y = 6; // Inside the doubled matrix of the title
+    private static final int SCREEN_TITLE_Y = 70; // Below the doubled title, above the content of the plain screens
     private static final int BACK_BUTTON_WIDTH = 60;
     private static final int BUTTON_WIDTH = 98;
     private static final int BUTTON_MARGIN = 4;
@@ -131,12 +135,12 @@ public abstract class VFPScreen extends Screen {
 
         matrices.pushMatrix();
         matrices.scale(2F, 2F);
-        context.centeredText(font, "ViaFabricPlus", width / 4, TITLE_Y, TITLE_COLOR);
+        context.centeredText(font, "ViaFabricPlus", width / 4, TITLE_Y, ACCENT_COLOR);
         matrices.popMatrix();
     }
 
     public void renderScreenTitle(final GuiGraphicsExtractor context) {
-        context.centeredText(this.font, this.title, this.width / 2, 70, 16777215);
+        context.centeredText(this.font, this.title, this.width / 2, SCREEN_TITLE_Y, -1);
     }
 
     public static void showToast(final Component message) {

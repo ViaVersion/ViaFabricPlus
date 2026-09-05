@@ -104,7 +104,7 @@ public abstract class VFPPopup extends VFPScreen {
     public void renderTitle(final GuiGraphicsExtractor context) {
         final int x = this.panel.left() + this.panel.width() / 2;
         final int y = this.panel.top() + (TITLE_HEIGHT - this.font.lineHeight) / 2;
-        context.centeredText(this.font, this.title, x, y, TITLE_COLOR);
+        context.centeredText(this.font, this.title, x, y, ACCENT_COLOR);
     }
 
 }

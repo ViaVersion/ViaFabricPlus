@@ -29,12 +29,12 @@ import com.viaversion.viafabricplus.api.settings.base.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.base.VersionedBooleanSetting;
 import com.viaversion.viafabricplus.screen.base.VFPTabbedScreen;
 import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import com.viaversion.viafabricplus.screen.impl.settings.BooleanListEntry;
 import com.viaversion.viafabricplus.screen.impl.settings.EnumListEntry;
 import com.viaversion.viafabricplus.screen.impl.settings.VersionedBooleanListEntry;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 

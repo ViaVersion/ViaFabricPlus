@@ -35,11 +35,6 @@ public class VFPList extends ObjectSelectionList<VFPListEntry> {
         super(minecraftClient, width, height - top - bottom, top, entryHeight);
     }
 
-    public void initScrollY(final double scrollY) {
-        // Needs calling last in init to have data loaded before setting scroll amount
-        this.setScrollAmount(scrollY);
-    }
-
     @Override
     public void setScrollAmount(double scrollY) {
         super.setScrollAmount(scrollY);

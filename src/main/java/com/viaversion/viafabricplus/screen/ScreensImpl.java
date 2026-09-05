@@ -23,9 +23,9 @@ package com.viaversion.viafabricplus.screen;
 
 import com.viaversion.viafabricplus.api.screen.Screens;
 import com.viaversion.viafabricplus.features.classic.creative_menu.GridItemSelectionScreen;
-import com.viaversion.viafabricplus.screen.impl.ViaFabricPlusScreen;
 import com.viaversion.viafabricplus.screen.impl.ReportIssuesScreen;
 import com.viaversion.viafabricplus.screen.impl.SettingsScreen;
+import com.viaversion.viafabricplus.screen.impl.ViaFabricPlusScreen;
 import com.viaversion.viafabricplus.screen.impl.serverlist.BetaCraftServerListScreen;
 import com.viaversion.viafabricplus.screen.impl.serverlist.ClassiCubeLoginScreen;
 import com.viaversion.viafabricplus.screen.impl.serverlist.ClassiCubeMFAScreen;
@@ -53,7 +53,7 @@ public final class ScreensImpl implements Screens {
         this.settingsScreen.open(parent);
     }
 
-    public ViaFabricPlusScreen protocolSelectionScreen() {
+    public ViaFabricPlusScreen viaFabricPlusScreen() {
         return this.viaFabricPlusScreen;
     }
 

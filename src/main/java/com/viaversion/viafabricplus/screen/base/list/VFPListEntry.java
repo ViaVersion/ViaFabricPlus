@@ -35,35 +35,28 @@ import org.jspecify.annotations.NonNull;
 
 public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntry> {
 
-    protected static final int SCISSORS_OFFSET = 4;
+    private static final int SCISSORS_OFFSET = 4;
     public static final int SLOT_MARGIN = 3;
 
-    private GuiGraphicsExtractor context;
-
-    public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(GuiGraphicsExtractor context, int entryWidth, int entryHeight) {
         // To be overridden
     }
 
-    public void mappedMouseClicked(double mouseX, double mouseY, int button) {
+    public void mappedMouseClicked() {
         // To be overridden
     }
 
     @Override
     public boolean mouseClicked(final MouseButtonEvent click, final boolean doubled) {
-        mappedMouseClicked(click.x(), click.y(), click.button());
+        mappedMouseClicked();
         AbstractWidget.playButtonClickSound(Minecraft.getInstance().getSoundManager());
         return super.mouseClicked(click, doubled);
     }
 
-    public void renderScrollableText(final Component name, final int offset) {
+    public void renderScrollableText(final GuiGraphicsExtractor context, final Component text, final int offset) {
         final Font font = Minecraft.getInstance().font;
 
-        renderScrollableText(name, getContentHeight() / 2 - font.lineHeight / 2, offset);
-    }
-
-    public void renderScrollableText(final Component text, final int textY, final int offset) {
-        final Font font = Minecraft.getInstance().font;
-
+        final int textY = getContentHeight() / 2 - font.lineHeight / 2;
         final int fontWidth = font.width(text);
         if (fontWidth > (getContentWidth() - offset)) {
             final double time = (double) Util.getMillis() / 1000.0;
@@ -81,14 +74,13 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
 
     @Override
     public void extractContent(final @NonNull GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
-        this.context = graphics; // Allows cross-sharing between util methods
+        final Matrix3x2fStack matrices = graphics.pose();
 
-        final Matrix3x2fStack matrices = this.context.pose();
-
+        // The content is translated to the entry, so everything below renders in the entry's own space
         matrices.pushMatrix();
         matrices.translate(getContentX(), getContentY());
-        this.context.fill(0, 0, getContentWidth(), getContentHeight(), Integer.MIN_VALUE);
-        mappedRender(this.context, getContentX(), getContentY(), getContentWidth(), getContentHeight(), mouseX, mouseY, hovered, deltaTicks);
+        graphics.fill(0, 0, getContentWidth(), getContentHeight(), Integer.MIN_VALUE);
+        mappedRender(graphics, getContentWidth(), getContentHeight());
         matrices.popMatrix();
     }
 

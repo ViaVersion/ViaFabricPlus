@@ -91,7 +91,7 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
 
     @Override
     public void onClose() {
-        // The user wasn't logged in when opening this screen, so he canceled the login process, so we can safely unset the account
+        // The user wasn't logged in when opening this screen, so they canceled the login process and the account can safely be unset
         ClassiCubeAccount.set(null);
         super.onClose();
     }

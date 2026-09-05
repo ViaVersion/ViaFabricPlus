@@ -33,6 +33,8 @@ import org.jspecify.annotations.NonNull;
 
 public final class EnumListEntry<T extends EnumSetting.EnumValue> extends VFPListEntry {
 
+    private static final int VALUE_MARGIN = 2;
+
     private final EnumSetting<T> value;
 
     public EnumListEntry(EnumSetting<T> value) {
@@ -45,19 +47,19 @@ public final class EnumListEntry<T extends EnumSetting.EnumValue> extends VFPLis
     }
 
     @Override
-    public void mappedMouseClicked(double mouseX, double mouseY, int button) {
+    public void mappedMouseClicked() {
         final T[] values = this.value.values();
         final int currentIndex = Arrays.asList(values).indexOf(this.value.value());
         this.value.setValue(currentIndex + 1 == values.length ? values[0] : values[currentIndex + 1]);
     }
 
     @Override
-    public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void mappedRender(GuiGraphicsExtractor context, int entryWidth, int entryHeight) {
         final Font textRenderer = Minecraft.getInstance().font;
 
         final Component name = this.value.value().component();
-        final int offset = textRenderer.width(name) + 2;
-        renderScrollableText(this.value.name().copy().withStyle(ChatFormatting.GRAY), offset);
+        final int offset = textRenderer.width(name) + VALUE_MARGIN;
+        renderScrollableText(context, this.value.name().copy().withStyle(ChatFormatting.GRAY), offset);
         context.text(textRenderer, name, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
     }
 

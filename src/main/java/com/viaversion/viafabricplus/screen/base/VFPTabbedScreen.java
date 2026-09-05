@@ -22,12 +22,12 @@
 package com.viaversion.viafabricplus.screen.base;
 
 import com.google.common.collect.ImmutableList;
+import com.viaversion.viafabricplus.screen.base.list.VFPList;
+import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import com.viaversion.viafabricplus.screen.base.list.VFPList;
-import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
@@ -45,7 +45,6 @@ import org.jspecify.annotations.NonNull;
 
 public abstract class VFPTabbedScreen<T> extends VFPScreen {
 
-    private static final int TAB_BAR_TOP = SEARCH_TOP + SEARCH_HEIGHT + SEARCH_MARGIN;
     private static final int TAB_BAR_HEIGHT = 24;
 
     private final Map<T, Double> scrollAmounts = new HashMap<>();
@@ -96,7 +95,7 @@ public abstract class VFPTabbedScreen<T> extends VFPScreen {
             tabButtons.add(new MenuTabBar.MenuTabButton(this.tabManager, listTab, 0, TAB_BAR_HEIGHT));
         }
         this.tabWidgets = listTabs.build();
-        this.tabBar = this.addRenderableWidget(new VFPTabBar(TAB_BAR_TOP, this.width, TAB_BAR_HEIGHT, this.tabManager, tabButtons.build(), this.tabWidgets));
+        this.tabBar = this.addRenderableWidget(new VFPTabBar(CONTENT_TOP, this.width, TAB_BAR_HEIGHT, this.tabManager, tabButtons.build(), this.tabWidgets));
 
         // The search results are held by a tab which isn't part of the tab bar, so selecting them
         // deselects all other tabs without any further handling
@@ -188,7 +187,7 @@ public abstract class VFPTabbedScreen<T> extends VFPScreen {
         private final @Nullable T tab;
 
         private TabList(final Minecraft minecraftClient, final int width, final int height, final int bottom, final int entryHeight, final @Nullable T tab) {
-            super(minecraftClient, width, height, TAB_BAR_TOP + TAB_BAR_HEIGHT, bottom, entryHeight);
+            super(minecraftClient, width, height, CONTENT_TOP + TAB_BAR_HEIGHT, bottom, entryHeight);
             this.tab = tab;
 
             if (tab == null) { // Search results are filled in by #showResults
@@ -196,7 +195,8 @@ public abstract class VFPTabbedScreen<T> extends VFPScreen {
             }
 
             entries(tab).forEach(this::addEntry);
-            initScrollY(scrollAmounts.getOrDefault(tab, 0D));
+            // Needs calling last to have the entries added before setting the scroll amount
+            setScrollAmount(scrollAmounts.getOrDefault(tab, 0D));
         }
 
         private void showResults(final String query) {

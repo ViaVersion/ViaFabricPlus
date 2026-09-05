@@ -49,7 +49,6 @@ import org.jspecify.annotations.NonNull;
 public final class ClassiCubeServerListScreen extends VFPScreen {
 
     public static final Component TITLE = Component.nullToEmpty("ClassiCube");
-    private static final int LIST_TOP = SEARCH_TOP + SEARCH_HEIGHT + SEARCH_MARGIN;
     private static final int ROW_WIDTH = 360;
 
     private static @Nullable List<CCServerInfo> serverList;
@@ -73,7 +72,7 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
 
         this.addSearchBar(this::search);
 
-        this.list = this.addRenderableWidget(new SlotList(this.minecraft, this.width, this.height, LIST_TOP, FOOTER_HEIGHT,
+        this.list = this.addRenderableWidget(new SlotList(this.minecraft, this.width, this.height, CONTENT_TOP, FOOTER_HEIGHT,
             (this.font.lineHeight + 2) * 3 /* title is 2 */));
 
         this.addFooter(Button.builder(Component.translatable("base.viafabricplus.logout"), _ -> {
@@ -168,13 +167,13 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
         }
 
         @Override
-        public void mappedMouseClicked(double mouseX, double mouseY, int button) {
+        public void mappedMouseClicked() {
             ViaFabricPlusClassicMPPassProvider.classicubeMPPass = classiCubeServerInfo.mpPass();
             ConnectionUtil.connect(classiCubeServerInfo.name(), classiCubeServerInfo.ip() + ":" + classiCubeServerInfo.port(), LegacyProtocolVersion.c0_30cpe);
         }
 
         @Override
-        public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void mappedRender(GuiGraphicsExtractor context, int entryWidth, int entryHeight) {
             context.blit(RenderPipelines.GUI_TEXTURED, FaviconTexture.MISSING_LOCATION, SLOT_MARGIN, (entryHeight - ICON_SIZE) / 2, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
 
             final Font font = Minecraft.getInstance().font;

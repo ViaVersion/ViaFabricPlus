@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.screen.impl.protocol;
 
 import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
+import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
@@ -40,8 +41,8 @@ public final class ProtocolSlot extends VFPListEntry {
     private static final int ICON_SIZE = 16;
     private static final int TEXT_OFFSET = SLOT_MARGIN + ICON_SIZE + SLOT_MARGIN;
 
-    private static final int SELECTED_COLOR = 0xFF58A6FF;
-    private static final int SELECTED_BACKGROUND_COLOR = 0x4058A6FF;
+    private static final int SELECTED_COLOR = VFPScreen.ACCENT_COLOR;
+    private static final int SELECTED_BACKGROUND_COLOR = 0x4058A6FF; // ACCENT_COLOR at 25% opacity
     private static final int SUBTITLE_COLOR = 0xFFAAAAAA;
     private static final int DISABLED_COLOR = 0xFF808080;
 
@@ -72,14 +73,14 @@ public final class ProtocolSlot extends VFPListEntry {
     }
 
     @Override
-    public void mappedMouseClicked(final double mouseX, final double mouseY, final int button) {
+    public void mappedMouseClicked() {
         if (this.screen.selectable()) {
             this.screen.select(this.protocolVersion);
         }
     }
 
     @Override
-    public void mappedRender(final GuiGraphicsExtractor context, final int x, final int y, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
+    public void mappedRender(final GuiGraphicsExtractor context, final int entryWidth, final int entryHeight) {
         final boolean selectable = this.screen.selectable();
         final boolean selected = this.screen.selected(this.protocolVersion);
         if (selected && selectable) {

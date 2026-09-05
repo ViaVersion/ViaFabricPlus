@@ -48,12 +48,12 @@ public final class VFPTextEntry extends VFPListEntry {
         // The text isn't clickable, so it's rendered without the background of a normal entry
         matrices.pushMatrix();
         matrices.translate(getContentX(), getContentY());
-        mappedRender(context, getContentX(), getContentY(), getContentWidth(), getContentHeight(), mouseX, mouseY, hovered, deltaTicks);
+        mappedRender(context, getContentWidth(), getContentHeight());
         matrices.popMatrix();
     }
 
     @Override
-    public void mappedRender(final GuiGraphicsExtractor context, final int x, final int y, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
+    public void mappedRender(final GuiGraphicsExtractor context, final int entryWidth, final int entryHeight) {
         final Font font = Minecraft.getInstance().font;
 
         context.centeredText(font, this.text, entryWidth / 2, entryHeight / 2 - font.lineHeight / 2, -1);

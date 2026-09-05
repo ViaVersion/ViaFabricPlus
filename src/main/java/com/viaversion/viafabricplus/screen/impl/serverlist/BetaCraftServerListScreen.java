@@ -140,13 +140,19 @@ public final class BetaCraftServerListScreen extends VFPTabbedScreen<BCVersionCa
         BetaCraftHandler.requestServerList(response -> {
             serverList = response;
             loading = false;
-            Minecraft.getInstance().execute(this::rebuildWidgets);
+            Minecraft.getInstance().execute(this::showResponse);
         }, throwable -> {
             loading = false;
             ViaFabricPlusImpl.impl().logger().error("Error while loading BetaCraft servers!", throwable);
             showToast(Component.translatable("base.viafabricplus.something_went_wrong"));
-            Minecraft.getInstance().execute(this::rebuildWidgets); // Replaces the loading text of the tabs
+            Minecraft.getInstance().execute(this::showResponse);
         });
+    }
+
+    // Releasing and rebuilding in the same tick keeps the slots of the previous list from being drawn with released icons
+    private void showResponse() {
+        ServerSlot.releaseIcons();
+        this.rebuildWidgets(); // Also replaces the loading text of the tabs
     }
 
     public static class ServerSlot extends VFPListEntry {
@@ -170,6 +176,16 @@ public final class BetaCraftServerListScreen extends VFPTabbedScreen<BCVersionCa
 
         private static Identifier icon(final BCServerInfo server) {
             return ICONS.computeIfAbsent(server.socket(), _ -> uploadIcon(server));
+        }
+
+        // The servers of a refreshed list may carry changed icons or be gone entirely, so the old textures are dropped
+        private static void releaseIcons() {
+            for (final Identifier texture : ICONS.values()) {
+                if (texture != FaviconTexture.MISSING_LOCATION) { // Only the icons we uploaded ourselves are ours to free
+                    Minecraft.getInstance().getTextureManager().release(texture);
+                }
+            }
+            ICONS.clear();
         }
 
         private static Identifier uploadIcon(final BCServerInfo server) {
@@ -201,13 +217,12 @@ public final class BetaCraftServerListScreen extends VFPTabbedScreen<BCVersionCa
         }
 
         @Override
-        public void mappedMouseClicked(double mouseX, double mouseY, int button) {
+        public void mappedMouseClicked() {
             ConnectionUtil.connect(server.name(), server.socket());
-            super.mappedMouseClicked(mouseX, mouseY, button);
         }
 
         @Override
-        public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void mappedRender(GuiGraphicsExtractor context, int entryWidth, int entryHeight) {
             context.blit(RenderPipelines.GUI_TEXTURED, this.icon, SLOT_MARGIN, (entryHeight - ICON_SIZE) / 2, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
 
             final Font font = Minecraft.getInstance().font;
