@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_14;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
+import com.viaversion.viafabricplus.features.v1_15_2.Block1_14;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;

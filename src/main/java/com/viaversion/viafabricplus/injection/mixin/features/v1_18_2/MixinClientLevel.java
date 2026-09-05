@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_18_2;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.features.world.disable_sequencing.PendingUpdateManager1_18_2;
+import com.viaversion.viafabricplus.features.v1_18_2.PendingUpdateManager1_18_2;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.prediction.BlockStatePredictionHandler;
 import org.spongepowered.asm.mixin.Final;

@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_17_1;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.injection.access.interaction.container_clicking.IAbstractContainerMenu;
+import com.viaversion.viafabricplus.injection.access.v1_21_4.IAbstractContainerMenu;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;

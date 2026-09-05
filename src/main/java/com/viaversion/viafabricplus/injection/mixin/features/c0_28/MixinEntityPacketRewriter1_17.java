@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.c0_28;
 
-import com.viaversion.viafabricplus.features.classic.world_height.WorldHeightSupport;
+import com.viaversion.viafabricplus.features.c0_28.WorldHeightSupport;
 import com.viaversion.viaversion.api.protocol.Protocol;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;

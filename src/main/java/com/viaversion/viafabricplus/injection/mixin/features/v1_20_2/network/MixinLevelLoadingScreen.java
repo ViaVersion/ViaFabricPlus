@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_20_2.network;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.injection.access.networking.downloading_terrain.ILevelLoadingScreen;
+import com.viaversion.viafabricplus.injection.access.v1_20_2.ILevelLoadingScreen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;

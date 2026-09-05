@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_12_2.particle;
 
-import com.viaversion.viafabricplus.features.world.footstep_particle.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.features.v1_12_2.FootStepParticle1_12_2;
 import com.viaversion.viaversion.protocols.v1_12_2to1_13.data.ParticleIdMappings1_13;
 import java.util.List;
 import org.spongepowered.asm.mixin.Final;

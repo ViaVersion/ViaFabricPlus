@@ -25,7 +25,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
+import com.viaversion.viafabricplus.features.global.ClassiCubeAccount;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslationImpl;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;

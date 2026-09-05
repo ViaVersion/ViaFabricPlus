@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_12_2;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.interaction.replace_block_placement_logic.ActionResultException1_12_2;
+import com.viaversion.viafabricplus.features.v1_12_2.ActionResultException1_12_2;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.viaversion.ViaFabricPlusHandItemProvider;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;

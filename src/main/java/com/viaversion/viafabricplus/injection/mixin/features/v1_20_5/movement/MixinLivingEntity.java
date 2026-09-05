@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_20_5.movement;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.entity.attribute.EnchantmentAttributesEmulation1_20_6;
+import com.viaversion.viafabricplus.features.v1_20_5.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;

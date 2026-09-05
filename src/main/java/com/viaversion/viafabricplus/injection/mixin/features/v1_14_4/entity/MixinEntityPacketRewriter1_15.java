@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_14_4.entity;
 
-import com.viaversion.viafabricplus.features.entity.metadata.WolfHealthTracker1_14_4;
+import com.viaversion.viafabricplus.features.v1_21_5.WolfHealthTracker1_14_4;
 import com.viaversion.viaversion.protocols.v1_14_4to1_15.rewriter.EntityPacketRewriter1_15;
 import com.viaversion.viaversion.rewriter.entitydata.EntityDataFilter;
 import org.spongepowered.asm.mixin.Mixin;

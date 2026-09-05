@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_14_4;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.item.r1_14_4_enchantment_tooltip.Enchantments1_14_4;
+import com.viaversion.viafabricplus.features.v1_14_4.Enchantments1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.util.ItemUtil;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Optional;

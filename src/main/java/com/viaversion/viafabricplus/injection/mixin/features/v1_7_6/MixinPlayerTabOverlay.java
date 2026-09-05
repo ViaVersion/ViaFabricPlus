@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_7_6;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.injection.access.r1_7_tab_list_style.IPlayerInfo;
-import com.viaversion.viafabricplus.injection.access.r1_7_tab_list_style.IPlayerTabOverlay;
+import com.viaversion.viafabricplus.injection.access.v1_7_6.IPlayerInfo;
+import com.viaversion.viafabricplus.injection.access.v1_7_6.IPlayerTabOverlay;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

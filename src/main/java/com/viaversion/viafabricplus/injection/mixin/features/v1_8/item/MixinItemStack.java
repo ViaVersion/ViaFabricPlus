@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_8.item;
 
-import com.viaversion.viafabricplus.injection.access.item.attack_damage.IDisplayDefault;
+import com.viaversion.viafabricplus.injection.access.v1_20_5.IDisplayDefault;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;

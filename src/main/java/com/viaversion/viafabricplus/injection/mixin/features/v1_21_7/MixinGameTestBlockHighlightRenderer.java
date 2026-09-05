@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_21_7;
 
-import com.viaversion.viafabricplus.injection.access.networking.packet_handling.IGameTestBlockHighlightRenderer;
+import com.viaversion.viafabricplus.injection.access.v1_21_7.IGameTestBlockHighlightRenderer;
 import java.util.Map;
 import net.minecraft.client.renderer.debug.GameTestBlockHighlightRenderer;
 import net.minecraft.core.BlockPos;

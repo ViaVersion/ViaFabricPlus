@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.screen.impl.serverlist;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
+import com.viaversion.viafabricplus.features.global.ClassiCubeAccount;
 import com.viaversion.viafabricplus.protocoltranslator.impl.provider.vialegacy.ViaFabricPlusClassicMPPassProvider;
 import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import com.viaversion.viafabricplus.screen.base.list.VFPList;

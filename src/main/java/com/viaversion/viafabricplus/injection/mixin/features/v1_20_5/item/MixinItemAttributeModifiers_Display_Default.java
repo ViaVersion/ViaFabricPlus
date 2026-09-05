@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_20_5.item;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.injection.access.item.attack_damage.IDisplayDefault;
+import com.viaversion.viafabricplus.injection.access.v1_20_5.IDisplayDefault;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.attributes.Attribute;

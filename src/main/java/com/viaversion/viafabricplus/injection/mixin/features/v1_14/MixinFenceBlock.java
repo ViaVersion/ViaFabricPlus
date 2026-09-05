@@ -22,8 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_14;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
-import com.viaversion.viafabricplus.injection.access.block.shape.ICrossCollisionBlock;
+import com.viaversion.viafabricplus.features.v1_15_2.Block1_14;
+import com.viaversion.viafabricplus.injection.access.v1_14.ICrossCollisionBlock;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.FenceBlock;

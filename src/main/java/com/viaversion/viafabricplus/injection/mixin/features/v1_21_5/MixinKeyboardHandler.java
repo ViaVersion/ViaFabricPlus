@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_21_5;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.networking.remove_signed_commands.SignedCommands1_21_6;
+import com.viaversion.viafabricplus.features.v1_21_5.SignedCommands1_21_6;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.multiplayer.ClientPacketListener;

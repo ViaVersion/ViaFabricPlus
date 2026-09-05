@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection;
 
-import com.viaversion.viafabricplus.features.movement.constants.LithiumWorkaround;
-import com.viaversion.viafabricplus.features.movement.elytra.FabricAPIWorkaround;
+import com.viaversion.viafabricplus.features.global.LithiumWorkaround;
+import com.viaversion.viafabricplus.features.global.FabricAPIWorkaround;
 import java.util.List;
 import java.util.Set;
 import net.fabricmc.loader.api.FabricLoader;

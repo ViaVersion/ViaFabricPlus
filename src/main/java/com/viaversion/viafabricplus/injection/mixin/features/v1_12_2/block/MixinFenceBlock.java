@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_12_2.block;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.injection.access.block.shape.ICrossCollisionBlock;
+import com.viaversion.viafabricplus.injection.access.v1_14.ICrossCollisionBlock;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;

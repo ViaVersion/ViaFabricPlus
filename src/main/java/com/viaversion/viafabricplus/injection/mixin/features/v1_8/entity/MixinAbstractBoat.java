@@ -22,9 +22,9 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_8.entity;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.entity.dimensions.EntityRidingOffsetsPre1_20_2;
-import com.viaversion.viafabricplus.features.entity.legacy_boat_model.PositionInterpolator1_8;
-import com.viaversion.viafabricplus.injection.access.entity.legacy_boat_model.IAbstractBoat;
+import com.viaversion.viafabricplus.features.v1_20.EntityRidingOffsetsPre1_20_2;
+import com.viaversion.viafabricplus.features.v1_8.PositionInterpolator1_8;
+import com.viaversion.viafabricplus.injection.access.v1_8.IAbstractBoat;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

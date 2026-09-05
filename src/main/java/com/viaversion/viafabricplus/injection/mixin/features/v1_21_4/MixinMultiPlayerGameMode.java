@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_21_4;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.injection.access.interaction.container_clicking.IAbstractContainerMenu;
+import com.viaversion.viafabricplus.injection.access.v1_21_4.IAbstractContainerMenu;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;

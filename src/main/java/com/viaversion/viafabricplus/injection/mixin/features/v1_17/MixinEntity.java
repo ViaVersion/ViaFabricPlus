@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_17;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.injection.access.world.always_tick_entities.IEntity;
+import com.viaversion.viafabricplus.injection.access.v1_17.IEntity;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;

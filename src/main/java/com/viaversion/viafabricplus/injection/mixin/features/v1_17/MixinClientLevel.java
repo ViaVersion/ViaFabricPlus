@@ -23,7 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_17;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.viaversion.viafabricplus.injection.access.world.always_tick_entities.IEntity;
+import com.viaversion.viafabricplus.injection.access.v1_17.IEntity;
 import java.util.List;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;

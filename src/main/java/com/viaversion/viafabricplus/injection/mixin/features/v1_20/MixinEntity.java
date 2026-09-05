@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_20;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.entity.dimensions.EntityRidingOffsetsPre1_20_2;
+import com.viaversion.viafabricplus.features.v1_20.EntityRidingOffsetsPre1_20_2;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;

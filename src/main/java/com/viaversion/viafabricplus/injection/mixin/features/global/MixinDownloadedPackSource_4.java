@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.global;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.networking.resource_pack_header.ResourcePackHeaderDiff;
+import com.viaversion.viafabricplus.features.global.ResourcePackHeaderDiff;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.LinkedHashMap;
 import java.util.Map;

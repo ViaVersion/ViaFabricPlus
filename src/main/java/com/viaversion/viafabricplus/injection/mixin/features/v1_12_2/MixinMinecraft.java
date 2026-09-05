@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_12_2;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.injection.access.execute_inputs_sync.IMouseKeyboardHandlers;
+import com.viaversion.viafabricplus.injection.access.v1_12_2.IMouseKeyboardHandlers;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Queue;
 import net.minecraft.client.KeyboardHandler;

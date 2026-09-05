@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_12_2;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.font.force_unicodes.UnicodeFontFix1_12_2;
+import com.viaversion.viafabricplus.features.v1_12_2.UnicodeFontFix1_12_2;
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.spongepowered.asm.mixin.Mixin;

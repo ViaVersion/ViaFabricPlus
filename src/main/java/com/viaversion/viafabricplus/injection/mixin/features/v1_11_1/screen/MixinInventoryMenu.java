@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_11_1.screen;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.recipe.Recipes1_11_2;
+import com.viaversion.viafabricplus.features.v1_11_1.Recipes1_11_2;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.AbstractCraftingMenu;

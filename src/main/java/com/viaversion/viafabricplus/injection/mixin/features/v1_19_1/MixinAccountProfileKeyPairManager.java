@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_19_1;
 
 import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
-import com.viaversion.viafabricplus.injection.access.networking.legacy_chat_signature.IProfilePublicKey_Data;
+import com.viaversion.viafabricplus.injection.access.v1_19_1.IProfilePublicKey_Data;
 import net.minecraft.client.multiplayer.AccountProfileKeyPairManager;
 import net.minecraft.world.entity.player.ProfilePublicKey;
 import org.spongepowered.asm.mixin.Mixin;

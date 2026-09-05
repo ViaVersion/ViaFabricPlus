@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_12_2.block;
 
-import com.viaversion.viafabricplus.injection.access.block.shape.ICrossCollisionBlock;
+import com.viaversion.viafabricplus.injection.access.v1_14.ICrossCollisionBlock;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.Direction;

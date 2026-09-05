@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_21_5;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.entity.metadata.WolfHealthTracker1_14_4;
+import com.viaversion.viafabricplus.features.v1_21_5.WolfHealthTracker1_14_4;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.c0_30cpe;
 
-import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
+import com.viaversion.viafabricplus.features.c0_30cpe.CPEAdditions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;

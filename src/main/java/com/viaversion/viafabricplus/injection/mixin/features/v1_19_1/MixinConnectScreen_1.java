@@ -25,7 +25,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.injection.access.core.IConnection;
-import com.viaversion.viafabricplus.injection.access.networking.legacy_chat_signature.IProfilePublicKey_Data;
+import com.viaversion.viafabricplus.injection.access.v1_19_1.IProfilePublicKey_Data;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.ProfileKey;
 import com.viaversion.viaversion.api.minecraft.signature.storage.ChatSession1_19_0;

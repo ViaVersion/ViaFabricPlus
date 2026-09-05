@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.screen;
 
 import com.viaversion.viafabricplus.api.screen.Screens;
-import com.viaversion.viafabricplus.features.classic.creative_menu.GridItemSelectionScreen;
+import com.viaversion.viafabricplus.features.c0_28.GridItemSelectionScreen;
 import com.viaversion.viafabricplus.screen.impl.ReportIssuesScreen;
 import com.viaversion.viafabricplus.screen.impl.SettingsScreen;
 import com.viaversion.viafabricplus.screen.impl.ViaFabricPlusScreen;

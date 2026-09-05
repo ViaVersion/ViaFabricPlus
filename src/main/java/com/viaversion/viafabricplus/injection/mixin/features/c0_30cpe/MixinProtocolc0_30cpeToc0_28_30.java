@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.c0_30cpe;
 
-import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
+import com.viaversion.viafabricplus.features.c0_30cpe.CPEAdditions;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.remapper.PacketHandlers;

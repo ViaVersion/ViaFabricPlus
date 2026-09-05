@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.screen.impl.serverlist;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
+import com.viaversion.viafabricplus.features.global.ClassiCubeAccount;
 import com.viaversion.viafabricplus.injection.access.core.IEditBox;
 import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import de.florianreuth.classic4j.api.LoginProcessHandler;

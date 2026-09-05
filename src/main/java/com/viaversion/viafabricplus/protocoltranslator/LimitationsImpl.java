@@ -56,7 +56,7 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.data.ClassicProtocolExtension;
 import net.raphimc.vialegacy.protocol.classic.c0_30cpetoc0_28_30.storage.ExtensionProtocolMetadataStorage;
 
-import static com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions.EXTENDED_CLASSIC_ITEMS;
+import static com.viaversion.viafabricplus.features.c0_30cpe.CPEAdditions.EXTENDED_CLASSIC_ITEMS;
 
 public final class LimitationsImpl implements Limitations {
 
