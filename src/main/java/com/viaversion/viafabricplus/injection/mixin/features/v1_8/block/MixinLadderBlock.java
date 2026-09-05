@@ -42,14 +42,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(LadderBlock.class)
 public abstract class MixinLadderBlock extends Block {
 
-    @Unique
-    private static final Map<Direction, VoxelShape> viaFabricPlus$shapes_r1_8_x = Map.of(
-        Direction.NORTH, Block.box(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
-        Direction.SOUTH, Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
-        Direction.WEST, Block.box(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D),
-        Direction.EAST, Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D)
-    );
-
     @Shadow
     @Final
     public static Map<Direction, VoxelShape> SHAPES;
@@ -57,6 +49,14 @@ public abstract class MixinLadderBlock extends Block {
     @Shadow
     @Final
     public static EnumProperty<Direction> FACING;
+
+    @Unique
+    private static final Map<Direction, VoxelShape> viaFabricPlus$shapes_r1_8_x = Map.of(
+        Direction.NORTH, Block.box(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D),
+        Direction.SOUTH, Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D),
+        Direction.WEST, Block.box(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D),
+        Direction.EAST, Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D)
+    );
 
     public MixinLadderBlock(final Properties settings) {
         super(settings);

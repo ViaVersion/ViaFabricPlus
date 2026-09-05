@@ -45,13 +45,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinHopperBlock extends BaseEntityBlock {
 
     @Unique
+    private boolean viaFabricPlus$requireOriginalShape;
+
+    @Unique
     private static final VoxelShape viaFabricPlus$inside_shape_r1_12_2 = Block.box(2.0D, 10.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
     @Unique
     private static final VoxelShape viaFabricPlus$hopper_shape_r1_12_2 = Shapes.join(Shapes.block(), viaFabricPlus$inside_shape_r1_12_2, BooleanOp.ONLY_FIRST);
-
-    @Unique
-    private boolean viaFabricPlus$requireOriginalShape;
 
     public MixinHopperBlock(Properties settings) {
         super(settings);

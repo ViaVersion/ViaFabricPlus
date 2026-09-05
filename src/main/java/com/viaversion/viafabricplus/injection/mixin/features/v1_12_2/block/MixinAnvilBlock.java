@@ -46,22 +46,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AnvilBlock.class)
 public abstract class MixinAnvilBlock extends FallingBlock {
 
+    @Shadow
+    @Final
+    public static EnumProperty<Direction> FACING;
+
+    @Unique
+    private boolean viaFabricPlus$requireOriginalShape;
+
     @Unique
     private static final VoxelShape viaFabricPlus$x_axis_shape_r1_12_2 = Block.box(0.0D, 0.0D, 2.0D, 16.0D, 16.0D, 14.0D);
 
     @Unique
     private static final VoxelShape viaFabricPlus$z_axis_shape_r1_12_2 = Block.box(2.0D, 0.0D, 0.0D, 14.0D, 16.0D, 16.0D);
 
-    @Shadow
-    @Final
-    public static EnumProperty<Direction> FACING;
-
     public MixinAnvilBlock(Properties settings) {
         super(settings);
     }
-
-    @Unique
-    private boolean viaFabricPlus$requireOriginalShape;
 
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {

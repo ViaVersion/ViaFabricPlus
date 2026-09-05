@@ -40,10 +40,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinEntity {
 
     @Shadow
-    public abstract Vec3 getDeltaMovement();
+    public boolean verticalCollision;
 
     @Shadow
-    public boolean verticalCollision;
+    public abstract Vec3 getDeltaMovement();
 
     @Redirect(method = "move", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;horizontalCollision:Z", ordinal = 2, opcode = Opcodes.GETFIELD))
     private boolean removeVerticalCheck(Entity instance) {

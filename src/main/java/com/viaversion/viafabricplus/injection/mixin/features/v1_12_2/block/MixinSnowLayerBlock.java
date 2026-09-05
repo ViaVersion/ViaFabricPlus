@@ -42,6 +42,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SnowLayerBlock.class)
 public abstract class MixinSnowLayerBlock {
 
+    @Shadow
+    @Final
+    public static IntegerProperty LAYERS;
+
     @Unique
     private static final VoxelShape[] viaFabricPlus$layers_to_shape_r1_12_2 = new VoxelShape[]{
         Block.box(0.0D, -0.00001 /* 0.0D */, 0.0D, 16.0D, 0.0D, 16.0D),
@@ -54,10 +58,6 @@ public abstract class MixinSnowLayerBlock {
         Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D),
         Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D)
     };
-
-    @Shadow
-    @Final
-    public static IntegerProperty LAYERS;
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     private void changeCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {

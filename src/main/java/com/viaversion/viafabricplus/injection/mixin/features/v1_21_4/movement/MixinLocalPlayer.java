@@ -41,6 +41,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Shadow
+    public ClientInput input;
+
+    @Shadow
     protected abstract Vec2 modifyInput(final Vec2 input);
 
     @Shadow
@@ -50,9 +53,6 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Shadow
     protected abstract boolean shouldStopRunSprinting();
-
-    @Shadow
-    public ClientInput input;
 
     public MixinLocalPlayer(ClientLevel world, GameProfile profile) {
         super(world, profile);

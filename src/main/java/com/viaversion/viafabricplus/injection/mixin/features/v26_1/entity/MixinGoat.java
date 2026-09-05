@@ -42,12 +42,12 @@ public abstract class MixinGoat extends Animal {
     @Shadow
     public abstract float getAgeScale();
 
+    @Unique
+    private static final EntityDimensions viaFabricPlus$dimensions_r26_1 = EntityDimensions.scalable(0.9F, 1.3F).scale(0.7F);
+
     public MixinGoat(final EntityType<? extends Animal> type, final Level level) {
         super(type, level);
     }
-
-    @Unique
-    private static final EntityDimensions viaFabricPlus$dimensions_r26_1 = EntityDimensions.scalable(0.9F, 1.3F).scale(0.7F);
 
     @Inject(method = "getDefaultDimensions", at = @At("HEAD"), cancellable = true)
     private void replaceDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> cir) {

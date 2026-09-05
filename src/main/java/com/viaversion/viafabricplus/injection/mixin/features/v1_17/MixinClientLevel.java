@@ -51,12 +51,12 @@ public abstract class MixinClientLevel extends Level {
     @Final
     private EntityTickList tickingEntities;
 
+    @Shadow
+    protected abstract void tickPassenger(final Entity vehicle, final Entity entity);
+
     protected MixinClientLevel(WritableLevelData properties, ResourceKey<Level> registryRef, RegistryAccess registryManager, Holder<DimensionType> dimensionEntry, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates) {
         super(properties, registryRef, registryManager, dimensionEntry, isClient, debugWorld, seed, maxChainedNeighborUpdates);
     }
-
-    @Shadow
-    protected abstract void tickPassenger(final Entity vehicle, final Entity entity);
 
     @Inject(method = "tickNonPassenger", at = @At("HEAD"), cancellable = true)
     private void alwaysTickEntities(Entity entity, CallbackInfo ci) {

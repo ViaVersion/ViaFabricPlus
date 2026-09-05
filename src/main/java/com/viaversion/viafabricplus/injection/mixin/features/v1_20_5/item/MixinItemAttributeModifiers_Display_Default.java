@@ -39,13 +39,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(ItemAttributeModifiers.Display.Default.class)
 public abstract class MixinItemAttributeModifiers_Display_Default implements IDisplayDefault {
 
+    @Unique
+    private ItemEnchantments viaFabricPlus$itemEnchantments;
+
     @Override
     public void viaFabricPlus$setItemEnchantments(final ItemEnchantments itemEnchantments) {
         viaFabricPlus$itemEnchantments = itemEnchantments;
     }
-
-    @Unique
-    private ItemEnchantments viaFabricPlus$itemEnchantments;
 
     @Redirect(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getAttributeBaseValue(Lnet/minecraft/core/Holder;)D", ordinal = 0))
     private double fixAttackDamageCalculation(Player instance, Holder<Attribute> registryEntry) {

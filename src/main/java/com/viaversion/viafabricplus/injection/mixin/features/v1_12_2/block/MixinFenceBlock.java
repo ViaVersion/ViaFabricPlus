@@ -44,10 +44,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(FenceBlock.class)
 public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICrossCollisionBlock {
 
-    protected MixinFenceBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Properties settings) {
-        super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
-    }
-
     @Unique
     private final VoxelShape[] viaFabricPlus$outline_shape_r1_12_2 = new VoxelShape[]{
         Shapes.box(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D),
@@ -69,13 +65,47 @@ public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICr
     };
 
     @Unique
-    private final VoxelShape viaFabricPlus$shape_b1_8_1 = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 24.0D, 16.0D);
-
-    @Unique
     private VoxelShape[] viaFabricPlus$collision_shape_r1_4_7;
 
     @Unique
     private VoxelShape[] viaFabricPlus$outline_shape_r1_4_7;
+
+    @Unique
+    private final VoxelShape viaFabricPlus$shape_b1_8_1 = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 24.0D, 16.0D);
+
+    protected MixinFenceBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Properties settings) {
+        super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
+    }
+
+    @Override
+    public @NonNull VoxelShape getShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+            return Shapes.block();
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
+            return this.viaFabricPlus$outline_shape_r1_4_7[this.viaFabricPlus$getShapeIndex(state)];
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return this.viaFabricPlus$outline_shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
+        } else {
+            return super.getShape(state, world, pos, context);
+        }
+    }
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void init1_4_7Shapes(Properties properties, CallbackInfo ci) {
+        this.viaFabricPlus$collision_shape_r1_4_7 = this.viaFabricPlus$createShapes1_4_7(24.0F);
+        this.viaFabricPlus$outline_shape_r1_4_7 = this.viaFabricPlus$createShapes1_4_7(16.0F);
+    }
+
+    @Override
+    public @NonNull VoxelShape getCollisionShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
+            return viaFabricPlus$shape_b1_8_1;
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
+            return this.viaFabricPlus$collision_shape_r1_4_7[this.viaFabricPlus$getShapeIndex(state)];
+        } else {
+            return super.getCollisionShape(state, world, pos, context);
+        }
+    }
 
     @Unique
     private VoxelShape[] viaFabricPlus$createShapes1_4_7(final float height) {
@@ -114,36 +144,6 @@ public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICr
         }
 
         return voxelShapes;
-    }
-
-    @Override
-    public @NonNull VoxelShape getShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
-            return Shapes.block();
-        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            return this.viaFabricPlus$outline_shape_r1_4_7[this.viaFabricPlus$getShapeIndex(state)];
-        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return this.viaFabricPlus$outline_shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
-        } else {
-            return super.getShape(state, world, pos, context);
-        }
-    }
-
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void init1_4_7Shapes(Properties properties, CallbackInfo ci) {
-        this.viaFabricPlus$collision_shape_r1_4_7 = this.viaFabricPlus$createShapes1_4_7(24.0F);
-        this.viaFabricPlus$outline_shape_r1_4_7 = this.viaFabricPlus$createShapes1_4_7(16.0F);
-    }
-
-    @Override
-    public @NonNull VoxelShape getCollisionShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
-            return viaFabricPlus$shape_b1_8_1;
-        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            return this.viaFabricPlus$collision_shape_r1_4_7[this.viaFabricPlus$getShapeIndex(state)];
-        } else {
-            return super.getCollisionShape(state, world, pos, context);
-        }
     }
 
 }

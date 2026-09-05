@@ -51,15 +51,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Wolf.class)
 public abstract class MixinWolf extends TamableAnimal implements NeutralMob {
 
-    protected MixinWolf(EntityType<? extends TamableAnimal> entityType, Level world) {
-        super(entityType, world);
-    }
-
     @Shadow
     public abstract DyeColor getCollarColor();
 
     @Shadow
     protected abstract void setCollarColor(DyeColor color);
+
+    protected MixinWolf(EntityType<? extends TamableAnimal> entityType, Level world) {
+        super(entityType, world);
+    }
 
     @Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
     private void fixWolfInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {

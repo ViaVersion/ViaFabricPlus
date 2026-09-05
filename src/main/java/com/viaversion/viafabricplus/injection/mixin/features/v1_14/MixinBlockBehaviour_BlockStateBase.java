@@ -35,11 +35,11 @@ import org.spongepowered.asm.mixin.Shadow;
 public abstract class MixinBlockBehaviour_BlockStateBase {
 
     @Shadow
-    public abstract Block getBlock();
-
-    @Shadow
     @Final
     private boolean requiresCorrectToolForDrops;
+
+    @Shadow
+    public abstract Block getBlock();
 
     /**
      * @author RK_01

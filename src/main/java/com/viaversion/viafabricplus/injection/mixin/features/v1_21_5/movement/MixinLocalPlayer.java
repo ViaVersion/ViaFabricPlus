@@ -52,11 +52,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Shadow
-    public abstract boolean isShiftKeyDown();
-
-    @Shadow
     @Final
     protected Minecraft minecraft;
+
+    @Shadow
+    public abstract boolean isShiftKeyDown();
 
     @Unique
     private boolean viaFabricPlus$lastSneaking;

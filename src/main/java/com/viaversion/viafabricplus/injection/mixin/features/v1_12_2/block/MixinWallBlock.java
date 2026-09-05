@@ -49,9 +49,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(WallBlock.class)
 public abstract class MixinWallBlock extends Block {
 
-    @Unique
-    private final Object2IntMap<BlockState> viaFabricPlus$shapeIndexCache_r1_12_2 = new Object2IntOpenHashMap<>();
-
     @Shadow
     @Final
     private Function<BlockState, VoxelShape> shapes;
@@ -62,13 +59,11 @@ public abstract class MixinWallBlock extends Block {
     @Unique
     private VoxelShape[] viaFabricPlus$outline_shape_r1_12_2;
 
+    @Unique
+    private final Object2IntMap<BlockState> viaFabricPlus$shapeIndexCache_r1_12_2 = new Object2IntOpenHashMap<>();
+
     public MixinWallBlock(Properties settings) {
         super(settings);
-    }
-
-    @Unique
-    private static int viaFabricPlus$getDirectionMask(Direction dir) {
-        return 1 << dir.get2DDataValue();
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
@@ -98,6 +93,11 @@ public abstract class MixinWallBlock extends Block {
         } else {
             return super.getOcclusionShape(state);
         }
+    }
+
+    @Unique
+    private static int viaFabricPlus$getDirectionMask(Direction dir) {
+        return 1 << dir.get2DDataValue();
     }
 
     @Unique

@@ -43,7 +43,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinEntity {
 
     @Shadow
+    private Level level;
+
+    @Shadow
     public abstract boolean isAlive();
+
+    @Shadow
+    public abstract Level level();
 
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
     private void removeLeashActions(Player player, InteractionHand hand, Vec3 location, CallbackInfoReturnable<InteractionResult> cir) {
@@ -66,12 +72,6 @@ public abstract class MixinEntity {
             cir.setReturnValue(InteractionResult.PASS);
         }
     }
-
-    @Shadow
-    private Level level;
-
-    @Shadow
-    public abstract Level level();
 
     @WrapWithCondition(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;addMovementThisTick(Lnet/minecraft/world/entity/Entity$Movement;)V"))
     private boolean removeExtraCollisionChecks(Entity instance, Entity.Movement movement) {

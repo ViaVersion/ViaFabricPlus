@@ -53,6 +53,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack {
 
+    @Inject(method = "addToTooltip", at = @At("HEAD"), cancellable = true)
+    private <T extends TooltipProvider> void replaceEnchantmentTooltip(DataComponentType<T> type, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag, CallbackInfo ci) {
+        if (ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_14_4)) {
+            return;
+        }
+
+        final CompoundTag tag = ItemUtil.getTagOrNull((ItemStack) (Object) this);
+        if (tag == null) {
+            return;
+        }
+        if (type == DataComponents.ENCHANTMENTS) {
+            this.viaFabricPlus$appendEnchantments1_14_4("Enchantments", tag, context, consumer);
+            ci.cancel();
+        } else if (type == DataComponents.STORED_ENCHANTMENTS) {
+            this.viaFabricPlus$appendEnchantments1_14_4("StoredEnchantments", tag, context, consumer);
+            ci.cancel();
+        }
+    }
+
     @Unique
     private void viaFabricPlus$appendEnchantments1_14_4(final String name, final CompoundTag nbt, Item.TooltipContext context, final Consumer<Component> tooltip) {
         final HolderLookup.Provider registryLookup = context.registries();
@@ -73,25 +92,6 @@ public abstract class MixinItemStack {
                     v.ifPresent(enchantmentReference -> tooltip.accept(Enchantment.getFullname(enchantmentReference, Mth.clamp(lvl, Short.MIN_VALUE, Short.MAX_VALUE))));
                 }
             });
-        }
-    }
-
-    @Inject(method = "addToTooltip", at = @At("HEAD"), cancellable = true)
-    private <T extends TooltipProvider> void replaceEnchantmentTooltip(DataComponentType<T> type, Item.TooltipContext context, TooltipDisplay display, Consumer<Component> consumer, TooltipFlag flag, CallbackInfo ci) {
-        if (ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_14_4)) {
-            return;
-        }
-
-        final CompoundTag tag = ItemUtil.getTagOrNull((ItemStack) (Object) this);
-        if (tag == null) {
-            return;
-        }
-        if (type == DataComponents.ENCHANTMENTS) {
-            this.viaFabricPlus$appendEnchantments1_14_4("Enchantments", tag, context, consumer);
-            ci.cancel();
-        } else if (type == DataComponents.STORED_ENCHANTMENTS) {
-            this.viaFabricPlus$appendEnchantments1_14_4("StoredEnchantments", tag, context, consumer);
-            ci.cancel();
         }
     }
 

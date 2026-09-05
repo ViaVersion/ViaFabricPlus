@@ -61,9 +61,6 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
     private Boat.Status status;
 
     @Unique
-    private final InterpolationHandler viaFabricPlus$positionInterpolator = new PositionInterpolator1_8((AbstractBoat) (Object) this);
-
-    @Unique
     private double viaFabricPlus$speedMultiplier = 0.07D;
 
     @Unique
@@ -71,6 +68,9 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
 
     @Unique
     private Vec3 viaFabricPlus$boatVelocity = Vec3.ZERO;
+
+    @Unique
+    private final InterpolationHandler viaFabricPlus$positionInterpolator = new PositionInterpolator1_8((AbstractBoat) (Object) this);
 
     public MixinAbstractBoat(EntityType<?> entityType, Level world) {
         super(entityType, world);

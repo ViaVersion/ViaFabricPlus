@@ -44,12 +44,12 @@ public abstract class MixinLivingEntity extends Entity {
     @Shadow
     private Optional<BlockPos> lastClimbablePos;
 
+    @Shadow
+    protected abstract boolean trapdoorUsableAsLadder(final BlockPos pos, final BlockState state);
+
     public MixinLivingEntity(final EntityType<?> type, final Level world) {
         super(type, world);
     }
-
-    @Shadow
-    protected abstract boolean trapdoorUsableAsLadder(final BlockPos pos, final BlockState state);
 
     @Inject(method = "onClimbable", at = @At("RETURN"), cancellable = true)
     private void allowGappedLadderClimb(CallbackInfoReturnable<Boolean> cir) {

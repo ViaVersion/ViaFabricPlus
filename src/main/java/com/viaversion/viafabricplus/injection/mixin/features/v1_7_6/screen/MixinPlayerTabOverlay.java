@@ -48,13 +48,13 @@ public abstract class MixinPlayerTabOverlay implements IPlayerTabOverlay {
     private Minecraft minecraft;
 
     @Unique
-    private static final Comparator<PlayerInfo> viaFabricPlus$FIFO_COMPARATOR = Comparator.comparingInt(e -> ((IPlayerInfo) e).viaFabricPlus$getIndex());
-
-    @Unique
     private int viaFabricPlus$maxSlots;
 
     @Unique
     private boolean viaFabricPlus$hideSkins = true;
+
+    @Unique
+    private static final Comparator<PlayerInfo> viaFabricPlus$FIFO_COMPARATOR = Comparator.comparingInt(e -> ((IPlayerInfo) e).viaFabricPlus$getIndex());
 
     @Inject(method = "getPlayerInfos", at = @At("HEAD"), cancellable = true)
     private void collectPlayerEntries(CallbackInfoReturnable<List<PlayerInfo>> result) {
@@ -71,6 +71,11 @@ public abstract class MixinPlayerTabOverlay implements IPlayerTabOverlay {
     @ModifyExpressionValue(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;onlineMode()Z"))
     private boolean hideSkins(boolean original) {
         return original && !viaFabricPlus$hideSkins;
+    }
+
+    @Override
+    public void viaFabricPlus$setMaxPlayers(int maxPlayers) {
+        this.viaFabricPlus$maxSlots = Math.clamp(((maxPlayers + PlayerTabOverlay.MAX_ROWS_PER_COL - 1) / PlayerTabOverlay.MAX_ROWS_PER_COL) * PlayerTabOverlay.MAX_ROWS_PER_COL, 20, 200);
     }
 
     @Unique
@@ -94,11 +99,6 @@ public abstract class MixinPlayerTabOverlay implements IPlayerTabOverlay {
         }
         viaFabricPlus$hideSkins = !anyHasSkinData;
         return result;
-    }
-
-    @Override
-    public void viaFabricPlus$setMaxPlayers(int maxPlayers) {
-        this.viaFabricPlus$maxSlots = Math.clamp(((maxPlayers + PlayerTabOverlay.MAX_ROWS_PER_COL - 1) / PlayerTabOverlay.MAX_ROWS_PER_COL) * PlayerTabOverlay.MAX_ROWS_PER_COL, 20, 200);
     }
 
 }

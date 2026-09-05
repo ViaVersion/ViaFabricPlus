@@ -43,6 +43,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPistonHeadBlock extends DirectionalBlock {
 
     @Unique
+    private boolean viaFabricPlus$selfInflicted = false;
+
+    @Unique
     private static final VoxelShape viaFabricPlus$east_head_shape = Block.box(12.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 
     @Unique
@@ -77,9 +80,6 @@ public abstract class MixinPistonHeadBlock extends DirectionalBlock {
 
     @Unique
     private static final VoxelShape viaFabricPlus$west_arm_shape_r1_8_x = Block.box(6.0, 4.0, 4.0, 10.0, 12.0, 16.0);
-
-    @Unique
-    private boolean viaFabricPlus$selfInflicted = false;
 
     protected MixinPistonHeadBlock(Properties settings) {
         super(settings);

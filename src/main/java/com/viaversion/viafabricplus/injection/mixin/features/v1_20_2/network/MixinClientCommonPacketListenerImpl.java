@@ -41,11 +41,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinClientCommonPacketListenerImpl {
 
     @Shadow
-    public abstract void send(Packet<?> packet);
-
-    @Shadow
     @Final
     protected Connection connection;
+
+    @Shadow
+    public abstract void send(Packet<?> packet);
 
     @Shadow
     @Nullable

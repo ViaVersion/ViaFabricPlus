@@ -40,20 +40,6 @@ public abstract class MixinCamel extends AbstractHorse {
         super(entityType, world);
     }
 
-    @Unique
-    private void viaFabricPlus$clampPassengerYaw1_20_1(final Entity passenger) {
-        passenger.setYBodyRot(this.getYRot());
-        final float passengerYaw = passenger.getYRot();
-
-        final float deltaDegrees = Mth.wrapDegrees(passengerYaw - this.getYRot());
-        final float clampedDelta = Mth.clamp(deltaDegrees, -160.0F, 160.0F);
-        passenger.yRotO += clampedDelta - deltaDegrees;
-
-        final float newYaw = passengerYaw + clampedDelta - deltaDegrees;
-        passenger.setYRot(newYaw);
-        passenger.setYHeadRot(newYaw);
-    }
-
     @Override
     public void onPassengerTurned(@NonNull Entity passenger) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20) && this.getControllingPassenger() != passenger) {
@@ -68,6 +54,20 @@ public abstract class MixinCamel extends AbstractHorse {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20)) {
             this.viaFabricPlus$clampPassengerYaw1_20_1(passenger);
         }
+    }
+
+    @Unique
+    private void viaFabricPlus$clampPassengerYaw1_20_1(final Entity passenger) {
+        passenger.setYBodyRot(this.getYRot());
+        final float passengerYaw = passenger.getYRot();
+
+        final float deltaDegrees = Mth.wrapDegrees(passengerYaw - this.getYRot());
+        final float clampedDelta = Mth.clamp(deltaDegrees, -160.0F, 160.0F);
+        passenger.yRotO += clampedDelta - deltaDegrees;
+
+        final float newYaw = passengerYaw + clampedDelta - deltaDegrees;
+        passenger.setYRot(newYaw);
+        passenger.setYHeadRot(newYaw);
     }
 
 }

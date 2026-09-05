@@ -42,10 +42,6 @@ public abstract class MixinBaseRailBlock extends Block {
     @Final
     private static VoxelShape SHAPE_SLOPE;
 
-    public MixinBaseRailBlock(Properties settings) {
-        super(settings);
-    }
-
     @Unique
     private static final VoxelShape viaFabricPlus$ascending_shape_r1_10_x = Shapes.block();
 
@@ -54,6 +50,10 @@ public abstract class MixinBaseRailBlock extends Block {
 
     @Unique
     private static final VoxelShape viaFabricPlus$ascending_shape_r1_8_x = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D);
+
+    public MixinBaseRailBlock(Properties settings) {
+        super(settings);
+    }
 
     @Redirect(method = "getShape", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/block/BaseRailBlock;SHAPE_SLOPE:Lnet/minecraft/world/phys/shapes/VoxelShape;", opcode = Opcodes.GETSTATIC))
     private VoxelShape changeOutlineShape() {

@@ -45,9 +45,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinCommandSuggestions {
 
     @Shadow
-    public abstract void updateCommandInfo();
-
-    @Shadow
     @Nullable
     private CommandSuggestions.@Nullable SuggestionsList suggestions;
 
@@ -58,6 +55,9 @@ public abstract class MixinCommandSuggestions {
     @Shadow
     @Final
     private List<FormattedCharSequence> commandUsage;
+
+    @Shadow
+    public abstract void updateCommandInfo();
 
     @Inject(method = "formatChat", at = @At(value = "HEAD"), cancellable = true)
     private void disableTextFieldColors(String text, int offset, CallbackInfoReturnable<FormattedCharSequence> cir) {

@@ -59,10 +59,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = BlockItemPacketRewriter1_20_5.class, remap = false)
 public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<ClientboundPacket1_20_3, ServerboundPacket1_20_5, Protocol1_20_3To1_20_5> {
 
-    public MixinBlockItemPacketRewriter1_20_5(Protocol1_20_3To1_20_5 protocol, Type<Item> itemType, Type<Item[]> itemArrayType, Type<Item> mappedItemType, Type<Item[]> mappedItemArrayType) {
-        super(protocol, itemType, itemArrayType, mappedItemType, mappedItemArrayType);
-    }
-
     @Unique
     private final Set<String> viaFabricPlus$foodItems_b1_7_3 = new HashSet<>();
 
@@ -72,29 +68,8 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
     @Unique
     private final Map<ProtocolVersion, Map<String, ToolProperties>> viaFabricPlus$toolDataChanges = new LinkedHashMap<>();
 
-    // Converts block identifiers as well as materials (prefixed with #) to block ids
-    @Unique
-    private int[] viaFabricPlus$blockJsonArrayToIds(final ProtocolVersion protocolVersion, final JsonArray jsonArray) {
-        final IntSet ids = new IntOpenHashSet();
-        for (final JsonElement element : jsonArray) {
-            final String name = element.getAsString();
-            if (name.startsWith("#")) { // Material name
-                final String material = name.substring(1);
-                for (Map.Entry<String, Map<ProtocolVersion, String>> entry : ViaFabricPlusMappingDataLoader.BLOCK_MATERIALS.entrySet()) {
-                    for (Map.Entry<ProtocolVersion, String> materialEntry : entry.getValue().entrySet()) {
-                        if (protocolVersion.olderThanOrEqualTo(materialEntry.getKey()) && materialEntry.getValue().equals(material)) {
-                            ids.add(this.protocol.getMappingData().blockId(entry.getKey()));
-                            break;
-                        }
-                    }
-                }
-            } else if (name.startsWith("-")) { // Block name
-                ids.remove(this.protocol.getMappingData().blockId(name.substring(1)));
-            } else { // Block name
-                ids.add(this.protocol.getMappingData().blockId(name));
-            }
-        }
-        return ids.toIntArray();
+    public MixinBlockItemPacketRewriter1_20_5(Protocol1_20_3To1_20_5 protocol, Type<Item> itemType, Type<Item[]> itemArrayType, Type<Item> mappedItemType, Type<Item[]> mappedItemArrayType) {
+        super(protocol, itemType, itemArrayType, mappedItemType, mappedItemArrayType);
     }
 
     @Inject(method = "<init>", at = @At("RETURN"))
@@ -181,6 +156,31 @@ public abstract class MixinBlockItemPacketRewriter1_20_5 extends ItemRewriter<Cl
                 }
             }
         }
+    }
+
+    // Converts block identifiers as well as materials (prefixed with #) to block ids
+    @Unique
+    private int[] viaFabricPlus$blockJsonArrayToIds(final ProtocolVersion protocolVersion, final JsonArray jsonArray) {
+        final IntSet ids = new IntOpenHashSet();
+        for (final JsonElement element : jsonArray) {
+            final String name = element.getAsString();
+            if (name.startsWith("#")) { // Material name
+                final String material = name.substring(1);
+                for (Map.Entry<String, Map<ProtocolVersion, String>> entry : ViaFabricPlusMappingDataLoader.BLOCK_MATERIALS.entrySet()) {
+                    for (Map.Entry<ProtocolVersion, String> materialEntry : entry.getValue().entrySet()) {
+                        if (protocolVersion.olderThanOrEqualTo(materialEntry.getKey()) && materialEntry.getValue().equals(material)) {
+                            ids.add(this.protocol.getMappingData().blockId(entry.getKey()));
+                            break;
+                        }
+                    }
+                }
+            } else if (name.startsWith("-")) { // Block name
+                ids.remove(this.protocol.getMappingData().blockId(name.substring(1)));
+            } else { // Block name
+                ids.add(this.protocol.getMappingData().blockId(name));
+            }
+        }
+        return ids.toIntArray();
     }
 
 }

@@ -43,6 +43,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinAbstractCauldronBlock extends Block {
 
     @Unique
+    private boolean viaFabricPlus$requireOriginalShape;
+
+    @Unique
     private static final VoxelShape viaFabricPlus$collision_shape_r1_12_2 = Shapes.or(
         Shapes.box(0.0, 0.0, 0.0, 1.0, 0.3125, 1.0),
         Shapes.box(0.0, 0.0, 0.0, 0.125, 1.0, 1.0),
@@ -50,9 +53,6 @@ public abstract class MixinAbstractCauldronBlock extends Block {
         Shapes.box(0.875, 0.0, 0.0, 1.0, 1.0, 1.0),
         Shapes.box(0.0, 0.0, 0.875, 1.0, 1.0, 1.0)
     );
-
-    @Unique
-    private boolean viaFabricPlus$requireOriginalShape;
 
     public MixinAbstractCauldronBlock(final Properties properties) {
         super(properties);

@@ -48,11 +48,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MixinPlayer extends LivingEntity {
 
     @Shadow
-    public abstract boolean hasCorrectToolForDrops(BlockState state);
-
-    @Shadow
     @Final
     private Inventory inventory;
+
+    @Shadow
+    public abstract boolean hasCorrectToolForDrops(BlockState state);
 
     protected MixinPlayer(EntityType<? extends LivingEntity> entityType, Level world) {
         super(entityType, world);

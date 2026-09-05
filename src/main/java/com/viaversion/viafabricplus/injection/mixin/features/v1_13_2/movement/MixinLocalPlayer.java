@@ -39,12 +39,12 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     @Shadow
     private boolean crouching;
 
+    @Shadow
+    public abstract boolean isShiftKeyDown();
+
     public MixinLocalPlayer(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
-
-    @Shadow
-    public abstract boolean isShiftKeyDown();
 
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/ClientInput;tick()V"))
     private void removeSneakingConditions(CallbackInfo ci) { // Allows sneaking while flying, inside blocks and vehicles

@@ -46,15 +46,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity {
 
-    public MixinLivingEntity(EntityType<?> type, Level world) {
-        super(type, world);
-    }
-
     @Shadow
     public abstract boolean hasEffect(Holder<MobEffect> effect);
 
     @Shadow
     protected abstract float getWaterSlowDown();
+
+    public MixinLivingEntity(EntityType<?> type, Level world) {
+        super(type, world);
+    }
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;resetFallDistance()V"))
     private void dontResetLevitationFallDistance(LivingEntity instance) {
