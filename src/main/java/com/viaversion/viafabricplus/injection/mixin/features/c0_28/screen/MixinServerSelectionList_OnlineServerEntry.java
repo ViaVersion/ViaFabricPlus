@@ -1,0 +1,134 @@
+/*
+ * This file is part of ViaFabricPlus - https://github.com/ViaVersion/ViaFabricPlus
+ * Copyright (C) 2021-2026 the original authors
+ *                         - Florian Reuth <git@florianreuth.de>
+ *                         - RK_01/RaphiMC
+ * Copyright (C) 2023-2026 ViaVersion and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.viaversion.viafabricplus.injection.mixin.features.c0_28.screen;
+
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.injection.access.core.IServerData;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.FaviconTexture;
+import net.minecraft.client.gui.screens.multiplayer.ServerSelectionList;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.FormattedCharSequence;
+import org.objectweb.asm.Opcodes;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
+@Mixin(ServerSelectionList.OnlineServerEntry.class)
+public abstract class MixinServerSelectionList_OnlineServerEntry {
+
+    @Shadow
+    @Final
+    private ServerData serverData;
+
+    @Mutable
+    @Shadow
+    @Final
+    private FaviconTexture icon;
+
+    @Unique
+    private boolean viaFabricPlus$disableServerPinging = false;
+
+    @WrapOperation(method = "extractContent", at = @At(value = "INVOKE", target = "Ljava/util/concurrent/ThreadPoolExecutor;submit(Ljava/lang/Runnable;)Ljava/util/concurrent/Future;"))
+    private Future<?> disableServerPinging(ThreadPoolExecutor instance, Runnable runnable, Operation<Future<?>> original) {
+        ProtocolVersion version = ((IServerData) serverData).viaFabricPlus$forcedVersion();
+        if (version == null) {
+            version = ViaFabricPlus.api().targetVersion();
+        }
+
+        viaFabricPlus$disableServerPinging = ViaFabricPlusImpl.impl().visuals().disableServerPinging().isActive(version);
+        if (viaFabricPlus$disableServerPinging) {
+            this.serverData.version = Component.nullToEmpty(version.getName()); // Show target version
+            return null;
+        }
+        return original.call(instance, runnable);
+    }
+
+    @Redirect(method = "extractContent", at = @At(value = "FIELD", target = "Lnet/minecraft/client/multiplayer/ServerData$State;INCOMPATIBLE:Lnet/minecraft/client/multiplayer/ServerData$State;", opcode = Opcodes.GETSTATIC))
+    private ServerData.State disableServerPinging() {
+        if (viaFabricPlus$disableServerPinging) {
+            return this.serverData.state(); // server version will always be shown (as we don't have a player count anyway)
+        } else {
+            return ServerData.State.INCOMPATIBLE;
+        }
+    }
+
+    @Redirect(method = "extractContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;split(Lnet/minecraft/network/chat/FormattedText;I)Ljava/util/List;"))
+    private List<FormattedCharSequence> disableServerPinging(Font instance, FormattedText input, int maxWidth) {
+        if (viaFabricPlus$disableServerPinging) { // server label will just show the server address
+            return instance.split(Component.nullToEmpty(serverData.ip), maxWidth);
+        } else {
+            return instance.split(input, maxWidth);
+        }
+    }
+
+    @ModifyArg(method = "extractContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"), index = 2)
+    private int disableServerPinging(int x) {
+        if (viaFabricPlus$disableServerPinging) { // Move server label to the right (as we remove the ping bar)
+            x += 15 /* ping bar width */ - 3 /* magical offset */;
+        }
+        return x;
+    }
+
+    @WrapWithCondition(method = "extractContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V", ordinal = 0))
+    private boolean disableServerPinging(GuiGraphicsExtractor instance, RenderPipeline renderPipeline, Identifier location, int x, int y, int width, int height) {
+        return !viaFabricPlus$disableServerPinging; // Remove ping bar
+    }
+
+    @WrapWithCondition(method = "extractContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setTooltipForNextFrame(Ljava/util/List;II)V"))
+    private boolean disableServerPinging(GuiGraphicsExtractor instance, List<FormattedCharSequence> formattedCharSequences, int x, int y) {
+        return !viaFabricPlus$disableServerPinging; // Remove player list tooltip
+    }
+
+    @Redirect(method = "extractContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/FaviconTexture;textureLocation()Lnet/minecraft/resources/Identifier;"))
+    private Identifier disableServerPinging(FaviconTexture instance) {
+        if (viaFabricPlus$disableServerPinging) { // Remove server icon
+            return FaviconTexture.MISSING_LOCATION;
+        } else {
+            return this.icon.textureLocation();
+        }
+    }
+
+    @WrapWithCondition(method = "extractContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;setTooltipForNextFrame(Lnet/minecraft/network/chat/Component;II)V"))
+    private boolean disableServerPinging(GuiGraphicsExtractor instance, Component component, int x, int y) {
+        return !viaFabricPlus$disableServerPinging; // Remove ping bar tooltip
+    }
+
+}
