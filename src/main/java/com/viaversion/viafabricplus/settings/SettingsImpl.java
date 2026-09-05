@@ -32,6 +32,7 @@ import com.viaversion.viafabricplus.settings.impl.AdvancedSettingsImpl;
 import com.viaversion.viafabricplus.settings.impl.GeneralSettingsImpl;
 import com.viaversion.viafabricplus.settings.impl.VisualSettingsImpl;
 import com.viaversion.viafabricplus.util.JsonSave;
+import com.viaversion.viafabricplus.util.LegacySaveMigrator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,20 +56,27 @@ public final class SettingsImpl implements Settings {
 
     public void init() {
         JsonSave.load(ViaFabricPlus.api().path().resolve("settings.json"), jsonObject -> {
+            // Migrating into the current defaults leaves settings the old format didn't know at their default
+            final JsonObject settings = LegacySaveMigrator.isLegacySettings(jsonObject)
+                ? LegacySaveMigrator.migrateSettings(jsonObject, this.snapshot())
+                : jsonObject;
+
             for (final SettingGroup group : this.groups) {
-                group.read(jsonObject);
+                group.read(settings);
             }
-            this.selectedProtocolVersion = jsonObject.get("selected_protocol_version").getAsString();
-        }, () -> {
-            final JsonObject object = new JsonObject();
-            for (final SettingGroup group : this.groups) {
-                group.write(object);
-            }
-            object.addProperty("selected_protocol_version", ViaFabricPlus.api().targetVersion().getName());
-            return object;
-        });
+            this.selectedProtocolVersion = settings.get("selected_protocol_version").getAsString();
+        }, this::snapshot);
 
         FabricLoader.getInstance().invokeEntrypoints("viafabricplus", ViaFabricPlusEntrypoint.class, ViaFabricPlusEntrypoint::onPostSettingsLoading);
+    }
+
+    private JsonObject snapshot() {
+        final JsonObject object = new JsonObject();
+        for (final SettingGroup group : this.groups) {
+            group.write(object);
+        }
+        object.addProperty("selected_protocol_version", ViaFabricPlus.api().targetVersion().getName());
+        return object;
     }
 
     public void postInit() {

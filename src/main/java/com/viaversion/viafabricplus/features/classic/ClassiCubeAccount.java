@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.features.classic;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.util.JsonSave;
+import com.viaversion.viafabricplus.util.LegacySaveMigrator;
 import de.florianreuth.classic4j.model.classicube.account.CCAccount;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,7 +34,10 @@ public final class ClassiCubeAccount {
     private static CCAccount account;
 
     public static void init() {
-        final Path path = ViaFabricPlusImpl.impl().path().resolve("classicube.json");
+        final Path directory = ViaFabricPlusImpl.impl().path();
+        LegacySaveMigrator.migrateClassiCubeAccount(directory);
+
+        final Path path = directory.resolve("classicube.json");
         JsonSave.load(path, jsonObject -> account = CCAccount.fromJson(jsonObject), () -> {
             if (account != null) {
                 return account.asJson();
