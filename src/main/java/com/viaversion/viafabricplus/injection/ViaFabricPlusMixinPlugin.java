@@ -21,8 +21,8 @@
 
 package com.viaversion.viafabricplus.injection;
 
-import com.viaversion.viafabricplus.features.global.LithiumWorkaround;
 import com.viaversion.viafabricplus.features.global.FabricAPIWorkaround;
+import com.viaversion.viafabricplus.features.global.LithiumWorkaround;
 import java.util.List;
 import java.util.Set;
 import net.fabricmc.loader.api.FabricLoader;
@@ -66,8 +66,8 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
         return switch (mixinClassName) {
             case MIXINS_PACKAGE + "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor" -> IPNEXT_PRESENT;
             case MIXINS_PACKAGE + "compat.lithium.MixinEntity" -> LITHIUM_PRESENT && !MOONRISE_PRESENT;
-            case MIXINS_PACKAGE + "features.item.attack_damage.MixinItemStack" -> !LEGENDARYTOOLTIPS_PRESENT;
-            case MIXINS_PACKAGE + "features.item.negative_item_count.MixinGuiGraphics" -> !LEGACY_PRESENT;
+            case MIXINS_PACKAGE + "features.v1_8.item.MixinItemStack" -> !LEGENDARYTOOLTIPS_PRESENT;
+            case MIXINS_PACKAGE + "features.v1_10.MixinGuiGraphicsExtractor" -> !LEGACY_PRESENT;
             default -> true;
         };
     }
