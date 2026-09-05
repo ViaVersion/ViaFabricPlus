@@ -19,9 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.screen.base;
+package com.viaversion.viafabricplus.screen.base.list;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -34,21 +33,6 @@ import net.minecraft.util.Util;
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.NonNull;
 
-/**
- * This class is a wrapper for the {@link net.minecraft.client.gui.components.ObjectSelectionList.Entry} class.
- * Features included:
- * <ul>
- *     <li>Add wrapper function {@link #mappedRender(GuiGraphicsExtractor, int, int, int, int, int, int, boolean, float)} for:
- *     <ul>
- *         <li>cross-sharing entry position/dimension between other helper functions</li>
- *         <li>Setting the entry position as start inside the {@link PoseStack}</li>
- *         <li>rendering a default background</li>
- *     </ul>
- *     <li>Adds {@link #mappedMouseClicked(double, double, int)} to automatically play a click sound</li>
- *     <li>Adds some more utility functions, see {@link #renderScrollableText(Component, int, int)} and {@link #renderTooltip(Component, int, int)}</li>
- *     </li>
- * </ul>
- */
 public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntry> {
 
     protected static final int SCISSORS_OFFSET = 4;
@@ -64,9 +48,6 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
         // To be overridden
     }
 
-    /**
-     * Automatically plays a click sound and calls the {@link #mappedMouseClicked(double, double, int)} method
-     */
     @Override
     public boolean mouseClicked(final MouseButtonEvent click, final boolean doubled) {
         mappedMouseClicked(click.x(), click.y(), click.button());
@@ -80,13 +61,6 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
         renderScrollableText(name, getContentHeight() / 2 - font.lineHeight / 2, offset);
     }
 
-    /**
-     * Automatically scrolls the text if it is too long to be displayed in the slot. The text will be scrolled from right to left
-     *
-     * @param text   The text that should be displayed
-     * @param textY  The Y position of the text
-     * @param offset The offset of the text from the left side of the slot, this is used to calculate the width of the text, which should be scrolled
-     */
     public void renderScrollableText(final Component text, final int textY, final int offset) {
         final Font font = Minecraft.getInstance().font;
 
@@ -105,19 +79,17 @@ public abstract class VFPListEntry extends ObjectSelectionList.Entry<VFPListEntr
         }
     }
 
-    /**
-     * Automatically draws a background for the slot with the slot's dimension and calls the {@link #mappedRender(GuiGraphicsExtractor, int, int, int, int, int, int, boolean, float)} method
-     */
     @Override
     public void extractContent(final @NonNull GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
         this.context = graphics; // Allows cross-sharing between util methods
 
-        final Matrix3x2fStack matrices = context.pose();
+        final Matrix3x2fStack matrices = this.context.pose();
 
         matrices.pushMatrix();
         matrices.translate(getContentX(), getContentY());
-        context.fill(0, 0, getContentWidth(), getContentHeight(), Integer.MIN_VALUE);
-        mappedRender(context, getContentX(), getContentY(), getContentWidth(), getContentHeight(), mouseX, mouseY, hovered, deltaTicks);
+        this.context.fill(0, 0, getContentWidth(), getContentHeight(), Integer.MIN_VALUE);
+        mappedRender(this.context, getContentX(), getContentY(), getContentWidth(), getContentHeight(), mouseX, mouseY, hovered, deltaTicks);
         matrices.popMatrix();
     }
+
 }

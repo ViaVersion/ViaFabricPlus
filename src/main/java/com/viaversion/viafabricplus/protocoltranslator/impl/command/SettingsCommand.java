@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator.impl.command;
 
-import com.viaversion.viafabricplus.screen.impl.SettingsScreen;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
 
 public final class SettingsCommand implements VFPSubCommand {
@@ -38,7 +38,7 @@ public final class SettingsCommand implements VFPSubCommand {
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
-        SettingsScreen.INSTANCE.open(null);
+        ViaFabricPlusImpl.impl().screens().settingsScreen().open(null);
         return true;
     }
 

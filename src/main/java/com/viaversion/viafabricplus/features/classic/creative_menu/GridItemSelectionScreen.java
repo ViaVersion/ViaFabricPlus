@@ -40,8 +40,6 @@ import net.minecraft.world.item.Items;
 @SuppressWarnings("DataFlowIssue")
 public final class GridItemSelectionScreen extends Screen {
 
-    public static final GridItemSelectionScreen INSTANCE = new GridItemSelectionScreen();
-
     private static final int MAX_ROW_DIVIDER = 9;
     private static final int ITEM_XY_BOX_DIMENSION_CLASSIC = 25;
     private static final int SIDE_OFFSET = 15;

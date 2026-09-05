@@ -22,6 +22,7 @@ Also update versions in the `dependencies` block of `build.gradle.kts`.
 
 - Update the `NATIVE_VERSION` field in `ProtocolTranslator`
 - Update protocol constants in `ViaFabricPlusProtocol`
+- Add the new version to `assets/viafabricplus/data/version-metadata.json`, its icon has to be a vanilla texture no other version uses yet
 
 ---
 

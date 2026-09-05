@@ -1,0 +1,441 @@
+{
+  "c0.0.15a-1": {
+    "icon": "item/wooden_pickaxe",
+    "release_date": "2009-05-31",
+    "title": "Multiplayer Test 1"
+  },
+  "c0.0.16a-02": {
+    "icon": "item/wooden_shovel",
+    "release_date": "2009-06-07"
+  },
+  "c0.0.18a-02": {
+    "icon": "item/wooden_axe",
+    "release_date": "2009-06-14"
+  },
+  "c0.0.19a-06": {
+    "icon": "item/bucket",
+    "release_date": "2009-06-20"
+  },
+  "c0.0.20a-c0.27": {
+    "icon": "item/gunpowder",
+    "release_date": "2009-06-20"
+  },
+  "c0.28-c0.30": {
+    "icon": "item/flint_and_steel",
+    "release_date": "2009-10-27"
+  },
+  "c0.30 CPE": {
+    "icon": "item/written_book",
+    "release_date": "2009-11-10",
+    "title": "Classic Protocol Extension"
+  },
+  "a1.0.15": {
+    "icon": "item/stone_sword",
+    "release_date": "2010-08-03"
+  },
+  "a1.0.16-a1.0.16.2": {
+    "icon": "item/bow",
+    "release_date": "2010-08-11"
+  },
+  "a1.0.17-a1.0.17.4": {
+    "icon": "item/arrow",
+    "release_date": "2010-08-20"
+  },
+  "a1.1.0-a1.1.2.1": {
+    "icon": "item/apple",
+    "release_date": "2010-09-12"
+  },
+  "a1.2.0-a1.2.1.1": {
+    "icon": "item/pumpkin_seeds",
+    "release_date": "2010-10-29",
+    "title": "Halloween Update"
+  },
+  "a1.2.2": {
+    "icon": "item/glowstone_dust",
+    "release_date": "2010-11-09",
+    "title": "Halloween Update"
+  },
+  "a1.2.3-a1.2.3.4": {
+    "icon": "item/ghast_tear",
+    "release_date": "2010-11-23",
+    "title": "Halloween Update"
+  },
+  "a1.2.3.5-a1.2.6": {
+    "icon": "item/slime_ball",
+    "release_date": "2010-11-30",
+    "title": "Halloween Update"
+  },
+  "b1.0-b1.1.1": {
+    "icon": "item/snowball",
+    "release_date": "2010-12-19"
+  },
+  "b1.1.2": {
+    "icon": "item/clay_ball",
+    "release_date": "2010-12-21"
+  },
+  "b1.2-b1.2.2": {
+    "icon": "item/lapis_lazuli",
+    "release_date": "2011-01-12"
+  },
+  "b1.3-b1.3.1": {
+    "icon": "item/cake",
+    "release_date": "2011-02-21"
+  },
+  "b1.4-b1.4.1": {
+    "icon": "item/cookie",
+    "release_date": "2011-03-30"
+  },
+  "b1.5-b1.5.2": {
+    "icon": "item/minecart",
+    "release_date": "2011-04-18"
+  },
+  "b1.6-b1.6.6": {
+    "icon": "item/map",
+    "release_date": "2011-05-25"
+  },
+  "b1.7-b1.7.3": {
+    "icon": "item/shears",
+    "release_date": "2011-06-29"
+  },
+  "b1.8-b1.8.1": {
+    "icon": "item/melon_slice",
+    "release_date": "2011-09-14",
+    "title": "Adventure Update"
+  },
+  "1.0.0-1.0.1": {
+    "icon": "item/ender_pearl",
+    "release_date": "2011-11-17",
+    "title": "Adventure Update"
+  },
+  "1.1": {
+    "icon": "item/golden_apple",
+    "release_date": "2012-01-11"
+  },
+  "1.2.1-1.2.3": {
+    "icon": "item/cocoa_beans",
+    "release_date": "2012-02-29"
+  },
+  "1.2.4-1.2.5": {
+    "icon": "item/fire_charge",
+    "release_date": "2012-03-21"
+  },
+  "1.3.1-1.3.2": {
+    "icon": "item/emerald",
+    "release_date": "2012-07-31"
+  },
+  "1.4.2": {
+    "icon": "item/nether_star",
+    "release_date": "2012-11-24",
+    "title": "Pretty Scary Update"
+  },
+  "1.4.4-1.4.5": {
+    "icon": "item/item_frame",
+    "release_date": "2012-12-13",
+    "title": "Pretty Scary Update"
+  },
+  "1.4.6-1.4.7": {
+    "icon": "item/firework_rocket",
+    "release_date": "2012-12-19",
+    "title": "Pretty Scary Update"
+  },
+  "1.5-1.5.1": {
+    "icon": "item/redstone",
+    "release_date": "2013-03-06",
+    "title": "Redstone Update"
+  },
+  "1.5.2": {
+    "icon": "item/hopper",
+    "release_date": "2013-04-25",
+    "title": "Redstone Update"
+  },
+  "1.6.1": {
+    "icon": "item/saddle",
+    "release_date": "2013-06-28",
+    "title": "Horse Update"
+  },
+  "1.6.2": {
+    "icon": "item/iron_horse_armor",
+    "release_date": "2013-07-05",
+    "title": "Horse Update"
+  },
+  "1.6.4": {
+    "icon": "item/name_tag",
+    "release_date": "2013-09-19",
+    "title": "Horse Update"
+  },
+  "1.7.2-1.7.5": {
+    "icon": "item/salmon",
+    "release_date": "2013-10-25",
+    "title": "The Update that Changed the World"
+  },
+  "1.7.6-1.7.10": {
+    "icon": "item/tropical_fish",
+    "release_date": "2014-04-09",
+    "title": "The Update that Changed the World"
+  },
+  "1.8.x": {
+    "icon": "item/armor_stand",
+    "release_date": "2014-09-02",
+    "title": "Bountiful Update"
+  },
+  "1.9": {
+    "icon": "item/elytra",
+    "release_date": "2016-02-29",
+    "title": "Combat Update"
+  },
+  "1.9.1": {
+    "icon": "item/spectral_arrow",
+    "release_date": "2016-03-30",
+    "title": "Combat Update"
+  },
+  "1.9.2": {
+    "icon": "item/dragon_breath",
+    "release_date": "2016-03-30",
+    "title": "Combat Update"
+  },
+  "1.9.3-1.9.4": {
+    "icon": "item/chorus_fruit",
+    "release_date": "2016-05-10",
+    "title": "Combat Update"
+  },
+  "1.10.x": {
+    "icon": "item/magma_cream",
+    "release_date": "2016-06-08",
+    "title": "Frostburn Update"
+  },
+  "1.11": {
+    "icon": "item/totem_of_undying",
+    "release_date": "2016-11-14",
+    "title": "Exploration Update"
+  },
+  "1.11.1-1.11.2": {
+    "icon": "item/shulker_shell",
+    "release_date": "2016-12-20",
+    "title": "Exploration Update"
+  },
+  "1.12": {
+    "icon": "item/firework_star",
+    "release_date": "2017-06-02",
+    "title": "World of Color Update"
+  },
+  "1.12.1": {
+    "icon": "item/magenta_dye",
+    "release_date": "2017-08-03",
+    "title": "World of Color Update"
+  },
+  "1.12.2": {
+    "icon": "item/light_blue_dye",
+    "release_date": "2017-09-18",
+    "title": "World of Color Update"
+  },
+  "1.13": {
+    "icon": "item/trident",
+    "release_date": "2018-07-18",
+    "title": "Update Aquatic"
+  },
+  "1.13.1": {
+    "icon": "item/nautilus_shell",
+    "release_date": "2018-08-22",
+    "title": "Update Aquatic"
+  },
+  "1.13.2": {
+    "icon": "item/heart_of_the_sea",
+    "release_date": "2018-10-22",
+    "title": "Update Aquatic"
+  },
+  "1.14": {
+    "icon": "item/bell",
+    "release_date": "2019-04-23",
+    "title": "Village & Pillage"
+  },
+  "1.14.1": {
+    "icon": "item/suspicious_stew",
+    "release_date": "2019-05-13",
+    "title": "Village & Pillage"
+  },
+  "1.14.2": {
+    "icon": "item/sweet_berries",
+    "release_date": "2019-05-27",
+    "title": "Village & Pillage"
+  },
+  "1.14.3": {
+    "icon": "item/bamboo",
+    "release_date": "2019-06-24",
+    "title": "Village & Pillage"
+  },
+  "1.14.4": {
+    "icon": "item/lantern",
+    "release_date": "2019-07-19",
+    "title": "Village & Pillage"
+  },
+  "1.15": {
+    "icon": "item/honey_bottle",
+    "release_date": "2019-12-09",
+    "title": "Buzzy Bees"
+  },
+  "1.15.1": {
+    "icon": "item/honeycomb",
+    "release_date": "2019-12-16",
+    "title": "Buzzy Bees"
+  },
+  "1.15.2": {
+    "icon": "item/sugar",
+    "release_date": "2020-01-17",
+    "title": "Buzzy Bees"
+  },
+  "1.16": {
+    "icon": "item/netherite_ingot",
+    "release_date": "2020-06-23",
+    "title": "Nether Update"
+  },
+  "1.16.1": {
+    "icon": "item/netherite_scrap",
+    "release_date": "2020-06-24",
+    "title": "Nether Update"
+  },
+  "1.16.2": {
+    "icon": "item/warped_fungus_on_a_stick",
+    "release_date": "2020-08-11",
+    "title": "Nether Update"
+  },
+  "1.16.3": {
+    "icon": "item/nether_sprouts",
+    "release_date": "2020-09-10",
+    "title": "Nether Update"
+  },
+  "1.16.4-1.16.5": {
+    "icon": "item/soul_lantern",
+    "release_date": "2020-10-29",
+    "title": "Nether Update"
+  },
+  "1.17": {
+    "icon": "item/copper_ingot",
+    "release_date": "2021-06-08",
+    "title": "Caves & Cliffs: Part I"
+  },
+  "1.17.1": {
+    "icon": "item/amethyst_shard",
+    "release_date": "2021-07-06",
+    "title": "Caves & Cliffs: Part I"
+  },
+  "1.18-1.18.1": {
+    "icon": "item/glow_berries",
+    "release_date": "2021-11-30",
+    "title": "Caves & Cliffs: Part II"
+  },
+  "1.18.2": {
+    "icon": "item/pointed_dripstone",
+    "release_date": "2022-02-28",
+    "title": "Caves & Cliffs: Part II"
+  },
+  "1.19": {
+    "icon": "item/mangrove_propagule",
+    "release_date": "2022-06-07",
+    "title": "The Wild Update"
+  },
+  "1.19.1-1.19.2": {
+    "icon": "item/goat_horn",
+    "release_date": "2022-07-27",
+    "title": "The Wild Update"
+  },
+  "1.19.3": {
+    "icon": "item/echo_shard",
+    "release_date": "2022-12-07",
+    "title": "The Wild Update"
+  },
+  "1.19.4": {
+    "icon": "item/tadpole_bucket",
+    "release_date": "2023-03-14",
+    "title": "The Wild Update"
+  },
+  "1.20-1.20.1": {
+    "icon": "item/sniffer_egg",
+    "release_date": "2023-06-02",
+    "title": "Trails & Tales"
+  },
+  "1.20.2": {
+    "icon": "item/torchflower_seeds",
+    "release_date": "2023-09-20",
+    "title": "Trails & Tales"
+  },
+  "1.20.3-1.20.4": {
+    "icon": "item/brush",
+    "release_date": "2023-12-04",
+    "title": "Bats and Pots"
+  },
+  "1.20.5-1.20.6": {
+    "icon": "item/wolf_armor",
+    "release_date": "2024-04-23",
+    "title": "Armored Paws"
+  },
+  "1.21-1.21.1": {
+    "icon": "item/mace",
+    "release_date": "2024-06-13",
+    "title": "Tricky Trials"
+  },
+  "1.21.2-1.21.3": {
+    "icon": "item/bundle",
+    "release_date": "2024-10-22",
+    "title": "Bundles of Bravery"
+  },
+  "1.21.4": {
+    "icon": "item/resin_clump",
+    "release_date": "2024-12-03",
+    "title": "The Garden Awakens"
+  },
+  "1.21.5": {
+    "icon": "item/firefly_bush",
+    "release_date": "2025-03-25",
+    "title": "Spring to Life"
+  },
+  "1.21.6": {
+    "icon": "item/white_harness",
+    "release_date": "2025-06-17",
+    "title": "Chase the Skies"
+  },
+  "1.21.7-1.21.8": {
+    "icon": "item/music_disc_lava_chicken",
+    "release_date": "2025-06-30",
+    "title": "Chase the Skies"
+  },
+  "1.21.9-1.21.10": {
+    "icon": "item/copper_lantern",
+    "release_date": "2025-09-30",
+    "title": "The Copper Age"
+  },
+  "1.21.11": {
+    "icon": "item/copper_horse_armor",
+    "release_date": "2025-12-09",
+    "title": "Mounts of Mayhem"
+  },
+  "26.1-26.1.2": {
+    "icon": "block/golden_dandelion",
+    "release_date": "2026-03-24",
+    "title": "Tiny Takeover"
+  },
+  "26.2": {
+    "icon": "item/sulfur_cube_bucket",
+    "release_date": "2026-06-16",
+    "title": "Chaos Cubed"
+  },
+  "3D Shareware": {
+    "icon": "item/knowledge_book",
+    "release_date": "2019-04-01",
+    "title": "April Fools 2019"
+  },
+  "20w14infinite": {
+    "icon": "item/ender_eye",
+    "release_date": "2020-04-01",
+    "title": "April Fools 2020"
+  },
+  "Combat Test 8c": {
+    "icon": "item/iron_sword",
+    "release_date": "2020-08-26",
+    "title": "Combat Tests"
+  },
+  "25w14craftmine": {
+    "icon": "item/diamond_pickaxe",
+    "release_date": "2025-04-01",
+    "title": "April Fools 2025"
+  }
+}

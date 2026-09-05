@@ -19,9 +19,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.screen.impl.classic4j;
+package com.viaversion.viafabricplus.screen.impl.serverlist;
 
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
+import com.viaversion.viafabricplus.injection.access.core.IEditBox;
 import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import de.florianreuth.classic4j.ClassiCubeHandler;
 import de.florianreuth.classic4j.api.LoginProcessHandler;
@@ -32,46 +34,59 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 
-public final class ClassiCubeMFAScreen extends VFPScreen {
+public final class ClassiCubeLoginScreen extends VFPScreen {
 
-    public static final ClassiCubeMFAScreen INSTANCE = new ClassiCubeMFAScreen();
-
-    public ClassiCubeMFAScreen() {
-        super(Component.translatable("screen.viafabricplus.classicube_mfa"), true);
+    public ClassiCubeLoginScreen() {
+        super(Component.translatable("screen.viafabricplus.classicube_login"), true);
     }
 
-    private EditBox mfaField;
+    private EditBox nameField;
+    private EditBox passwordField;
 
     @Override
     protected void init() {
         super.init();
-        if (this.getSubtitle() == null) {
-            this.setupSubtitle(Component.translatable("classic4j_library.viafabricplus.error.logincode"));
+        this.addRenderableWidget(nameField = new EditBox(font, width / 2 - 150, 70 + 10, 300, 20, Component.empty()));
+        this.addRenderableWidget(passwordField = new EditBox(font, width / 2 - 150, nameField.getY() + 20 + 5, 300, 20, Component.empty()));
+        passwordField.addFormatter((s, integer) -> Component.nullToEmpty("*".repeat(s.length())).getVisualOrderText());
+
+        nameField.setHint(Component.translatable("base.viafabricplus.name"));
+        passwordField.setHint(Component.translatable("base.viafabricplus.password"));
+
+        nameField.setMaxLength(Integer.MAX_VALUE);
+        passwordField.setMaxLength(Integer.MAX_VALUE);
+
+        ((IEditBox) nameField).viaFabricPlus$unlockForbiddenCharacters();
+        ((IEditBox) passwordField).viaFabricPlus$unlockForbiddenCharacters();
+
+        if (ClassiCubeAccount.get() != null) {
+            nameField.setValue(ClassiCubeAccount.get().username());
+            passwordField.setValue(ClassiCubeAccount.get().password());
         }
 
-        this.addRenderableWidget(mfaField = new EditBox(font, width / 2 - 150, 70 + 10, 300, 20, Component.empty()));
+        this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.login"), _ -> {
+            ClassiCubeAccount.set(new CCAccount(nameField.getValue(), passwordField.getValue()));
 
-        mfaField.setHint(Component.nullToEmpty("MFA"));
+            ClassiCubeHandler.requestAuthentication(ClassiCubeAccount.get(), null, new LoginProcessHandler() {
 
-        this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.login"), button -> {
-            this.setupSubtitle(Component.translatable("classicube.viafabricplus.loading"));
-            ClassiCubeHandler.requestAuthentication(ClassiCubeAccount.get(), mfaField.getValue(), new LoginProcessHandler() {
                 @Override
                 public void handleMfa(CCAccount account) {
-                    // Not implemented in this case
+                    showToast(Component.translatable("classic4j_library.viafabricplus.error.logincode"));
+                    ViaFabricPlusImpl.impl().screens().classiCubeMFAScreen().open(prevScreen);
                 }
 
                 @Override
                 public void handleSuccessfulLogin(CCAccount account) {
-                    ClassiCubeServerListScreen.INSTANCE.open(prevScreen);
+                    ViaFabricPlusImpl.impl().screens().classiCubeServerListScreen().open(prevScreen);
                 }
 
                 @Override
                 public void handleException(Throwable throwable) {
-                    setupSubtitle(Component.nullToEmpty(throwable.getMessage()));
+                    ViaFabricPlusImpl.impl().logger().error("Error while logging in to ClassiCube!", throwable);
+                    showToast(Component.nullToEmpty(throwable.getMessage()));
                 }
             });
-        }).pos(width / 2 - 75, mfaField.getY() + (20 * 4) + 5).size(150, 20).build());
+        }).pos(width / 2 - 75, passwordField.getY() + (20 * 4) + 5).size(150, 20).build());
     }
 
     @Override

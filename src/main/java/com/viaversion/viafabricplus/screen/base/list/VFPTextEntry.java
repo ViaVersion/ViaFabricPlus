@@ -19,10 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.screen.impl.settings;
+package com.viaversion.viafabricplus.screen.base.list;
 
-import com.viaversion.viafabricplus.screen.base.VFPListEntry;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -30,34 +28,35 @@ import net.minecraft.network.chat.Component;
 import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.NonNull;
 
-public final class TitleEntry extends VFPListEntry {
+public final class VFPTextEntry extends VFPListEntry {
 
-    private final Component name;
+    private final Component text;
 
-    public TitleEntry(Component name) {
-        this.name = name;
+    public VFPTextEntry(final Component text) {
+        this.text = text;
     }
 
     @Override
     public @NonNull Component getNarration() {
-        return this.name;
+        return this.text;
     }
 
     @Override
     public void extractContent(final @NonNull GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
         final Matrix3x2fStack matrices = context.pose();
 
+        // The text isn't clickable, so it's rendered without the background of a normal entry
         matrices.pushMatrix();
-        matrices.translate(getX(), getY());
-        mappedRender(context, getX(), getY(), getWidth(), getHeight(), mouseX, mouseY, hovered, deltaTicks);
+        matrices.translate(getContentX(), getContentY());
+        mappedRender(context, getContentX(), getContentY(), getContentWidth(), getContentHeight(), mouseX, mouseY, hovered, deltaTicks);
         matrices.popMatrix();
     }
 
     @Override
-    public void mappedRender(GuiGraphicsExtractor context, int x, int y, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        final Font textRenderer = Minecraft.getInstance().font;
+    public void mappedRender(final GuiGraphicsExtractor context, final int x, final int y, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
+        final Font font = Minecraft.getInstance().font;
 
-        context.text(textRenderer, this.name.copy().withStyle(ChatFormatting.BOLD), 3, entryHeight / 2 - textRenderer.lineHeight / 2, -1);
+        context.centeredText(font, this.text, entryWidth / 2, entryHeight / 2 - font.lineHeight / 2, -1);
     }
 
 }

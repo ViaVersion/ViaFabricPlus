@@ -21,23 +21,15 @@
 
 package com.viaversion.viafabricplus.screen.impl;
 
-import com.viaversion.viafabricplus.screen.base.VFPList;
-import com.viaversion.viafabricplus.screen.base.VFPListEntry;
-import com.viaversion.viafabricplus.screen.base.VFPScreen;
+import com.viaversion.viafabricplus.screen.impl.protocol.AbstractProtocolSelectionScreen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.awt.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import org.jspecify.annotations.NonNull;
 
-public final class PerServerVersionScreen extends VFPScreen {
+public final class PerServerVersionScreen extends AbstractProtocolSelectionScreen {
 
     private final Consumer<ProtocolVersion> selectionConsumer;
     private final Supplier<ProtocolVersion> selectionSupplier;
@@ -48,79 +40,28 @@ public final class PerServerVersionScreen extends VFPScreen {
         this.prevScreen = prevScreen;
         this.selectionConsumer = selectionConsumer;
         this.selectionSupplier = selectionSupplier;
-
-        this.setupSubtitle(Component.translatable("force_version.viafabricplus.title"));
     }
 
     @Override
     protected void init() {
         super.init();
 
-        this.addRenderableWidget(new SlotList(this.minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, -5, font.lineHeight + 4));
+        this.addFooter(Button.builder(Component.translatable("base.viafabricplus.reset"), _ -> this.selectionConsumer.accept(null)).build());
     }
 
-    public final class SlotList extends VFPList {
-
-        public SlotList(Minecraft minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height, top, bottom, entryHeight);
-
-            this.addEntry(new ResetSlot());
-            ProtocolVersion.getReversedProtocols().stream().map(ProtocolSlot::new).forEach(this::addEntry);
-        }
+    @Override
+    protected void select(final ProtocolVersion version) {
+        this.selectionConsumer.accept(version);
     }
 
-    public abstract class SharedSlot extends VFPListEntry {
-
-        @Override
-        public void mappedMouseClicked(double mouseX, double mouseY, int button) {
-            onClose();
-        }
+    @Override
+    protected boolean selected(final ProtocolVersion version) {
+        return version.equals(this.selectionSupplier.get());
     }
 
-    public final class ResetSlot extends SharedSlot {
-
-        @Override
-        public Component getNarration() {
-            return Component.translatable("base.viafabricplus.cancel_and_reset");
-        }
-
-        @Override
-        public void mappedMouseClicked(final double mouseX, final double mouseY, final int button) {
-            selectionConsumer.accept(null);
-        }
-
-        @Override
-        public void extractContent(final @NonNull GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
-            final Font textRenderer = Minecraft.getInstance().font;
-            context.centeredText(textRenderer, ((MutableComponent) getNarration()).withStyle(ChatFormatting.GOLD), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, -1);
-        }
-    }
-
-    public final class ProtocolSlot extends SharedSlot {
-
-        private final ProtocolVersion protocolVersion;
-
-        public ProtocolSlot(final ProtocolVersion protocolVersion) {
-            this.protocolVersion = protocolVersion;
-        }
-
-        @Override
-        public Component getNarration() {
-            return Component.nullToEmpty(this.protocolVersion.getName());
-        }
-
-        @Override
-        public void mappedMouseClicked(final double mouseX, final double mouseY, final int button) {
-            selectionConsumer.accept(protocolVersion);
-        }
-
-        @Override
-        public void extractContent(final @NonNull GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
-            final boolean isSelected = protocolVersion.equals(selectionSupplier.get());
-
-            final Font textRenderer = Minecraft.getInstance().font;
-            context.centeredText(textRenderer, this.protocolVersion.getName(), getContentXMiddle(), getContentYMiddle() - textRenderer.lineHeight / 2, isSelected ? Color.GREEN.getRGB() : -1);
-        }
+    @Override
+    protected boolean selectable() {
+        return true;
     }
 
 }

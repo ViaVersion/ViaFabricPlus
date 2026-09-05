@@ -23,10 +23,10 @@ package com.viaversion.viafabricplus.features;
 
 import com.viaversion.viaaprilfools.api.AprilFoolsProtocolVersion;
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.block.shape.CollisionShapes;
 import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
 import com.viaversion.viafabricplus.features.classic.cpe_extension.CPEAdditions;
-import com.viaversion.viafabricplus.features.classic.creative_menu.GridItemSelectionScreen;
 import com.viaversion.viafabricplus.features.entity.attribute.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.features.entity.dimensions.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.font.filter_glyphs.FontCacheReload;
@@ -55,7 +55,7 @@ public final class FeaturesLoading {
             }
 
             if (newVersion.olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) {
-                GridItemSelectionScreen.INSTANCE.itemGrid = null;
+                ViaFabricPlusImpl.impl().screens().gridItemSelectionScreen().itemGrid = null;
             }
 
             FontCacheReload.reload();

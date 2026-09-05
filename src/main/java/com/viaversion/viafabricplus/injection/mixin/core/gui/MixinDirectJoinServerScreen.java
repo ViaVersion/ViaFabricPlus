@@ -44,7 +44,7 @@ public abstract class MixinDirectJoinServerScreen extends Screen {
     private void addProtocolSelectionButton(CallbackInfo ci) {
         final Orientation orientation = ViaFabricPlusImpl.impl().options().directConnectScreenButtonOrientation().value();
         if (orientation != Orientation.NONE) {
-            final Button.Builder builder = Button.builder(Component.nullToEmpty("ViaFabricPlus"), _ -> ViaFabricPlus.api().screens().openProtocolSelectionScreen(this)).size(98, 20);
+            final Button.Builder builder = Button.builder(Component.nullToEmpty("ViaFabricPlus"), _ -> ViaFabricPlus.api().screens().openViaFabricPlusScreen(this)).size(98, 20);
             orientation.getPositioner().setPosition(this.addRenderableWidget(builder.build()), width, height);
         }
     }

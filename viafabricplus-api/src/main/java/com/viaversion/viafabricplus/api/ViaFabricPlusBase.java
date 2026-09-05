@@ -111,7 +111,7 @@ public interface ViaFabricPlusBase {
 
     @Deprecated(forRemoval = true)
     default void openProtocolSelectionScreen(final Screen parent) {
-        ViaFabricPlus.api().screens().openProtocolSelectionScreen(parent);
+        ViaFabricPlus.api().screens().openViaFabricPlusScreen(parent);
     }
 
     @Deprecated(forRemoval = true)

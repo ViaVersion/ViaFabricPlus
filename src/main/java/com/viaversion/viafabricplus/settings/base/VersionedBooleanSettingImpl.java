@@ -49,7 +49,7 @@ public final class VersionedBooleanSettingImpl extends BooleanSettingImpl implem
 
     @Override
     public void write(final JsonObject object) {
-        object.addProperty(this.key(), this.isActive());
+        object.addProperty(this.key(), this.value());
     }
 
     @Override

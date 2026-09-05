@@ -22,7 +22,7 @@
 package com.viaversion.viafabricplus.screen.impl.settings;
 
 import com.viaversion.viafabricplus.api.settings.base.BooleanSetting;
-import com.viaversion.viafabricplus.screen.base.VFPListEntry;
+import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
 import java.awt.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;

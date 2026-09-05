@@ -50,7 +50,7 @@ public abstract class MixinJoinMultiplayerScreen extends Screen {
         if (orientation != Orientation.NONE) {
             if (viaFabricPlus$button == null) {
                 viaFabricPlus$button = Button
-                    .builder(Component.nullToEmpty("ViaFabricPlus"), _ -> ViaFabricPlus.api().screens().openProtocolSelectionScreen(this))
+                    .builder(Component.nullToEmpty("ViaFabricPlus"), _ -> ViaFabricPlus.api().screens().openViaFabricPlusScreen(this))
                     .size(98, 20)
                     .build();
                 this.addRenderableWidget(viaFabricPlus$button);

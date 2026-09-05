@@ -27,61 +27,80 @@ import com.viaversion.viafabricplus.api.settings.base.EnumSetting;
 import com.viaversion.viafabricplus.api.settings.base.Setting;
 import com.viaversion.viafabricplus.api.settings.base.SettingGroup;
 import com.viaversion.viafabricplus.api.settings.base.VersionedBooleanSetting;
-import com.viaversion.viafabricplus.screen.base.VFPList;
-import com.viaversion.viafabricplus.screen.base.VFPScreen;
+import com.viaversion.viafabricplus.screen.base.VFPTabbedScreen;
+import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import com.viaversion.viafabricplus.screen.impl.settings.BooleanListEntry;
 import com.viaversion.viafabricplus.screen.impl.settings.EnumListEntry;
-import com.viaversion.viafabricplus.screen.impl.settings.TitleEntry;
 import com.viaversion.viafabricplus.screen.impl.settings.VersionedBooleanListEntry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.Nullable;
 
-public final class SettingsScreen extends VFPScreen {
+public final class SettingsScreen extends VFPTabbedScreen<SettingGroup> {
 
-    public static final SettingsScreen INSTANCE = new SettingsScreen();
+    private static final int ROW_WIDTH = 360;
+    private static final int LIST_BOTTOM_MARGIN = 5; // The screen has no buttons below the list
 
     public SettingsScreen() {
         super(Component.translatable("screen.viafabricplus.settings"), true);
     }
 
     @Override
-    protected void init() {
-        this.setupDefaultSubtitle();
-        this.addRenderableWidget(new SlotList(this.minecraft, width, height, 3 + 3 /* start offset */ + (font.lineHeight + 2) * 3 /* title is 2 */, -5, (font.lineHeight + 2) * 2));
-
-        super.init();
+    protected List<SettingGroup> tabs() {
+        return ViaFabricPlusImpl.impl().settings().groups();
     }
 
-    public static class SlotList extends VFPList {
-        private static double scrollAmount;
+    @Override
+    protected Component tabTitle(final SettingGroup tab) {
+        return tab.name();
+    }
 
-        public SlotList(Minecraft minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
-            super(minecraftClient, width, height, top, bottom, entryHeight);
+    @Override
+    protected int entryHeight() {
+        return (this.font.lineHeight + 2) * 2;
+    }
 
-            for (final SettingGroup group : ViaFabricPlusImpl.impl().settings().groups()) {
-                this.addEntry(new TitleEntry(group.name()));
+    @Override
+    protected int rowWidth(final int screenWidth) {
+        return Math.min(ROW_WIDTH, screenWidth - 20);
+    }
 
-                for (final Setting setting : group.settings()) {
-                    switch (setting) {
-                        case final VersionedBooleanSetting versionedBooleanSetting -> this.addEntry(new VersionedBooleanListEntry(versionedBooleanSetting));
-                        case final BooleanSetting booleanSetting -> this.addEntry(new BooleanListEntry(booleanSetting));
-                        case final EnumSetting<?> enumSetting -> this.addEntry(new EnumListEntry<>(enumSetting));
-                        default -> ViaFabricPlusImpl.impl().logger().warn("Unknown setting type: {}", setting.getClass().getName());
-                    }
-                }
+    @Override
+    protected int listBottomMargin() {
+        return LIST_BOTTOM_MARGIN;
+    }
+
+    @Override
+    protected List<VFPListEntry> entries(final SettingGroup tab) {
+        return tab.settings().stream()
+            .map(SettingsScreen::entry)
+            .filter(Objects::nonNull)
+            .toList();
+    }
+
+    @Override
+    protected List<VFPListEntry> results(final String query) {
+        return this.tabs().stream()
+            .flatMap(group -> group.settings().stream())
+            .filter(setting -> setting.name().getString().toLowerCase(Locale.ROOT).contains(query))
+            .map(SettingsScreen::entry)
+            .filter(Objects::nonNull)
+            .toList();
+    }
+
+    private static @Nullable VFPListEntry entry(final Setting setting) {
+        return switch (setting) {
+            case final VersionedBooleanSetting versionedBooleanSetting ->
+                new VersionedBooleanListEntry(versionedBooleanSetting);
+            case final BooleanSetting booleanSetting -> new BooleanListEntry(booleanSetting);
+            case final EnumSetting<?> enumSetting -> new EnumListEntry<>(enumSetting);
+            default -> {
+                ViaFabricPlusImpl.impl().logger().warn("Unknown setting type: {}", setting.getClass().getName());
+                yield null;
             }
-            initScrollY(scrollAmount);
-        }
-
-        @Override
-        public int getRowWidth() {
-            return super.getRowWidth() + 140;
-        }
-
-        @Override
-        protected void updateSlotAmount(double amount) {
-            scrollAmount = amount;
-        }
+        };
     }
 
 }

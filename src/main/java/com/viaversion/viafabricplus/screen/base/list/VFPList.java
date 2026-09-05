@@ -19,27 +19,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.screen.base;
+package com.viaversion.viafabricplus.screen.base.list;
 
-import com.viaversion.viafabricplus.screen.impl.PerServerVersionScreen;
-import com.viaversion.viafabricplus.screen.impl.ProtocolSelectionScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import org.jspecify.annotations.NonNull;
 
-/**
- * Wrapper class for {@link ObjectSelectionList} including the following features:
- * <ul>
- *     <li>Changing the constructor arguments to be more readable and customizable</li>
- *     <li>Adds {@link #initScrollY(double)} to save the scroll state after closing the screen, requires static tracking by the implementation</li>
- *     <li>Removes the selection box</li>
- * </ul>
- *
- * @see ProtocolSelectionScreen
- * @see PerServerVersionScreen
- */
 public class VFPList extends ObjectSelectionList<VFPListEntry> {
+
+    private static final int ENTRIES_PER_SCROLL_STEP = 5;
+    private static final int MAX_SCROLL_STEPS = 2;
 
     public VFPList(Minecraft minecraftClient, int width, int height, int top, int bottom, int entryHeight) {
         super(minecraftClient, width, height - top - bottom, top, entryHeight);
@@ -54,6 +44,12 @@ public class VFPList extends ObjectSelectionList<VFPListEntry> {
     public void setScrollAmount(double scrollY) {
         super.setScrollAmount(scrollY);
         updateSlotAmount(scrollAmount()); // Ensure value is clamped
+    }
+
+    @Override
+    protected double scrollRate() {
+        final int steps = Math.min(this.getItemCount() / ENTRIES_PER_SCROLL_STEP, MAX_SCROLL_STEPS);
+        return Math.max(super.scrollRate(), steps * (double) this.defaultEntryHeight);
     }
 
     @Override

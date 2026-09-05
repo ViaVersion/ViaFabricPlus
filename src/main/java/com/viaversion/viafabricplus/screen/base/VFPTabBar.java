@@ -19,17 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.util;
+package com.viaversion.viafabricplus.screen.base;
 
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
-import com.terraformersmc.modmenu.api.ModMenuApi;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.gui.components.TabButton;
+import net.minecraft.client.gui.components.tabs.MenuTabBar;
+import net.minecraft.client.gui.components.tabs.Tab;
+import net.minecraft.client.gui.components.tabs.TabManager;
 
-public final class ModMenuScreenFactory implements ModMenuApi {
+public final class VFPTabBar extends MenuTabBar {
+
+    public VFPTabBar(final int y, final int width, final int height, final TabManager tabManager, final ImmutableList<TabButton> tabButtons, final ImmutableList<Tab> tabs) {
+        super(0, y, width, height, tabManager, tabButtons, tabs);
+    }
 
     @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return screen -> ViaFabricPlusImpl.impl().screens().protocolSelectionScreen().get(screen);
+    public void arrangeElements(final int width) {
+        super.arrangeElements(width);
+        this.layout.setY(this.getY());
     }
 
 }

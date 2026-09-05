@@ -33,7 +33,7 @@ public interface Screens {
      *
      * @param parent The parent screen
      */
-    void openProtocolSelectionScreen(final Screen parent);
+    void openViaFabricPlusScreen(final Screen parent);
 
     /**
      * Open the settings screen.
