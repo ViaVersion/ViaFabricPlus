@@ -33,6 +33,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Minecraft.class)
@@ -42,6 +44,26 @@ public abstract class MixinMinecraft {
     @Nullable
     public LocalPlayer player;
 
+    @Shadow
+    protected int missTime;
+
+    @Redirect(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;missTime:I", ordinal = 1, opcode = Opcodes.GETFIELD))
+    private int moveCooldownIncrement(Minecraft instance) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            return 0;
+        } else {
+            return missTime;
+        }
+    }
+
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;handleKeybinds()V"))
+    private void moveCooldownIncrement(CallbackInfo ci) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            if (this.missTime > 0) {
+                --this.missTime;
+            }
+        }
+    }
 
     @Inject(method = "startAttack", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;hitResult:Lnet/minecraft/world/phys/HitResult;", ordinal = 0, opcode = Opcodes.GETFIELD))
     private void fixSwingPacketOrder(CallbackInfoReturnable<Boolean> cir) {

@@ -21,21 +21,27 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_20_3.network;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.time.Instant;
 import java.util.List;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.CommonListenerCookie;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.commands.arguments.ArgumentSignatures;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.LastSeenMessagesTracker;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundStartConfigurationPacket;
 import net.minecraft.network.protocol.game.ServerboundChatCommandSignedPacket;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -79,6 +85,11 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
         } else {
             instance.send(packet);
         }
+    }
+
+    @WrapWithCondition(method = "handleRespawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;startWaitingForNewLevel(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/gui/screens/LevelLoadingScreen$Reason;)V"))
+    private boolean checkDimensionChange(ClientPacketListener instance, LocalPlayer player, ClientLevel level, LevelLoadingScreen.Reason reason, @Local(name = "dimensionKey") ResourceKey<Level> dimensionKey) {
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_20_3) || dimensionKey != this.minecraft.player.level().dimension();
     }
 
 }
