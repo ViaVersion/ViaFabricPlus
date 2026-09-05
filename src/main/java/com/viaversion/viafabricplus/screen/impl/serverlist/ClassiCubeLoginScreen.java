@@ -25,7 +25,6 @@ import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.classic.ClassiCubeAccount;
 import com.viaversion.viafabricplus.injection.access.core.IEditBox;
 import com.viaversion.viafabricplus.screen.base.VFPScreen;
-import de.florianreuth.classic4j.ClassiCubeHandler;
 import de.florianreuth.classic4j.api.LoginProcessHandler;
 import de.florianreuth.classic4j.model.classicube.account.CCAccount;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -67,7 +66,7 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
         this.addRenderableWidget(Button.builder(Component.translatable("base.viafabricplus.login"), _ -> {
             ClassiCubeAccount.set(new CCAccount(nameField.getValue(), passwordField.getValue()));
 
-            ClassiCubeHandler.requestAuthentication(ClassiCubeAccount.get(), null, new LoginProcessHandler() {
+            ClassiCubeAccount.authenticate(null, new LoginProcessHandler() {
 
                 @Override
                 public void handleMfa(CCAccount account) {

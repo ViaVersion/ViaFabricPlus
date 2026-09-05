@@ -30,6 +30,8 @@ import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
 import com.viaversion.viafabricplus.screen.base.list.VFPTextEntry;
 import com.viaversion.viafabricplus.util.network.ConnectionUtil;
 import de.florianreuth.classic4j.ClassiCubeHandler;
+import de.florianreuth.classic4j.api.LoginProcessHandler;
+import de.florianreuth.classic4j.model.classicube.account.CCAccount;
 import de.florianreuth.classic4j.model.classicube.server.CCServerInfo;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,16 +97,46 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
         }
 
         loading = true;
+        if (ClassiCubeAccount.authenticated()) {
+            this.requestServers();
+            return;
+        }
+
+        // Without a session the API omits the addresses of the servers, so a restored account logs in again first
+        ClassiCubeAccount.authenticate(null, new LoginProcessHandler() {
+
+            @Override
+            public void handleSuccessfulLogin(final CCAccount account) {
+                requestServers();
+            }
+
+            @Override
+            public void handleMfa(final CCAccount account) {
+                loading = false;
+                showToast(Component.translatable("classic4j_library.viafabricplus.error.logincode"));
+                ViaFabricPlusImpl.impl().screens().classiCubeMFAScreen().open(prevScreen);
+            }
+
+            @Override
+            public void handleException(final Throwable throwable) {
+                fail(throwable);
+            }
+        });
+    }
+
+    private void requestServers() {
         ClassiCubeHandler.requestServerList(ClassiCubeAccount.get(), response -> {
             serverList = new ArrayList<>(response.servers());
             loading = false;
             Minecraft.getInstance().execute(this::rebuildWidgets);
-        }, throwable -> {
-            loading = false;
-            ViaFabricPlusImpl.impl().logger().error("Error while loading ClassiCube servers!", throwable);
-            showToast(Component.translatable("base.viafabricplus.something_went_wrong"));
-            Minecraft.getInstance().execute(this::rebuildWidgets); // Replaces the loading text of the list
-        });
+        }, this::fail);
+    }
+
+    private void fail(final Throwable throwable) {
+        loading = false;
+        ViaFabricPlusImpl.impl().logger().error("Error while loading ClassiCube servers!", throwable);
+        showToast(Component.translatable("base.viafabricplus.something_went_wrong"));
+        Minecraft.getInstance().execute(this::rebuildWidgets); // Replaces the loading text of the list
     }
 
     public static class SlotList extends VFPList {
