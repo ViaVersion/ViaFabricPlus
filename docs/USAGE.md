@@ -2,120 +2,95 @@
 
 ## Getting Started
 
-When you open the **Multiplayer** screen, you'll notice a new **ViaFabricPlus button** in the top right corner.
-Clicking it opens the mod's main menu, where you can:
+When you open the **Multiplayer** screen, you'll notice a new **ViaFabricPlus button** in the top right corner. Clicking
+it opens the mod's main menu, where you can pick the protocol version to play on, open the BetaCraft and ClassiCube
+server lists, reach the settings and report issues.
 
-- Adjust general settings
-- Choose which protocol version to use
-
-You can also move this button's position via:
-**Settings → General → Multiplayer screen button orientation**
+You can move this button's position via **Settings → General → Multiplayer screen button orientation**.
 
 ![](preview/multiplayer.png)
 ![](preview/protocol_selection.png)
 
+### Choosing a Version
+
+Versions are split into tabs by era, and the search bar at the top looks through all of them at once – by version name,
+by update name, or by a version included in a range like `1.7.6-1.7.10`.
+
+**Auto** at the top of the **Modern** tab doesn't pick a version itself. Instead, ViaFabricPlus detects the version of
+the server you're joining and translates to that one.
+
+Versions can only be changed while you're **not** connected to a server.
+
 ### Per-Server Version Selection
 
-On the **Add/Edit Server** screen, you'll see a ViaFabricPlus button.
-Here you can pick a specific version just for that server:
+The **Set version** button on the **Add/Edit Server** screen picks a version just for that server. It's used for pinging
+and joining and is saved in `servers.dat`, and **Reset** puts the server back on the globally selected version.
 
-- When you **ping** or **join**, ViaFabricPlus will automatically use the chosen version.
-- Your choice is saved in `servers.dat` (just like normal server info).
-
-If you want to reset, simply press the button again and select **"Cancel and reset"**.
+The **Direct Connect** screen has a button as well, but since there's no server entry to save the choice to, it opens
+the main menu and changes the global version instead.
 
 ![](preview/set_version_for_server.png)
 
----
+## Server Lists
 
-## Commands
-
-ViaFabricPlus supports all normal **ViaVersion commands** under `/viafabricplus` or `/viaversion`.
-Additionally, it adds some **classic-specific commands**:
-
-- **/viafabricplus settime <time>** – Sets the client-side world time (available in **c0.28–c0.30**)
-- **/viafabricplus listextensions** – Lists all Classic Protocol Extensions (**c0.30 CPE**)
-
----
-
-## Settings
-
-For most players, only these tabs matter:
-
-- **General**
-- **Bedrock**
-- **Authentication**
-- **Visual**
-
-⚠️ The **Debug** tab is for developers only – don't touch it unless you know what you're doing.
-
-![](preview/settings_selection.png)
-
-Settings are saved in:
-
-- `settings.json` (general settings)
-- `accounts.json` (Bedrock/ClassiCube login info)
-
----
-
-## Config Files
-
-Advanced users can tweak the protocol translation libraries.
-Configs are stored in the `config` folder and may include:
-
-- `viaversion.yml` – core ViaVersion
-- `viabackwards.yml` – backward compatibility
-- `vialegacy.yml` – legacy versions
-- `viabedrock.yml` – Bedrock support
-- `viaaprilfools.yml` – April Fools versions
-
-On first launch, all files are created with safe default values.
-If you're not sure what a setting does, **don't change it**.
-
----
-
-## Debug HUD
-
-ViaFabricPlus includes a Debug HUD that can be toggled in settings.
-It shows useful connection and protocol info while playing.
-
-![](preview/debug_hud.png)
-
----
-
-## Bedrock Edition Support
-
-ViaFabricPlus also lets you connect to **Bedrock servers** – but keep in mind:
-
-- Support is still **alpha**
-- Many features are incomplete or may not work correctly
-
-To log into a Bedrock account:
-
-- Go to Settings and click **“Click to set account for Bedrock edition”**
-
-### Bedrock Realms
-
-If you have a Bedrock account linked, you'll see your **Bedrock Realms** listed in the **Server Lists** menu (bottom
-left of the main GUI).
-
-![](preview/bedrock_realms.png)
-
----
-
-## ClassiCube & BetaCraft
-
-ViaFabricPlus integrates with **ClassiCube** and **BetaCraft** server lists, accessible from the main GUI via the **Server Lists** button.
+Both lists are reachable from the main menu and are greyed out while you're connected to a server.
 
 ### BetaCraft
+
+The list is split into tabs by era, hiding eras without online servers, and joining an entry automatically uses its game
+version.
+
+Servers marked as **Online Mode** verify your session on join. That needs **Settings → General → BetaCraft
+authentication** to be enabled and a logged-in Minecraft account.
 
 ![](preview/betacraft_servers.png)
 
 ### ClassiCube
 
-To join ClassiCube servers, you'll need a ClassiCube account (sign up at [classicube.net](https://www.classicube.net/)).
+Joining ClassiCube servers needs a ClassiCube account (sign up at [classicube.net](https://www.classicube.net/)). If
+multifactor authentication is enabled on it, ViaFabricPlus asks for the code sent to your email.
 
-- If MultiFactor authentication is required, ViaFabricPlus will open a dedicated login window.
+Your account is saved in `classicube.json`, so you only log in once – the session itself isn't stored, so the mod signs
+in again in the background after a restart. **Logout** removes the saved account.
 
 ![](preview/classicube_servers.png)
 ![](preview/classicube_login.png)
+
+## Settings
+
+Settings are split into **General**, **Visual** and **Advanced**, and the search bar finds a setting across all three.
+Clicking an entry toggles it or cycles through its options, and changes take effect immediately.
+
+Settings tied to a version range show it next to their name. Turning one on only has an effect while your target version
+is inside that range.
+
+⚠️ The **Advanced** tab is for developers – don't touch it unless you know what you're doing.
+
+![](preview/settings_selection.png)
+
+## Commands
+
+ViaFabricPlus supports all normal **ViaVersion commands** under `/viafabricplus` or `/viaversion`. Additionally, it
+adds:
+
+- **/viafabricplus settings** – Opens the settings screen
+- **/viafabricplus settime \<time\>** – Sets the client-side world time (**a1.0.16.2 and older**)
+- **/viafabricplus listextensions** – Lists all Classic Protocol Extensions (**c0.30 CPE**)
+
+## Config Files
+
+All files live in the `config/viafabricplus` folder and are created with safe defaults on first launch.
+
+- `settings.json` – everything from the settings screen, plus the selected protocol version
+- `classicube.json` – your ClassiCube login info, only present while you're logged in
+- `viaversion.yml`, `viabackwards.yml`, `vialegacy.yml`, `viaaprilfools.yml` – the protocol translation libraries. If
+  you're not sure what a setting does, **don't change it**.
+
+Any jar placed in the `jars` folder next to them overrides the bundled Via\* library of the same name.
+
+## Debug HUD
+
+ViaFabricPlus adds its own section to the vanilla **F3 debug screen**, showing the mod version and details about the
+current connection.
+
+![](preview/debug_hud.png)

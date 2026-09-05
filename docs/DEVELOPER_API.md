@@ -3,15 +3,13 @@
 ViaFabricPlus exposes events and utility functions so other mods can integrate with it.
 If you want to include it in your project, keep in mind:
 
-- Requires **Java 17**
+- Requires **Java 25** (see `jvm_version` in `gradle.properties`)
 - Needs a **Fabric Loom** setup (since it's a Minecraft mod, not a standalone API library)
-
----
 
 ## Adding as a Dependency
 
 If you only need the **public API**, include the `viafabricplus-api` artifact.
-If you also want to access **internal features** (including the legacy compatibility layer), use `viafabricplus`.
+If you also want to access **internal features**, use `viafabricplus`.
 
 ### Kotlin (Gradle)
 
@@ -44,81 +42,66 @@ dependencies {
 }
 ```
 
----
-
 ## Using the API
 
-Get the main API instance with:
+Everything is reached through a single entry point:
 
 ```java
-final ViaFabricPlusBase platform = ViaFabricPlus.getImpl();
+final ViaFabricPlusAPI api = ViaFabricPlus.api();
 ```
 
-The `ViaFabricPlusAPI` interface contains all stable API functions that other mods can safely use.
+`ViaFabricPlusAPI` is the only stable API surface other mods should use. Next to the mod's own metadata it hands
+out four sub-APIs:
 
----
+- `protocolTranslation()` – the target version, per-connection versions, ViaVersion's `UserConnection` and a
+  listener for version changes
+- `conversions()` – translating items between Minecraft and ViaVersion, and dummy user connections
+- `limitations()` – whether an item, enchantment, effect or banner pattern exists in a given version
+- `screens()` – opening the mod's own screens
 
-## Event Callbacks
-
-ViaFabricPlus provides two key callbacks:
-
-* **`LoadingCycleEvent`** – Fired at different stages of ViaFabricPlus loading (config, settings, files, etc.)
-* **`ChangeProtocolVersionEvent`** – Fired when the user switches to another protocol version (manually or by joining a server)
-
-### Example: Listening for version changes
+`apiVersion()` is incremented on every meaningful API change, so you can check what you're running against.
 
 ```java
-final ViaFabricPlusBase platform = ViaFabricPlus.getImpl();
-
-platform.registerOnChangeProtocolVersionCallback((oldVersion, newVersion) -> {
+ViaFabricPlus.api().addChangeProtocolVersionListener((oldVersion, newVersion) -> {
     // Called whenever the target protocol version changes
 });
 ```
 
----
+> `ViaFabricPlus.getImpl()` and `ViaFabricPlusBase` are deprecated for removal. Every method on it forwards to its
+> replacement on `ViaFabricPlusAPI`, so migrating is a rename.
 
-## Loading Cycle Callback
+## Entrypoint
 
-Since your mod may load **after** ViaFabricPlus, you need to register callbacks inside a `BootstrapEntrypoint` declared in your `fabric.mod.json` as `viafabricplus`.
-This entrypoint also represents the `INITIAL_LOAD` stage.
+Since your mod may load **after** ViaFabricPlus, hook into the loading cycle with a `ViaFabricPlusEntrypoint`
+declared in your `fabric.mod.json` under the `viafabricplus` key:
 
-```java
-public class Example implements ViaFabricPlusLoadEntrypoint {
-
-    @Override
-    public void onPlatformLoad(ViaFabricPlusBase platform) {
-        platform.registerLoadingCycleCallback(stage -> {
-            if (stage == LoadingCycleCallback.LoadingCycle.PRE_SETTINGS_LOAD) {
-                // Before settings are loaded
-            } else if (stage == LoadingCycleCallback.LoadingCycle.POST_SETTINGS_LOAD) {
-                // After settings are loaded
-            } else if (stage == LoadingCycleCallback.LoadingCycle.PRE_FILES_LOAD) {
-                // Before files are loaded
-            } else if (stage == LoadingCycleCallback.LoadingCycle.POST_FILES_LOAD) {
-                // After files are loaded
-            } else if (stage == LoadingCycleCallback.LoadingCycle.PRE_VIAVERSION_LOAD) {
-                // Before ViaVersion initializes
-            } else if (stage == LoadingCycleCallback.LoadingCycle.POST_VIAVERSION_LOAD) {
-                // After ViaVersion initializes
-            } else if (stage == LoadingCycleCallback.LoadingCycle.FINAL_LOAD) {
-                // After everything is fully loaded
-            } else if (stage == LoadingCycleCallback.LoadingCycle.POST_GAME_LOAD) {
-                // After the game finishes loading
-            }
-        });
-    }
+```json
+{
+  "entrypoints": {
+    "viafabricplus": [
+      "com.example.ExampleEntrypoint"
+    ]
+  }
 }
 ```
 
----
+All of its methods are optional: `onPreLoading`, `onPostSettingsLoading`, `onPostProtocolTranslationLoading`,
+`onPostRegistryLoading` and `onPostGameLoading`.
 
-## Extended API
+## Custom Settings
 
-For version-specific tasks, ViaFabricPlus provides a range of helper methods.
-Since it relies on [ViaVersion](https://github.com/ViaVersion/ViaVersion), you can also use the ViaVersion API directly.
-
-### Example: Get current protocol version
+`api.settings()` gives access to the mod's own groups and lets you register your own, which then show up as their
+own tab in the settings screen:
 
 ```java
-final ProtocolVersion version = ViaFabricPlus.getImpl().getTargetVersion();
+final SettingGroup group = ViaFabricPlus.api().settings().register("example_settings.example");
+
+final BooleanSetting enabled = group.registerBoolean("enabled", true);
+final VersionedBooleanSetting legacyOnly = group.registerVersionedBoolean("legacy_only", andOlder(v1_12_2), false);
 ```
+
+The group and its settings are named by translation keys, so the example above needs `example_settings.example`
+and `example_settings.example.enabled` in your language files.
+
+A `VersionedBooleanSetting` displays its version range in the screen, and its `isActive()` only returns `true`
+while the target version is inside that range.
