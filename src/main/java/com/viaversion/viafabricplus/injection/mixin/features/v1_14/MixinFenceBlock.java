@@ -25,31 +25,16 @@ import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import com.viaversion.viafabricplus.injection.access.block.shape.ICrossCollisionBlock;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FenceBlock.class)
-public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICrossCollisionBlock {
-
-    protected MixinFenceBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Properties settings) {
-        super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
-    }
+public abstract class MixinFenceBlock implements ICrossCollisionBlock {
 
     @Inject(method = "connectsTo", at = @At("RETURN"), cancellable = true)
     private void canConnect1_14(BlockState state, boolean faceSolid, Direction direction, CallbackInfoReturnable<Boolean> cir) {
@@ -59,4 +44,5 @@ public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICr
             }
         }
     }
+
 }

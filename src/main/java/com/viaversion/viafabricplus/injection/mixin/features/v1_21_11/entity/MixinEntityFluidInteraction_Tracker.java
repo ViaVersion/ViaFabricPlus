@@ -19,41 +19,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_21_11;
+package com.viaversion.viafabricplus.injection.mixin.features.v1_21_11.entity;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import org.jspecify.annotations.Nullable;
+import net.minecraft.world.entity.EntityFluidInteraction;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(Entity.class)
-public abstract class MixinEntity {
+@Mixin(EntityFluidInteraction.Tracker.class)
+public abstract class MixinEntityFluidInteraction_Tracker {
 
-    @Shadow
-    private Level level;
-
-    @Shadow
-    public abstract AABB getBoundingBox();
-
-    @Shadow
-    protected abstract @Nullable AABB modifyPassengerFluidInteractionBox(final AABB passengerBox);
-
-    @Redirect(method = "getFluidInteractionBox", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;modifyPassengerFluidInteractionBox(Lnet/minecraft/world/phys/AABB;)Lnet/minecraft/world/phys/AABB;"))
-    private AABB skipPassengerChanges(Entity instance, AABB passengerBox) {
+    @Redirect(method = "applyCurrentTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;lengthSqr()D"))
+    private double useLengthInstead(Vec3 instance) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
-            return passengerBox;
+            return instance.length();
         } else {
-            return modifyPassengerFluidInteractionBox(passengerBox);
+            return instance.lengthSqr();
         }
     }
+
+    @ModifyConstant(method = "applyCurrentTo", constant = @Constant(doubleValue = (double) 1.0E-5F))
+    private double changeThreshold(double constant) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_11)) {
+            return 0;
+        } else {
+            return constant;
+        }
+    }
+
 }

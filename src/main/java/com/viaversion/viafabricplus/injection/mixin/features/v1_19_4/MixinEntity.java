@@ -21,17 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_19_4;
 
-import com.google.common.collect.ImmutableList;
-import com.llamalad7.mixinextras.expression.Definition;
-import com.llamalad7.mixinextras.expression.Expression;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.util.List;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -40,14 +32,10 @@ import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
@@ -63,19 +51,7 @@ public abstract class MixinEntity {
     public abstract AABB getBoundingBox();
 
     @Shadow
-    public abstract boolean onGround();
-
-    @Shadow
-    public abstract float maxUpStep();
-
-    @Shadow
     public abstract Level level();
-
-    @Shadow
-    public abstract Vec3 getDeltaMovement();
-
-    @Shadow
-    public boolean verticalCollision;
 
     @Inject(method = "getOnPos(F)Lnet/minecraft/core/BlockPos;", at = @At("HEAD"), cancellable = true)
     private void modifyPosWithYOffset(float offset, CallbackInfoReturnable<BlockPos> cir) {
@@ -105,4 +81,5 @@ public abstract class MixinEntity {
             cir.setReturnValue(BlockPos.containing(position.x, getBoundingBox().minY - (target.olderThanOrEqualTo(ProtocolVersion.v1_14_4) ? 1 : 0.5000001), position.z));
         }
     }
+
 }

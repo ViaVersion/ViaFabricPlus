@@ -28,15 +28,11 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityFluidInteraction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(EntityFluidInteraction.class)
 public abstract class MixinEntityFluidInteraction {
@@ -52,4 +48,5 @@ public abstract class MixinEntityFluidInteraction {
             return original;
         }
     }
+
 }

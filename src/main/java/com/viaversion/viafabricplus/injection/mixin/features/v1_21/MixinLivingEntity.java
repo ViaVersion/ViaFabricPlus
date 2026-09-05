@@ -24,23 +24,12 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_21;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.LivingEntity;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
-
-    @Shadow
-    protected boolean jumping;
-
-    @Shadow
-    private int noJumpDelay;
 
     @Redirect(method = "jumpFromGround", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
     private double dontLimitJumpVelocity(double a, double b) {
@@ -50,4 +39,5 @@ public abstract class MixinLivingEntity {
             return Math.max(a, b);
         }
     }
+
 }

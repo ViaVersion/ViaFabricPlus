@@ -32,11 +32,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DecoratedPotBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(DecoratedPotBlock.class)
@@ -48,4 +46,5 @@ public abstract class MixinDecoratedPotBlock {
             cir.setReturnValue(InteractionResult.PASS);
         }
     }
+
 }

@@ -75,5 +75,4 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
         return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_21);
     }
 
-
 }

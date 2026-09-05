@@ -47,4 +47,5 @@ public abstract class MixinClientLevel {
             this.blockStatePredictionHandler = new PendingUpdateManager1_18_2();
         }
     }
+
 }

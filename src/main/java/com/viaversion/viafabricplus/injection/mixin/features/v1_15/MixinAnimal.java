@@ -23,10 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_15;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.Level;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -38,4 +36,5 @@ public abstract class MixinAnimal {
     private boolean changeIsClientCondition(Level instance) {
         return instance.isClientSide() && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15);
     }
+
 }

@@ -28,12 +28,9 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.InfestedBlock;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -44,10 +41,6 @@ public abstract class MixinBlockBehaviour_BlockStateBase {
 
     @Shadow
     public abstract Block getBlock();
-
-    @Shadow
-    @Final
-    private boolean requiresCorrectToolForDrops;
 
     @Inject(method = "getDestroySpeed", at = @At("RETURN"), cancellable = true)
     private void changeHardness(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> cir) {
@@ -73,4 +66,5 @@ public abstract class MixinBlockBehaviour_BlockStateBase {
             }
         }
     }
+
 }

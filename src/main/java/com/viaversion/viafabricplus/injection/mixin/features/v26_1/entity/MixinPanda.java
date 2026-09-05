@@ -26,11 +26,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.entity.EntityAttachments;
 import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.panda.Panda;
-import net.minecraft.world.level.Level;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Panda.class)
-public abstract class MixinPanda extends Animal {
+public abstract class MixinPanda {
 
     @Shadow
     @Final
@@ -51,10 +48,6 @@ public abstract class MixinPanda extends Animal {
         .getDimensions()
         .scale(0.5F)
         .withAttachments(EntityAttachments.builder().attach(EntityAttachment.PASSENGER, 0.0F, 0.40625F, 0.0F));
-
-    public MixinPanda(final EntityType<? extends Animal> type, final Level level) {
-        super(type, level);
-    }
 
     @Redirect(method = "getDefaultDimensions", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/animal/panda/Panda;BABY_DIMENSIONS:Lnet/minecraft/world/entity/EntityDimensions;", opcode = Opcodes.GETSTATIC))
     private EntityDimensions changeBabyDimensions() {

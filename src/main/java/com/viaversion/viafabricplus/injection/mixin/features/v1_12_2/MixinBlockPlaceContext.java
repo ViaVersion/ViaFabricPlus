@@ -78,4 +78,5 @@ public abstract class MixinBlockPlaceContext extends UseOnContext {
             cir.setReturnValue(ViaFabricPlusMappingDataLoader.getBlockMaterial(this.getLevel().getBlockState(this.getClickedPos()).getBlock()).equals("decoration") && Block.byItem(this.getItemInHand().getItem()).equals(Blocks.ANVIL));
         }
     }
+
 }

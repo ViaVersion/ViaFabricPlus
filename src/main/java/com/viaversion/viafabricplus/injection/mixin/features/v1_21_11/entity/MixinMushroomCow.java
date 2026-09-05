@@ -23,20 +23,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_21_11.entity;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.cow.MushroomCow;
-import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(MushroomCow.class)
-public abstract class MixinMushroomCow extends Animal {
-
-    protected MixinMushroomCow(EntityType<? extends Animal> entityType, Level world) {
-        super(entityType, world);
-    }
+public abstract class MixinMushroomCow {
 
     @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/cow/MushroomCow;isBaby()Z", ordinal = 0))
     private boolean allowBabyVariant(MushroomCow instance) {

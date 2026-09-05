@@ -76,4 +76,5 @@ public abstract class MixinConnectScreen_1 {
             }
         }
     }
+
 }

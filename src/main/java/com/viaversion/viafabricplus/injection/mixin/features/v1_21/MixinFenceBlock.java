@@ -54,4 +54,5 @@ public abstract class MixinFenceBlock extends CrossCollisionBlock {
             return super.useItemOn(stack, state, world, pos, player, hand, hit);
         }
     }
+
 }

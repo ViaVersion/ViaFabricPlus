@@ -37,6 +37,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin({BaseTorchBlock.class, LadderBlock.class, TripWireHookBlock.class})
+
 public abstract class MixinCanPlaceAt1_14 {
 
     @Inject(method = "canSurvive", at = @At(value = "RETURN"), cancellable = true)
@@ -49,5 +50,8 @@ public abstract class MixinCanPlaceAt1_14 {
             }
         }
     }
+
+
+
 
 }

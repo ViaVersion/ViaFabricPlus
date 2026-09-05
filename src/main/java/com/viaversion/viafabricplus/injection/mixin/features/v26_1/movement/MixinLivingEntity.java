@@ -24,10 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.v26_1.movement;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -35,11 +32,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(LivingEntity.class)
-public abstract class MixinLivingEntity extends Entity {
-
-    public MixinLivingEntity(EntityType<?> type, Level world) {
-        super(type, world);
-    }
+public abstract class MixinLivingEntity {
 
     @ModifyConstant(method = "getFrictionInfluencedSpeed", constant = @Constant(doubleValue = 0.6))
     private double allowFrictionLessThan(double constant) {

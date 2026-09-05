@@ -26,7 +26,6 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import java.util.Map;
 import java.util.UUID;
-import net.minecraft.world.level.entity.EntityAccess;
 import net.minecraft.world.level.entity.EntityLookup;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityLookup.class)
-public abstract class MixinEntityLookup<T extends EntityAccess> {
+public abstract class MixinEntityLookup<T> {
 
     @Shadow
     @Final

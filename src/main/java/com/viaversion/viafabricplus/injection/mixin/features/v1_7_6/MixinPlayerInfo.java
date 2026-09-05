@@ -37,4 +37,5 @@ public abstract class MixinPlayerInfo implements IPlayerInfo {
     public int viaFabricPlus$getIndex() {
         return viaFabricPlus$index;
     }
+
 }

@@ -35,4 +35,5 @@ public abstract class MixinVillager {
     private boolean dontChangeScale(Villager instance) {
         return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21_11) && instance.isBaby();
     }
+
 }

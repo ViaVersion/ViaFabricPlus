@@ -21,56 +21,26 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_19_3;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.net.URL;
-import java.nio.file.Path;
 import java.time.Duration;
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
-import net.minecraft.network.Connection;
-import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.ServerboundPacketListener;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.common.ClientboundPingPacket;
-import net.minecraft.network.protocol.common.ClientboundResourcePackPushPacket;
-import net.minecraft.network.protocol.common.ServerboundResourcePackPacket;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientCommonPacketListenerImpl.class)
 public abstract class MixinClientCommonPacketListenerImpl {
-
-    @Shadow
-    @Final
-    protected Minecraft minecraft;
 
     @Shadow
     protected abstract void sendWhen(Packet<? extends ServerboundPacketListener> packet, BooleanSupplier sendCondition, Duration expiry);
 
     @Shadow
     public abstract void send(Packet<?> packet);
-
-    @Shadow
-    @Final
-    protected Connection connection;
-
-    @Shadow
-    @Nullable
-    private static URL parseResourcePackUrl(String urlString) {
-        return null;
-    }
 
     @Redirect(method = "handleKeepAlive", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientCommonPacketListenerImpl;sendWhen(Lnet/minecraft/network/protocol/Packet;Ljava/util/function/BooleanSupplier;Ljava/time/Duration;)V"))
     private void forceSendKeepAlive(ClientCommonPacketListenerImpl instance, Packet<? extends ServerboundPacketListener> packet, BooleanSupplier condition, Duration expireAfterDuration) {
@@ -80,4 +50,5 @@ public abstract class MixinClientCommonPacketListenerImpl {
             sendWhen(packet, condition, expireAfterDuration);
         }
     }
+
 }

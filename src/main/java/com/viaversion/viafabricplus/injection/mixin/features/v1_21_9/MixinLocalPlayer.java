@@ -81,9 +81,6 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     protected abstract boolean vehicleCanSprint(final Entity vehicle);
 
     @Shadow
-    public abstract void applyInput();
-
-    @Shadow
     protected abstract boolean canStartSprinting();
 
     @Shadow
@@ -264,7 +261,6 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
             this.viaFabricPlus$sendSneakingPacket();
         }
     }
-
 
     @Unique
     private boolean viaFabricPlus$shouldCancelSprinting() {

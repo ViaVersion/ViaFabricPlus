@@ -21,12 +21,9 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_14_4.movement;
 
-import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.phys.Vec2;
@@ -39,14 +36,10 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LocalPlayer.class)
-public abstract class MixinLocalPlayer extends AbstractClientPlayer {
+public abstract class MixinLocalPlayer {
 
     @Shadow
     public ClientInput input;
-
-    public MixinLocalPlayer(ClientLevel world, GameProfile profile) {
-        super(world, profile);
-    }
 
     @Redirect(method = "modifyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isMovingSlowly()Z"))
     private boolean changeSneakSlowdownCondition(LocalPlayer instance) {

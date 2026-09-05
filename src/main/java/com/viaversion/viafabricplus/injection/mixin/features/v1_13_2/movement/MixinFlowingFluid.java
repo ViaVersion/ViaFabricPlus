@@ -60,4 +60,5 @@ public abstract class MixinFlowingFluid {
         }
         return instance.isFaceSturdy(blockView, blockPos, direction);
     }
+
 }

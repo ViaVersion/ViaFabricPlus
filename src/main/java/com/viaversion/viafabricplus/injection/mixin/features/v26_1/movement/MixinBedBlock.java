@@ -44,4 +44,5 @@ public abstract class MixinBedBlock extends HorizontalDirectionalBlock {
             return super.getBounceRestitution();
         }
     }
+
 }

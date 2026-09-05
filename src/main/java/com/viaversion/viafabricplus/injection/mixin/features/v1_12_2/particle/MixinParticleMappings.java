@@ -52,4 +52,5 @@ public abstract class MixinParticleMappings extends FullMappingsBase {
             return super.mappedIdentifier(mappedId);
         }
     }
+
 }

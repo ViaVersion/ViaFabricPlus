@@ -44,6 +44,7 @@ public abstract class MixinBedBlock extends HorizontalDirectionalBlock {
 
     @Unique
     private static final VoxelShape viaFabricPlus$shape_r1_13_2 = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
+
     @Unique
     private boolean viaFabricPlus$requireOriginalShape;
 

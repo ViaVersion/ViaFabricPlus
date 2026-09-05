@@ -46,4 +46,5 @@ public abstract class MixinEntityPacketRewriter1_20_5 {
             this.writeAttribute(wrapper, attributeId, base, modifierId, amount);
         }
     }
+
 }

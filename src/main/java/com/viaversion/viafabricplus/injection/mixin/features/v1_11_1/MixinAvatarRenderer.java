@@ -25,16 +25,10 @@ import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
-import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.phys.Vec3;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AvatarRenderer.class)
 public abstract class MixinAvatarRenderer {
@@ -44,4 +38,5 @@ public abstract class MixinAvatarRenderer {
     private boolean disableSneakPositionOffset(AvatarRenderState instance) {
         return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_11_1) && instance.isCrouching;
     }
+
 }

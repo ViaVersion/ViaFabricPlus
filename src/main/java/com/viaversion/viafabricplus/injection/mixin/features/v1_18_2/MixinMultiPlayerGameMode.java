@@ -51,6 +51,7 @@ public abstract class MixinMultiPlayerGameMode implements IMultiPlayerGameMode {
     @Shadow
     @Final
     private ClientPacketListener connection;
+
     @Unique
     private final ClientPlayerInteractionManager1_18_2 viaFabricPlus$1_18_2InteractionManager = new ClientPlayerInteractionManager1_18_2();
 

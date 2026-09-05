@@ -21,54 +21,24 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_21_5;
 
-import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.type.Types;
 import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.packet.ServerboundPackets1_21_5;
 import com.viaversion.viaversion.protocols.v1_21_5to1_21_6.Protocol1_21_5To1_21_6;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ServerboundPlayerInputPacket;
 import net.minecraft.world.entity.player.Input;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(LocalPlayer.class)
-public abstract class MixinLocalPlayer extends AbstractClientPlayer {
-
-    @Shadow
-    public ClientInput input;
-
-    @Shadow
-    @Final
-    protected Minecraft minecraft;
-
-    @Shadow
-    public abstract void applyInput();
-
-    @Shadow
-    public abstract boolean isShiftKeyDown();
-
-    @Shadow
-    public abstract boolean isUnderWater();
-
-    @Shadow
-    public abstract boolean isUsingItem();
-
-    public MixinLocalPlayer(ClientLevel world, GameProfile profile) {
-        super(world, profile);
-    }
+public abstract class MixinLocalPlayer {
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V", ordinal = 0))
     private void skipVVProtocol(ClientPacketListener instance, Packet<?> packet) {

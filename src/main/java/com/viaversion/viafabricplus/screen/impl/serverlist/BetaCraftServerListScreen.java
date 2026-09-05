@@ -23,8 +23,8 @@ package com.viaversion.viafabricplus.screen.impl.serverlist;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
 import com.viaversion.viafabricplus.screen.base.VFPTabbedScreen;
+import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
 import com.viaversion.viafabricplus.screen.base.list.VFPTextEntry;
 import com.viaversion.viafabricplus.util.network.ConnectionUtil;
 import de.florianreuth.classic4j.BetaCraftHandler;

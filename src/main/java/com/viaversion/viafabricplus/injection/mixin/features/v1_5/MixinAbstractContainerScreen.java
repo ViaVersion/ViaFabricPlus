@@ -21,30 +21,19 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_5;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.inventory.ContainerInput;
-import net.minecraft.world.inventory.Slot;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
-import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractContainerScreen.class)
 public abstract class MixinAbstractContainerScreen extends Screen {
-
-    @Shadow
-    public abstract boolean mouseClicked(final @NonNull MouseButtonEvent event, final boolean doubleClick);
 
     protected MixinAbstractContainerScreen(final Component component) {
         super(component);
@@ -57,4 +46,5 @@ public abstract class MixinAbstractContainerScreen extends Screen {
             cir.setReturnValue(super.mouseDragged(event, dx, dy));
         }
     }
+
 }

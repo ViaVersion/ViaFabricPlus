@@ -24,28 +24,15 @@ package com.viaversion.viafabricplus.injection.mixin.features.v26_1.entity;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.camel.Camel;
-import net.minecraft.world.entity.animal.equine.AbstractHorse;
-import net.minecraft.world.level.Level;
-import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Camel.class)
-public abstract class MixinCamel extends AbstractHorse {
-
-    public MixinCamel(EntityType<? extends AbstractHorse> entityType, Level world) {
-        super(entityType, world);
-    }
+public abstract class MixinCamel {
 
     @ModifyConstant(method = "getBodyAnchorAnimationYOffset", constant = @Constant(doubleValue = 0.375))
     private double scaleSitOffset(double constant, @Local(ordinal = 1, argsOnly = true) float scale) {
@@ -65,4 +52,5 @@ public abstract class MixinCamel extends AbstractHorse {
     private boolean dontChangeScale(Camel instance) {
         return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v26_1) && instance.isBaby();
     }
+
 }

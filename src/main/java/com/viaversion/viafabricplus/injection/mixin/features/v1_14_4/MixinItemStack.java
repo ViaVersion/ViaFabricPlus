@@ -21,12 +21,10 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_14_4;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.features.item.r1_14_4_enchantment_tooltip.Enchantments1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.util.ItemUtil;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import com.viaversion.viaversion.protocols.v1_21_4to1_21_5.Protocol1_21_4To1_21_5;
 import java.util.Optional;
 import java.util.function.Consumer;
 import net.minecraft.core.Holder;
@@ -47,7 +45,6 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -55,9 +52,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack {
-
-    @Shadow
-    public abstract Item getItem();
 
     @Unique
     private void viaFabricPlus$appendEnchantments1_14_4(final String name, final CompoundTag nbt, Item.TooltipContext context, final Consumer<Component> tooltip) {
@@ -100,4 +94,5 @@ public abstract class MixinItemStack {
             ci.cancel();
         }
     }
+
 }

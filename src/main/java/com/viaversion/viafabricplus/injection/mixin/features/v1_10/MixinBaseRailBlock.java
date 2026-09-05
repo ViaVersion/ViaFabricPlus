@@ -67,4 +67,5 @@ public abstract class MixinBaseRailBlock extends Block {
             return SHAPE_SLOPE;
         }
     }
+
 }

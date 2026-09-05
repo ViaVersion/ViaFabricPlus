@@ -26,11 +26,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.entity.EntityAttachments;
 import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.animal.equine.AbstractHorse;
 import net.minecraft.world.entity.animal.equine.SkeletonHorse;
-import net.minecraft.world.level.Level;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(SkeletonHorse.class)
-public abstract class MixinSkeletonHorse extends AbstractHorse {
+public abstract class MixinSkeletonHorse {
 
     @Shadow
     @Final
@@ -51,10 +48,6 @@ public abstract class MixinSkeletonHorse extends AbstractHorse {
         .getDimensions()
         .withAttachments(EntityAttachments.builder().attach(EntityAttachment.PASSENGER, 0.0F, EntityTypes.SKELETON_HORSE.getHeight() - 0.03125F, 0.0F))
         .scale(0.5F);
-
-    public MixinSkeletonHorse(final EntityType<? extends AbstractHorse> type, final Level level) {
-        super(type, level);
-    }
 
     @Redirect(method = "getDefaultDimensions", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/animal/equine/SkeletonHorse;BABY_DIMENSIONS:Lnet/minecraft/world/entity/EntityDimensions;", opcode = Opcodes.GETSTATIC))
     private EntityDimensions changeBabyDimensions() {

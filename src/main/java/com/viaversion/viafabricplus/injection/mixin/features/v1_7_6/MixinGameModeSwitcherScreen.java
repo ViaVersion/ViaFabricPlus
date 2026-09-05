@@ -26,9 +26,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.debug.GameModeSwitcherScreen;
-import net.minecraft.network.chat.Component;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
@@ -42,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameModeSwitcherScreen.class)
-public abstract class MixinGameModeSwitcherScreen extends Screen {
+public abstract class MixinGameModeSwitcherScreen {
 
     @Mutable
     @Shadow
@@ -51,10 +49,6 @@ public abstract class MixinGameModeSwitcherScreen extends Screen {
 
     @Unique
     private GameModeSwitcherScreen.GameModeIcon[] viaFabricPlus$unwrappedGameModes;
-
-    public MixinGameModeSwitcherScreen(Component title) {
-        super(title);
-    }
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void fixUIWidth(CallbackInfo ci) {

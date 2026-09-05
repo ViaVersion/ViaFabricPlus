@@ -25,7 +25,6 @@ import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EndPortalBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,11 +37,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EndPortalBlock.class)
-public abstract class MixinEndPortalBlock extends BaseEntityBlock {
-
-    protected MixinEndPortalBlock(Properties settings) {
-        super(settings);
-    }
+public abstract class MixinEndPortalBlock {
 
     @Unique
     private static final VoxelShape viaFabricPlus$shape_r1_8_x = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
@@ -58,4 +53,5 @@ public abstract class MixinEndPortalBlock extends BaseEntityBlock {
             cir.setReturnValue(viaFabricPlus$shape_r1_16_5);
         }
     }
+
 }

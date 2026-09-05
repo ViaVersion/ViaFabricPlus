@@ -55,4 +55,5 @@ public abstract class MixinZombieVillager {
             return BABY_DIMENSIONS;
         }
     }
+
 }

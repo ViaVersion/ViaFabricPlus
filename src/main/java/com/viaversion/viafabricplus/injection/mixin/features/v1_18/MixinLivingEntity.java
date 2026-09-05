@@ -23,23 +23,14 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_18;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(LivingEntity.class)
-public abstract class MixinLivingEntity extends Entity {
-
-    public MixinLivingEntity(EntityType<?> type, Level world) {
-        super(type, world);
-    }
+public abstract class MixinLivingEntity {
 
     @Redirect(method = "updateFallFlyingMovement", at = @At(value = "INVOKE", target = "Ljava/lang/Math;cos(D)D", remap = false))
     private double fixCosTable(double a) {
@@ -49,4 +40,5 @@ public abstract class MixinLivingEntity extends Entity {
             return Math.cos(a);
         }
     }
+
 }

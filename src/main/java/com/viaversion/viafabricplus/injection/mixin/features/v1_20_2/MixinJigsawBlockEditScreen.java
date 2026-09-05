@@ -24,9 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_20_2;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.JigsawBlockEditScreen;
-import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,17 +32,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(JigsawBlockEditScreen.class)
-public abstract class MixinJigsawBlockEditScreen extends Screen {
+public abstract class MixinJigsawBlockEditScreen {
 
     @Shadow
     private EditBox selectionPriorityEdit;
 
     @Shadow
     private EditBox placementPriorityEdit;
-
-    protected MixinJigsawBlockEditScreen(final Component title) {
-        super(title);
-    }
 
     @Inject(method = "init", at = @At("RETURN"))
     private void disableWidgets(CallbackInfo ci) {

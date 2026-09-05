@@ -22,21 +22,14 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_15_1;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(LocalPlayer.class)
-public abstract class MixinLocalPlayer extends AbstractClientPlayer {
-
-    public MixinLocalPlayer(ClientLevel world, GameProfile profile) {
-        super(world, profile);
-    }
+public abstract class MixinLocalPlayer {
 
     @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;onClimbable()Z"))
     private boolean allowElytraWhenClimbing(boolean original) {

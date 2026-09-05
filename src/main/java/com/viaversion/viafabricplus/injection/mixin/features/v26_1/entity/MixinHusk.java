@@ -55,4 +55,5 @@ public abstract class MixinHusk {
             return BABY_DIMENSIONS;
         }
     }
+
 }

@@ -26,11 +26,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.EntityAttachment;
 import net.minecraft.world.entity.EntityAttachments;
 import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.zombie.ZombifiedPiglin;
-import net.minecraft.world.level.Level;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ZombifiedPiglin.class)
-public abstract class MixinZombifiedPiglin extends Monster {
+public abstract class MixinZombifiedPiglin {
 
     @Shadow
     @Final
@@ -53,10 +50,6 @@ public abstract class MixinZombifiedPiglin extends Monster {
 
     @Unique
     private static final EntityDimensions viaFabricPlus$baby_dimensions_r1_21_11 = EntityTypes.ZOMBIFIED_PIGLIN.getDimensions().scale(0.5F).withEyeHeight(0.97F);
-
-    public MixinZombifiedPiglin(final EntityType<? extends Monster> type, final Level level) {
-        super(type, level);
-    }
 
     @Redirect(method = "getDefaultDimensions", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/monster/zombie/ZombifiedPiglin;BABY_DIMENSIONS:Lnet/minecraft/world/entity/EntityDimensions;", opcode = Opcodes.GETSTATIC))
     private EntityDimensions changeBabyDimensions() {

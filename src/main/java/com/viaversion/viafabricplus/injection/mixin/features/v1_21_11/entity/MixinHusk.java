@@ -23,27 +23,17 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_21_11.entity;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.entity.EntityAttachment;
-import net.minecraft.world.entity.EntityAttachments;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.monster.zombie.Husk;
-import org.objectweb.asm.Opcodes;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Husk.class)
 public abstract class MixinHusk {
 
-    @Shadow
-    @Final
-    private static EntityDimensions BABY_DIMENSIONS;
-
     @Redirect(method = "getDefaultDimensions", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/monster/zombie/Husk;isBaby()Z"))
     private boolean dontChangeScale(Husk instance) {
         return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21_11) && instance.isBaby();
     }
+
 }

@@ -23,15 +23,8 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_8.movement;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.util.Optional;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -40,17 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class MixinLivingEntity extends Entity {
-
-    @Shadow
-    private Optional<BlockPos> lastClimbablePos;
-
-    public MixinLivingEntity(final EntityType<?> type, final Level world) {
-        super(type, world);
-    }
-
-    @Shadow
-    protected abstract boolean trapdoorUsableAsLadder(final BlockPos pos, final BlockState state);
+public abstract class MixinLivingEntity {
 
     @Inject(method = "pushEntities", at = @At("HEAD"), cancellable = true)
     private void preventEntityPush(CallbackInfo ci) {

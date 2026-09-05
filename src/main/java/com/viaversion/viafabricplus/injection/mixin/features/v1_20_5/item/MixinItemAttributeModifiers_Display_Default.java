@@ -70,4 +70,5 @@ public abstract class MixinItemAttributeModifiers_Display_Default implements IDi
             return instance.getAttributeBaseValue(registryEntry) + value;
         }
     }
+
 }

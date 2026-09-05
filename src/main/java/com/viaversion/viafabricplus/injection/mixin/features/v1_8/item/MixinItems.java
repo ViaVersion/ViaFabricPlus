@@ -35,6 +35,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin({FlintAndSteelItem.class, HoeItem.class})
+
 public abstract class MixinItems {
 
     @WrapWithCondition(method = "useOn", at = @At(value = "INVOKE",
@@ -42,5 +43,8 @@ public abstract class MixinItems {
     private boolean disableItemPlaceSounds(Level instance, Entity except, BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch) {
         return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_8);
     }
+
+
+
 
 }

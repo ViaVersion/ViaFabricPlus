@@ -51,4 +51,5 @@ public abstract class MixinBundleItem {
             cir.setReturnValue(InteractionResult.CONSUME);
         }
     }
+
 }

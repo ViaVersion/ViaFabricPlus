@@ -22,11 +22,9 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_12_2.block;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.features.block.interaction.Block1_14;
 import com.viaversion.viafabricplus.injection.access.block.shape.ICrossCollisionBlock;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CrossCollisionBlock;
@@ -42,7 +40,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FenceBlock.class)
 public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICrossCollisionBlock {
@@ -148,4 +145,5 @@ public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICr
             return super.getCollisionShape(state, world, pos, context);
         }
     }
+
 }

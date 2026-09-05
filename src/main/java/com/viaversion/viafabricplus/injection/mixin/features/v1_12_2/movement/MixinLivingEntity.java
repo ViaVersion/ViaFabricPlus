@@ -51,12 +51,6 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Shadow
-    public abstract float getSpeed();
-
-    @Shadow
-    protected abstract float getFlyingSpeed();
-
-    @Shadow
     public abstract boolean hasEffect(Holder<MobEffect> effect);
 
     @Shadow
@@ -99,4 +93,5 @@ public abstract class MixinLivingEntity extends Entity {
             return constant;
         }
     }
+
 }

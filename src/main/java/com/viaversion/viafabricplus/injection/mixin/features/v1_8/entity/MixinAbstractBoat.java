@@ -60,9 +60,6 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
     @Shadow
     private Boat.Status status;
 
-    @Shadow
-    public abstract InterpolationHandler getInterpolation();
-
     @Unique
     private final InterpolationHandler viaFabricPlus$positionInterpolator = new PositionInterpolator1_8((AbstractBoat) (Object) this);
 
