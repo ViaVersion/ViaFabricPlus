@@ -21,8 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_21_4.movement;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -30,13 +28,28 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.Input;
+import net.minecraft.world.phys.Vec2;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LocalPlayer.class)
 public abstract class MixinLocalPlayer extends AbstractClientPlayer {
+
+    @Shadow
+    protected abstract Vec2 modifyInput(final Vec2 input);
+
+    @Shadow
+    private static Vec2 modifyInputSpeedForSquareMovement(final Vec2 vec) {
+        return null;
+    }
+
+    @Shadow
+    protected abstract boolean shouldStopRunSprinting();
 
     @Shadow
     public ClientInput input;
@@ -45,19 +58,47 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
         super(world, profile);
     }
 
-    @WrapOperation(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/ClientInput;hasForwardImpulse()Z"))
-    private boolean easierUnderwaterSprinting(ClientInput instance, Operation<Boolean> original) {
+    @Redirect(method = "applyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;modifyInput(Lnet/minecraft/world/phys/Vec2;)Lnet/minecraft/world/phys/Vec2;"))
+    private Vec2 moveMovementSpeedFactors(LocalPlayer instance, Vec2 input) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return this.viaFabricPlus$isWalking1_21_4();
+            return input;
         } else {
-            return original.call(instance);
+            return this.modifyInput(input);
         }
     }
 
-    @Unique
-    private boolean viaFabricPlus$isWalking1_21_4() {
-        final boolean submergedInWater = ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_14_1) && isUnderWater();
-        return submergedInWater ? this.input.hasForwardImpulse() : this.input.moveVector.y >= 0.8;
+    @Redirect(method = "modifyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;modifyInputSpeedForSquareMovement(Lnet/minecraft/world/phys/Vec2;)Lnet/minecraft/world/phys/Vec2;"))
+    private Vec2 moveMovementSpeedFactors(Vec2 vec) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            return vec;
+        } else {
+            return modifyInputSpeedForSquareMovement(vec);
+        }
+    }
+
+    @Redirect(method = "modifyInput", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec2;scale(F)Lnet/minecraft/world/phys/Vec2;", ordinal = 0))
+    private Vec2 moveMovementSpeedFactors(Vec2 instance, float s) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            return instance;
+        } else {
+            return instance.scale(s);
+        }
+    }
+
+    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/tutorial/Tutorial;onInput(Lnet/minecraft/client/player/ClientInput;)V", shift = At.Shift.AFTER))
+    private void moveMovementSpeedFactors(CallbackInfo ci) {
+        //... and also add this hotfix back
+        if (ViaFabricPlus.api().targetVersion().equals(ProtocolVersion.v1_21_4) && this.shouldStopRunSprinting()) {
+            this.setSprinting(false);
+        }
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            this.input.moveVector = this.modifyInput(this.input.moveVector);
+        }
+    }
+
+    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Input;backward()Z"))
+    private boolean dontResetDoubleTapTicks(Input instance) {
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21_4) && instance.backward();
     }
 
 }

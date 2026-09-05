@@ -19,23 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.c0_28.screen;
+package com.viaversion.viafabricplus.injection.mixin.features.c0_28;
 
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import com.viaversion.viafabricplus.ViaFabricPlus;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.debug.GameModeSwitcherScreen;
+import net.minecraft.network.chat.Component;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(CreativeModeInventoryScreen.class)
-public abstract class MixinCreativeModeInventoryScreen {
+@Mixin(GameModeSwitcherScreen.class)
+public abstract class MixinGameModeSwitcherScreen extends Screen {
 
-    @Inject(method = "init", at = @At("RETURN"))
-    private void replaceCreativeMenu(CallbackInfo ci) {
-        if (ViaFabricPlusImpl.impl().visuals().replaceCreativeInventory().isActive()) {
-            Minecraft.getInstance().gui.setScreen(ViaFabricPlusImpl.impl().screens().gridItemSelectionScreen());
+    protected MixinGameModeSwitcherScreen(final Component title) {
+        super(title);
+    }
+
+    @Inject(method = "init", at = @At("HEAD"))
+    private void disableInClassic(CallbackInfo ci) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30)) { // survival mode was added in a1.0.15
+            this.onClose();
         }
     }
 
