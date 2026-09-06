@@ -58,6 +58,12 @@ entity interactions, graphics, and more. In short, it recreates the classic Mine
 
 *[Support for new Mojang releases is usually added within a few days](https://github.com/ViaVersion/ViaVersion#snapshot-support)
 
+## Bedrock Edition
+
+Support for Minecraft: Bedrock Edition servers and Realms is available through the separate
+[ViaFabricPlus Bedrock](https://github.com/florianreuth/viafabricplus-bedrock) addon, which is based on
+[ViaBedrock](https://github.com/RaphiMC/ViaBedrock).
+
 ## For Developers & Contributors
 
 - [Contribution guide & dev setup](CONTRIBUTING.md)
