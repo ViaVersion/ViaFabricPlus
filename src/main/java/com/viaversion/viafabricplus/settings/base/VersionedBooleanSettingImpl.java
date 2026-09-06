@@ -53,11 +53,6 @@ public final class VersionedBooleanSettingImpl extends BooleanSettingImpl implem
     }
 
     @Override
-    public void read(final JsonObject object) {
-        this.setActive(object.get(this.key()).getAsBoolean());
-    }
-
-    @Override
     public boolean isActive() {
         return this.versionRange.contains(ViaFabricPlusImpl.impl().targetVersion()) && super.isActive();
     }

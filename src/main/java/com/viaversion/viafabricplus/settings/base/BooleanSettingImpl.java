@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.settings.base;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.api.settings.base.BooleanSetting;
 import net.minecraft.network.chat.Component;
@@ -58,7 +59,10 @@ public class BooleanSettingImpl extends SettingImpl implements BooleanSetting {
 
     @Override
     public void read(final JsonObject object) {
-        this.setActive(object.get(this.key()).getAsBoolean());
+        final JsonElement value = this.value(object);
+        if (value != null) {
+            this.setActive(value.getAsBoolean());
+        }
     }
 
 }

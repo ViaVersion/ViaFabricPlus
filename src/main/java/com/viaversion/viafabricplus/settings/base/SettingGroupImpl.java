@@ -86,8 +86,10 @@ public class SettingGroupImpl implements SettingGroup {
     @Override
     public void read(final JsonObject object) {
         final JsonObject settings = object.getAsJsonObject(this.key);
-        for (final Setting setting : this.settings) {
-            setting.read(settings);
+        if (settings != null) {
+            for (final Setting setting : this.settings) {
+                setting.read(settings);
+            }
         }
     }
 

@@ -21,8 +21,11 @@
 
 package com.viaversion.viafabricplus.settings.base;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.api.settings.base.Setting;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class SettingImpl implements Setting {
 
@@ -36,6 +39,10 @@ public abstract class SettingImpl implements Setting {
 
     protected String key() {
         return this.key;
+    }
+
+    protected @Nullable JsonElement value(final JsonObject object) {
+        return object.get(this.key);
     }
 
     @Override

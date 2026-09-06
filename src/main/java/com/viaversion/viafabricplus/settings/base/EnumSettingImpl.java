@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.settings.base;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.api.settings.base.EnumSetting;
 import net.minecraft.network.chat.Component;
@@ -63,8 +64,13 @@ public final class EnumSettingImpl<T extends Enum<T> & EnumSetting.EnumValue> ex
 
     @Override
     public void read(final JsonObject object) {
+        final JsonElement value = this.value(object);
+        if (value == null) {
+            return;
+        }
+
         for (final T constant : this.defaultValue().getDeclaringClass().getEnumConstants()) {
-            if (constant.name().equals(object.get(this.key()).getAsString())) {
+            if (constant.name().equals(value.getAsString())) {
                 this.setValue(constant);
                 return;
             }
