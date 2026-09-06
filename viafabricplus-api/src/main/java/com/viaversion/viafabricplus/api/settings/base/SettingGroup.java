@@ -77,6 +77,15 @@ public interface SettingGroup {
     VersionedBooleanSetting registerVersionedBoolean(final String key, final ProtocolVersionRange versionRange, final boolean defaultValue);
 
     /**
+     * Registers a new setting. This is useful for custom settings that are not part of the default settings.
+     *
+     * @param key     The translation key of the setting. Requires all settings to be prefixed with this key as well.
+     * @param setting The setting to register
+     * @return The registered setting
+     */
+    Setting register(final String key, final Setting setting);
+
+    /**
      * Writes the settings to the given JsonObject.
      *
      * @param object The JsonObject to write to

@@ -64,6 +64,12 @@ public class SettingGroupImpl implements SettingGroup {
         return setting;
     }
 
+    @Override
+    public Setting register(final String key, final Setting setting) {
+        this.settings.add(setting);
+        return setting;
+    }
+
     private Component settingsName(final String key) {
         return Component.translatable(this.key + "_settings.viafabricplus." + key);
     }
