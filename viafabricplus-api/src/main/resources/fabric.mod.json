@@ -37,7 +37,7 @@
   "license": "GPL-v3",
   "environment": "client",
   "depends": {
-    "viafabricplus": ">=5.0.0"
+    "viafabricplus": ">=5.0.1"
   },
   "custom": {
     "modmenu": {
