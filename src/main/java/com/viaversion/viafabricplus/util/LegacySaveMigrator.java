@@ -39,7 +39,7 @@ public final class LegacySaveMigrator {
     private static final String VERSION_KEY = "selected_protocol_version";
     private static final String LEGACY_VERSION_KEY = "selected-protocol-version";
 
-    private static final Set<String> LEGACY_GROUPS = Set.of("bedrock", "authentication", "debug");
+    private static final Set<String> LEGACY_GROUPS = Set.of("authentication", "debug");
     private static final Map<String, String> RENAMED_SETTINGS = Map.of("beta_craft_authentication", "use_beta_craft_authentication");
 
     private static final String DISABLED = "disabled";

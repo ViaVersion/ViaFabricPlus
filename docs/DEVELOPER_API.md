@@ -85,8 +85,7 @@ declared in your `fabric.mod.json` under the `viafabricplus` key:
 }
 ```
 
-All of its methods are optional: `onPreLoading`, `onPostSettingsLoading`, `onPostProtocolTranslationLoading`,
-`onPostRegistryLoading` and `onPostGameLoading`.
+All of its methods are optional.
 
 ## Custom Settings
 
