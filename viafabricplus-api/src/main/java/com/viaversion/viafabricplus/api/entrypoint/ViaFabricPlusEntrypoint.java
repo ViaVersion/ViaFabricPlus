@@ -36,6 +36,12 @@ public interface ViaFabricPlusEntrypoint {
     }
 
     /**
+     * Called before the settings are loaded.
+     */
+    default void onPreSettingsLoading() {
+    }
+
+    /**
      * Called after the settings have been loaded and registered.
      */
     default void onPostSettingsLoading() {
