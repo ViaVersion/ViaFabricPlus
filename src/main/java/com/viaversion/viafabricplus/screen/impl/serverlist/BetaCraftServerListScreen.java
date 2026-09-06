@@ -75,6 +75,7 @@ public final class BetaCraftServerListScreen extends VFPTabbedScreen<BCVersionCa
         this.addFooter(Button.builder(Component.translatable("base.viafabricplus.refresh"), _ -> {
             serverList = null;
             this.load();
+            this.showResponse();
         }).build());
     }
 
