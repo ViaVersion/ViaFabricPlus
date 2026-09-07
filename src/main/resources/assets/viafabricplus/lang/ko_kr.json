@@ -10,6 +10,7 @@
   "base.viafabricplus.logout": "로그아웃",
   "base.viafabricplus.online_mode": "온라인 모드",
   "base.viafabricplus.something_went_wrong": "뭔가 잘못됐어요! 나중에 다시 시도해 보세요.",
+  "base.viafabricplus.target_version": "대상 버전: %s",
   "base.viafabricplus.server_version": "서버 버전: %s",
   "base.viafabricplus.auto": "자동",
   "base.viafabricplus.set_version": "버전 설정",
