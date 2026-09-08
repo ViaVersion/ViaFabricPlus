@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.protocoltranslator;
 
+import com.google.common.base.Preconditions;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.api.protocoltranslator.Limitations;
 import com.viaversion.viafabricplus.protocoltranslator.impl.ViaFabricPlusMappingDataLoader;
@@ -65,7 +66,8 @@ public final class LimitationsImpl implements Limitations {
     private final Reference2ObjectMap<Holder<MobEffect>, ProtocolVersionRange> effectDiff = new Reference2ObjectOpenHashMap<>();
     private final Reference2ObjectMap<Item, ProtocolVersionRange> itemDiff = new Reference2ObjectOpenHashMap<>();
 
-    public LimitationsImpl() {
+    public void init() {
+        Preconditions.checkState(this.itemDiff.isEmpty(), "Limitations already initialized!");
         final JsonObject data = ViaFabricPlusMappingDataLoader.INSTANCE.loadData("versioned-registries.json");
         fillKeys(data.getAsJsonObject("enchantments"), Registries.ENCHANTMENT, enchantmentDiff);
         fillKeys(data.getAsJsonObject("banner_patterns"), Registries.BANNER_PATTERN, patternDiff);

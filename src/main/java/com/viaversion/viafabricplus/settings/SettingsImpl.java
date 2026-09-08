@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.settings;
 
+import com.google.common.base.Preconditions;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusEntrypoint;
@@ -55,6 +56,7 @@ public final class SettingsImpl implements Settings {
     private String selectedProtocolVersion;
 
     public void init() {
+        Preconditions.checkState(this.selectedProtocolVersion == null, "Settings already initialized!");
         FabricLoader.getInstance().invokeEntrypoints("viafabricplus", ViaFabricPlusEntrypoint.class, ViaFabricPlusEntrypoint::onPreSettingsLoading);
 
         JsonSave.load(ViaFabricPlus.api().path().resolve("settings.json"), jsonObject -> {
