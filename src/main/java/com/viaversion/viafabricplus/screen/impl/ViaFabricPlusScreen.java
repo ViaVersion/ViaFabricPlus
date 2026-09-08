@@ -47,16 +47,10 @@ public final class ViaFabricPlusScreen extends AbstractProtocolSelectionScreen {
         // The server lists connect to a server, which is not possible while already being connected to one
         final boolean disconnected = Minecraft.getInstance().getConnection() == null;
 
-        final Button classiCube = Button.builder(ClassiCubeServerListScreen.TITLE, _ -> {
-            if (ClassiCubeServerListScreen.loggedIn()) {
-                screens.classiCubeServerListScreen().open(this);
-            } else {
-                screens.classiCubeLoginScreen().open(this);
-            }
-        }).build();
+        final Button classiCube = Button.builder(ClassiCubeServerListScreen.TITLE, _ -> screens.openClassiCubeServerListScreen(this)).build();
         classiCube.active = disconnected;
 
-        final Button betaCraft = Button.builder(BetaCraftServerListScreen.TITLE, _ -> screens.betaCraftServerListScreen().open(this)).build();
+        final Button betaCraft = Button.builder(BetaCraftServerListScreen.TITLE, _ -> screens.openBetaCraftServerListScreen(this)).build();
         betaCraft.active = disconnected;
 
         this.addFooter(classiCube, betaCraft,

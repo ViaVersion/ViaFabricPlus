@@ -42,4 +42,16 @@ public interface Screens {
      */
     void openSettingsScreen(final Screen parent);
 
+    /**
+     * Open the ClassiCube server list screen.
+     * @param parent The parent screen
+     */
+    void openClassiCubeServerListScreen(final Screen parent);
+
+    /**
+     * Open the BetaCraft server list screen.
+     * @param parent The parent screen
+     */
+    void openBetaCraftServerListScreen(final Screen parent);
+
 }

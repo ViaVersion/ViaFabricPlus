@@ -53,6 +53,20 @@ public final class ScreensImpl implements Screens {
         this.settingsScreen.open(parent);
     }
 
+    @Override
+    public void openClassiCubeServerListScreen(final Screen parent) {
+        if (ClassiCubeServerListScreen.loggedIn()) {
+            this.classiCubeServerListScreen.open(parent);
+        } else {
+            this.classiCubeLoginScreen.open(parent);
+        }
+    }
+
+    @Override
+    public void openBetaCraftServerListScreen(final Screen parent) {
+        this.betaCraftServerListScreen.open(parent);
+    }
+
     public ViaFabricPlusScreen viaFabricPlusScreen() {
         return this.viaFabricPlusScreen;
     }
