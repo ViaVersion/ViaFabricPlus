@@ -15,7 +15,7 @@ plugins {
 repositories {
     maven("https://repo.viaversion.com")
     maven("https://maven.terraformersmc.com/releases")
-    //mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
+    mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
 }
 
 setupProject()
