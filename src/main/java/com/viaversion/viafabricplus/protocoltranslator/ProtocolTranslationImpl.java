@@ -62,7 +62,7 @@ public final class ProtocolTranslationImpl implements ProtocolTranslation {
     public static final AttributeKey<Connection> MINECRAFT_CONNECTION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-minecraft-connection");
     public static final AttributeKey<ProtocolVersion> TARGET_VERSION_ATTRIBUTE_KEY = AttributeKey.newInstance("viafabricplus-target-version");
 
-    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v26_2;
+    public static final ProtocolVersion NATIVE_VERSION = ProtocolVersion.v26_3;
 
     private final List<BiConsumer<ProtocolVersion, ProtocolVersion>> changeVersionListeners = new ArrayList<>();
 
