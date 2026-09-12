@@ -47,7 +47,7 @@ dependencies {
     shade("net.lenni0451:Reflect:1.6.4")
     shade("de.florianreuth:classic4j:2.3.1")
 
-    compileOnly("com.terraformersmc:modmenu:20.0.0")
+    compileOnly("com.terraformersmc:modmenu:21.0.0-beta.1")
 }
 
 includeTransitiveJijDependencies()
