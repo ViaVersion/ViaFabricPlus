@@ -21,12 +21,14 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_8;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.component.SwingAnimation;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
@@ -68,13 +70,17 @@ public abstract class MixinMinecraft {
     @Inject(method = "startAttack", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;hitResult:Lnet/minecraft/world/phys/HitResult;", ordinal = 0, opcode = Opcodes.GETFIELD))
     private void fixSwingPacketOrder(CallbackInfoReturnable<Boolean> cir) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            this.player.swing(InteractionHand.MAIN_HAND);
+            this.player.swing(InteractionHand.MAIN_HAND, this.player.getItemInHand(InteractionHand.MAIN_HAND).getAttackAnimation(), false);
         }
     }
 
-    @WrapWithCondition(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;)V"))
-    private boolean fixSwingPacketOrder(LocalPlayer instance, InteractionHand hand) {
-        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_8);
+    @WrapOperation(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/component/SwingAnimation;Z)Z"))
+    private boolean fixSwingPacketOrder(LocalPlayer instance, InteractionHand hand, SwingAnimation animation, boolean sendToSwingingEntity, Operation<Boolean> original) {
+        if (ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_8)) {
+            return original.call(instance, hand, animation, sendToSwingingEntity);
+        } else {
+            return false;
+        }
     }
 
 }

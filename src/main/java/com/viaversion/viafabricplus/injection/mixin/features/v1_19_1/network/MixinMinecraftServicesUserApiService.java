@@ -21,20 +21,23 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_19_1.network;
 
+import com.mojang.authlib.HttpDiscoveryService;
+import com.mojang.authlib.exceptions.MinecraftClientException;
 import com.mojang.authlib.minecraft.client.MinecraftClient;
-import com.mojang.authlib.yggdrasil.YggdrasilUserApiService;
-import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
+import com.mojang.authlib.services.MinecraftServicesDiscoveryService;
+import com.mojang.authlib.services.MinecraftServicesUserApiService;
+import com.mojang.authlib.services.response.KeyPairResponse;
+import com.mojang.authlib.services.response.discovery.Service;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.v1_19_1.KeyPairResponse1_19_0;
 import com.viaversion.viafabricplus.injection.access.v1_19_1.IProfilePublicKey_Data;
-import java.net.URL;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(value = YggdrasilUserApiService.class, remap = false)
-public abstract class MixinYggdrasilUserApiService {
+@Mixin(value = MinecraftServicesUserApiService.class, remap = false)
+public abstract class MixinMinecraftServicesUserApiService {
 
     @Shadow
     @Final
@@ -42,7 +45,7 @@ public abstract class MixinYggdrasilUserApiService {
 
     @Shadow
     @Final
-    private URL routeKeyPair;
+    private MinecraftServicesDiscoveryService discoveryService;
 
     /**
      * @author Florian Reuth (EnZaXD)
@@ -50,7 +53,12 @@ public abstract class MixinYggdrasilUserApiService {
      */
     @Overwrite
     public KeyPairResponse getKeyPair() {
-        final KeyPairResponse1_19_0 response = minecraftClient.post(routeKeyPair, KeyPairResponse1_19_0.class);
+        final KeyPairResponse1_19_0 response;
+        try {
+            response = minecraftClient.post(HttpDiscoveryService.constantURL(discoveryService.getUrl(Service.PLAYER, "getCertificates")), KeyPairResponse1_19_0.class);
+        } catch (final MinecraftClientException e) {
+            return null;
+        }
 
         // the response can't be null for us since we are constructing a new object with it.
         if (response == null) {

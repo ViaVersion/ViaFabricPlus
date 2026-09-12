@@ -27,6 +27,7 @@ import com.viaversion.viafabricplus.features.v1_8.PositionInterpolator1_8;
 import com.viaversion.viafabricplus.injection.access.v1_8.IAbstractBoat;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.PositionAndRotation;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -70,7 +71,7 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
     private Vec3 viaFabricPlus$boatVelocity = Vec3.ZERO;
 
     @Unique
-    private final InterpolationHandler viaFabricPlus$positionInterpolator = new PositionInterpolator1_8((AbstractBoat) (Object) this);
+    private PositionInterpolator1_8 viaFabricPlus$positionInterpolator;
 
     public MixinAbstractBoat(EntityType<?> entityType, Level world) {
         super(entityType, world);
@@ -84,10 +85,11 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
         }
     }
 
-    @Inject(method = "getInterpolation", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "createInterpolationHandler", at = @At("HEAD"), cancellable = true)
     private void replaceInterpolation(CallbackInfoReturnable<InterpolationHandler> cir) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            cir.setReturnValue(viaFabricPlus$positionInterpolator);
+            this.viaFabricPlus$positionInterpolator = new PositionInterpolator1_8((AbstractBoat) (Object) this);
+            cir.setReturnValue(this.viaFabricPlus$positionInterpolator);
         }
     }
 
@@ -148,12 +150,12 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
 
             if (this.level().isClientSide() && !this.isVehicle()) {
                 if (this.viaFabricPlus$boatInterpolationSteps > 0) {
-                    final InterpolationHandler.InterpolationData data = viaFabricPlus$positionInterpolator.interpolationData;
-                    final double newX = this.getX() + (data.position.x - this.getX()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newY = this.getY() + (data.position.y - this.getY()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newZ = this.getZ() + (data.position.z - this.getZ()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newYaw = this.getYRot() + Mth.wrapDegrees(data.yRot - this.getYRot()) / this.viaFabricPlus$boatInterpolationSteps;
-                    final double newPitch = this.getXRot() + (data.xRot - this.getXRot()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final PositionAndRotation data = viaFabricPlus$positionInterpolator.interpolationData();
+                    final double newX = this.getX() + (data.position().x - this.getX()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newY = this.getY() + (data.position().y - this.getY()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newZ = this.getZ() + (data.position().z - this.getZ()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newYaw = this.getYRot() + Mth.wrapDegrees(data.yRot() - this.getYRot()) / this.viaFabricPlus$boatInterpolationSteps;
+                    final double newPitch = this.getXRot() + (data.xRot() - this.getXRot()) / this.viaFabricPlus$boatInterpolationSteps;
                     this.viaFabricPlus$boatInterpolationSteps--;
                     this.setPos(newX, newY, newZ);
                     this.setRot((float) newYaw, (float) newPitch);

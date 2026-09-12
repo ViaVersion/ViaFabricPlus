@@ -76,6 +76,7 @@ import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.item.crafting.ShieldDecorationRecipe;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.item.crafting.TransmuteRecipe;
+import net.minecraft.world.item.crafting.TransmuteResult;
 import net.minecraft.world.level.ItemLike;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
@@ -171,8 +172,8 @@ public final class Recipes1_11_2 {
                 specialRecipes.add(createDyeRecipe(registryAccess, Items.LEATHER_LEGGINGS));
                 specialRecipes.add(createDyeRecipe(registryAccess, Items.LEATHER_BOOTS));
                 specialRecipes.add(createDyeRecipe(registryAccess, Items.LEATHER_HORSE_ARMOR));
-                specialRecipes.add(new TransmuteRecipe(RecipeBuilder.createCraftingCommonInfo(true), RecipeBuilder.createCraftingBookInfo(RecipeCategory.MISC, "map_cloning"), Ingredient.of(Items.FILLED_MAP), Ingredient.of(Items.MAP), TransmuteRecipe.FULL_RANGE_MATERIAL_COUNT, new ItemStackTemplate(Items.FILLED_MAP), true));
-                specialRecipes.add(new MapExtendingRecipe(Ingredient.of(Items.FILLED_MAP), Ingredient.of(Items.PAPER), new ItemStackTemplate(Items.FILLED_MAP)));
+                specialRecipes.add(new TransmuteRecipe(RecipeBuilder.createCraftingCommonInfo(true), RecipeBuilder.createCraftingBookInfo(RecipeCategory.MISC, "map_cloning"), Ingredient.of(Items.FILLED_MAP), Ingredient.of(Items.MAP), TransmuteRecipe.FULL_RANGE_MATERIAL_COUNT, new TransmuteResult(Items.FILLED_MAP), true));
+                specialRecipes.add(new MapExtendingRecipe(Ingredient.of(Items.FILLED_MAP), Ingredient.of(Items.PAPER), new TransmuteResult(Items.FILLED_MAP)));
             }
             if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
                 specialRecipes.add(new FireworkRocketRecipe(Ingredient.of(Items.PAPER), Ingredient.of(Items.GUNPOWDER), Ingredient.of(Items.FIREWORK_STAR), new ItemStackTemplate(Items.FIREWORK_ROCKET, 3)));

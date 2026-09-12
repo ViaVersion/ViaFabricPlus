@@ -32,10 +32,8 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
+import org.jspecify.annotations.NonNull;
 
-/**
- * Renderer for boats in 1.8 and lower.
- */
 public final class BoatRenderer1_8 extends AbstractBoatRenderer {
 
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("viafabricplus", "textures/boat1_8.png");
@@ -48,7 +46,7 @@ public final class BoatRenderer1_8 extends AbstractBoatRenderer {
     }
 
     @Override
-    protected EntityModel<BoatRenderState> model() {
+    protected @NonNull EntityModel<BoatRenderState> model() {
         return this.model;
     }
 
@@ -56,15 +54,15 @@ public final class BoatRenderer1_8 extends AbstractBoatRenderer {
     public void submit(final BoatRenderState state, final PoseStack matrices, final SubmitNodeCollector submitNodeCollector, final CameraRenderState camera) {
         matrices.pushPose();
         matrices.translate(0, 0.25, 0);
-        matrices.mulPose(Axis.YP.rotationDegrees(180 - state.yRot));
+        matrices.rotateDegrees(Axis.YP, 180 - state.yRot);
 
         if (state.hurtTime > 0) {
-            matrices.mulPose(Axis.XP.rotationDegrees(Mth.sin(state.hurtTime) * state.hurtTime * state.damageTime / 10 * state.hurtDir));
+            matrices.rotateDegrees(Axis.XP, Mth.sin(state.hurtTime) * state.hurtTime * state.damageTime / 10 * state.hurtDir);
         }
 
         matrices.scale(-1, -1, 1);
         model.setupAnim(state);
-        submitNodeCollector.submitModel(model(), state, matrices, this.texture, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+        submitNodeCollector.submitModel(model(), state, matrices, this.texture, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
 
         matrices.popPose();
     }
