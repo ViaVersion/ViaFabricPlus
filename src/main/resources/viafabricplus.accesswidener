@@ -10,10 +10,6 @@ accessible field net/minecraft/client/gui/screens/options/controls/KeyBindsList$
 accessible field net/minecraft/client/Minecraft fontManager Lnet/minecraft/client/gui/font/FontManager;
 accessible field net/minecraft/client/gui/font/FontManager fontSets Ljava/util/Map;
 accessible field net/minecraft/client/gui/font/FontSet glyphCache Lnet/minecraft/client/gui/font/CodepointMap;
-accessible field net/minecraft/world/entity/InterpolationHandler interpolationData Lnet/minecraft/world/entity/InterpolationHandler$InterpolationData;
-accessible field net/minecraft/world/entity/InterpolationHandler$InterpolationData position Lnet/minecraft/world/phys/Vec3;
-accessible field net/minecraft/world/entity/InterpolationHandler$InterpolationData yRot F
-accessible field net/minecraft/world/entity/InterpolationHandler$InterpolationData xRot F
 accessible field net/minecraft/world/entity/player/Inventory equipment Lnet/minecraft/world/entity/EntityEquipment;
 accessible field net/minecraft/client/player/ClientInput moveVector Lnet/minecraft/world/phys/Vec2;
 accessible field net/minecraft/core/Direction YXZ_AXIS_ORDER Lcom/google/common/collect/ImmutableList;
@@ -48,7 +44,6 @@ extendable method net/minecraft/world/entity/Entity moveOrInterpolateTo (Lnet/mi
 
 accessible method net/minecraft/world/level/block/StairBlock getStairsShape (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/properties/StairsShape;
 accessible method net/minecraft/world/level/block/FireBlock canBurn (Lnet/minecraft/world/level/block/state/BlockState;)Z
-accessible method net/minecraft/world/level/block/RedStoneWireBlock getConnectingSide (Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)Lnet/minecraft/world/level/block/state/properties/RedstoneSide;
 
 accessible class net/minecraft/client/gui/font/FontSet$SelectedGlyphs
 accessible class net/minecraft/world/entity/Entity$Movement
