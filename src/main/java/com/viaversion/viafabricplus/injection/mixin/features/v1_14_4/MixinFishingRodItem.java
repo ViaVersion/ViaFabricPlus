@@ -39,7 +39,7 @@ public abstract class MixinFishingRodItem {
     @Inject(method = "use", at = @At("RETURN"))
     private void swingHand(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
-            player.swing(hand);
+            player.swing(hand, player.getItemInHand(hand).getInteractAnimation(), false);
         }
     }
 

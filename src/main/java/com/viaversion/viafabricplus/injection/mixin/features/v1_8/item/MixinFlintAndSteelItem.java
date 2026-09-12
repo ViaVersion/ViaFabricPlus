@@ -21,26 +21,25 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_8.item;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.util.Map;
-import net.minecraft.world.item.ShovelItem;
-import org.objectweb.asm.Opcodes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.FlintAndSteelItem;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.Slice;
 
-@Mixin(ShovelItem.class)
-public abstract class MixinShovelItem {
+@Mixin(FlintAndSteelItem.class)
+public abstract class MixinFlintAndSteelItem {
 
-    @Redirect(method = "useOn", slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/world/item/ShovelItem;FLATTENABLES:Ljava/util/Map;", opcode = Opcodes.GETSTATIC)), at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0, remap = false))
-    private Object disablePathAction(Map<Object, Object> instance, Object grassBlock) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return null;
-        } else {
-            return instance.get(grassBlock);
-        }
+    @WrapWithCondition(method = "useOn", at = @At(value = "INVOKE",
+        target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
+    private boolean disableItemPlaceSounds(Level instance, Entity except, BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch) {
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_8);
     }
 
 }
