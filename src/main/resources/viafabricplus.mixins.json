@@ -340,6 +340,7 @@
     "features.v1_3_1.MixinServerRedirectHandler",
     "features.v1_3_1.MixinBrewingStandMenu",
     "features.v1_3_1.MixinCreativeModeInventoryScreen_ItemPickerMenu",
+    "features.v1_3_1.MixinEnchantmentMenu",
     "features.v1_3_1.MixinInventoryMenu",
     "features.v1_4_2.MixinAbstractContainerScreen",
     "features.v1_4_2.MixinChestBlock",
