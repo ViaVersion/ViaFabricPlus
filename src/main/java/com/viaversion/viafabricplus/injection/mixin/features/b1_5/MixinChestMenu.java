@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ChestMenu.class)
-public class MixinChestMenu {
+public abstract class MixinChestMenu {
 
     @WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;hasItem()Z"))
     private boolean disableShiftClickInChests(Slot instance, Operation<Boolean> original) {

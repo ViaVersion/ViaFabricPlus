@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(CreativeModeInventoryScreen.ItemPickerMenu.class)
-public class MixinItemPickerMenu {
+public abstract class MixinItemPickerMenu {
 
     @WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;hasItem()Z"))
     private boolean disableShiftClickCreativeItemPicker(Slot instance, Operation<Boolean> original) {
