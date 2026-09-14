@@ -38,6 +38,7 @@
     "core.integration.event.MixinMinecraft",
     "core.integration.sync_tasks.MixinClientCommonPacketListenerImpl",
     "core.performance.MixinServerStatusPinger",
+    "features.b1_5.MixinChestMenu",
     "features.b1_5.MixinLivingEntity",
     "features.b1_7.MixinBowItem",
     "features.b1_7.MixinHud",
