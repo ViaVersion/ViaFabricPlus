@@ -50,4 +50,5 @@ public abstract class MixinBrewingStandMenu extends AbstractContainerMenu {
     private boolean disableShiftClickPotionSlot(ItemStack itemStack, Operation<Boolean> original) {
         return original.call(itemStack) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2);
     }
+
 }
