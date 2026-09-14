@@ -35,7 +35,7 @@ public abstract class MixinInventoryMenu {
 
     @WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;hasItem()Z", ordinal = 1))
     private boolean disableShiftClickArmor(Slot instance, Operation<Boolean> original) {
-        return ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.r1_3_1tor1_3_2) || original.call(instance);
+        return original.call(instance) || ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.r1_3_1tor1_3_2);
     }
 
 }

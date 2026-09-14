@@ -31,11 +31,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(CreativeModeInventoryScreen.ItemPickerMenu.class)
-public abstract class MixinItemPickerMenu {
+public abstract class MixinCreativeModeInventoryScreen_ItemPickerMenu {
 
     @WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;hasItem()Z"))
     private boolean disableShiftClickCreativeItemPicker(Slot instance, Operation<Boolean> original) {
-        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2) && original.call(instance);
+        return original.call(instance) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2);
     }
 
 }
