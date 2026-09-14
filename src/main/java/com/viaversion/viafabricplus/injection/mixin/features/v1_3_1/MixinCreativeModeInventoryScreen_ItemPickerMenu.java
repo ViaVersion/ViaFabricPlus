@@ -21,21 +21,20 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_3_1;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.world.inventory.Slot;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(CreativeModeInventoryScreen.ItemPickerMenu.class)
 public abstract class MixinCreativeModeInventoryScreen_ItemPickerMenu {
 
-    @WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;hasItem()Z"))
-    private boolean disableShiftClickCreativeItemPicker(Slot instance, Operation<Boolean> original) {
-        return original.call(instance) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2);
+    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;hasItem()Z"))
+    private boolean disableShiftClickCreativeItemPicker(Slot instance) {
+        return instance.hasItem() && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2);
     }
 
 }

@@ -21,21 +21,20 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.b1_5;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.Slot;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ChestMenu.class)
 public abstract class MixinChestMenu {
 
-    @WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;hasItem()Z"))
-    private boolean disableShiftClickInChests(Slot instance, Operation<Boolean> original) {
-        return original.call(instance) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2);
+    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;hasItem()Z"))
+    private boolean disableShiftClickInChests(Slot instance) {
+        return instance.hasItem() && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2);
     }
 
 }

@@ -21,8 +21,6 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_3_1;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.BrewingStandMenu;
@@ -33,6 +31,7 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(BrewingStandMenu.class)
 public abstract class MixinBrewingStandMenu extends AbstractContainerMenu {
@@ -41,14 +40,14 @@ public abstract class MixinBrewingStandMenu extends AbstractContainerMenu {
         super(menuType, containerId);
     }
 
-    @WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;mayPlace(Lnet/minecraft/world/item/ItemStack;)Z"))
-    private boolean disableShiftClickIngredientSlot(Slot instance, ItemStack itemStack, Operation<Boolean> original) {
-        return original.call(instance, itemStack) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2);
+    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;mayPlace(Lnet/minecraft/world/item/ItemStack;)Z"))
+    private boolean disableShiftClickIngredientSlot(Slot instance, ItemStack itemStack) {
+        return instance.mayPlace(itemStack) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2);
     }
 
-    @WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/BrewingStandMenu$PotionSlot;mayPlaceItem(Lnet/minecraft/world/item/ItemStack;)Z"))
-    private boolean disableShiftClickPotionSlot(ItemStack itemStack, Operation<Boolean> original) {
-        return original.call(itemStack) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2);
+    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/BrewingStandMenu$PotionSlot;mayPlaceItem(Lnet/minecraft/world/item/ItemStack;)Z"))
+    private boolean disableShiftClickPotionSlot(ItemStack itemStack) {
+        return BrewingStandMenu.PotionSlot.mayPlaceItem(itemStack) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2);
     }
 
 }
