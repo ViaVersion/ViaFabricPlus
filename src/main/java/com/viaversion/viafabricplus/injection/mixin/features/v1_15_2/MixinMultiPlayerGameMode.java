@@ -59,9 +59,10 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Inject(method = "handleContainerInput", at = @At("HEAD"), cancellable = true)
     private void removeClickActions(int containerId, int slotNum, int buttonNum, ContainerInput containerInput, Player player, CallbackInfo ci) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !containerInput.equals(ContainerInput.PICKUP)) {
-            ci.cancel();
-        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !containerInput.equals(ContainerInput.PICKUP) && !containerInput.equals(ContainerInput.QUICK_MOVE) && !containerInput.equals(ContainerInput.SWAP) && !containerInput.equals(ContainerInput.CLONE)) {
+//        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !containerInput.equals(ContainerInput.PICKUP)) {
+//            ci.cancel();
+//        } else
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !containerInput.equals(ContainerInput.PICKUP) && !containerInput.equals(ContainerInput.QUICK_MOVE) && !containerInput.equals(ContainerInput.SWAP) && !containerInput.equals(ContainerInput.CLONE)) {
             ci.cancel();
         }
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && containerInput == ContainerInput.SWAP && buttonNum == 40) { // Pressing 'F' in inventory
