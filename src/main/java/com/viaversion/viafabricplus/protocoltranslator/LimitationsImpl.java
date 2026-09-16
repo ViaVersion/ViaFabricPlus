@@ -105,6 +105,7 @@ public final class LimitationsImpl implements Limitations {
     public boolean effectExists(final Holder<MobEffect> effect, final ProtocolVersion version) {
         return !this.effectDiff.containsKey(effect) || this.effectDiff.get(effect).contains(version);
     }
+
     @Override
     public boolean bannerPatternExists(final ResourceKey<BannerPattern> pattern, final ProtocolVersion version) {
         return !this.patternDiff.containsKey(pattern) || this.patternDiff.get(pattern).contains(version);
