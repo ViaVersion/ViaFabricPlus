@@ -19,33 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.b1_5;
+package com.viaversion.viafabricplus.injection.mixin.features.b1_4;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.Slot;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ChestMenu.class)
-public abstract class MixinChestMenu extends AbstractContainerMenu {
+public abstract class MixinChestMenu {
 
-    public MixinChestMenu(final MenuType<?> menuType, final int containerId) {
-        super(menuType, containerId);
-    }
-
-    /**
-     * b1.5 is the first version to have chest shift clicking
-     * and the only version to have reversed item placement ordering
-     * when shift clicking an item to player inventory
-     */
-    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ChestMenu;moveItemStackTo(Lnet/minecraft/world/item/ItemStack;IIZ)Z", ordinal = 0))
-    private boolean reverseShiftClickItemPlacementOrdering(ChestMenu instance, ItemStack itemStack, int startSlot, int endSlot, boolean backwards) {
-        return this.moveItemStackTo(itemStack, startSlot, endSlot, ViaFabricPlus.api().targetVersion().equalTo(LegacyProtocolVersion.b1_5tob1_5_2) && backwards);
+    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;hasItem()Z"))
+    private boolean disableShiftClickInChests(Slot instance) {
+        return instance.hasItem() && ViaFabricPlus.api().targetVersion().newerThan(LegacyProtocolVersion.b1_4tob1_4_1);
     }
 
 }
