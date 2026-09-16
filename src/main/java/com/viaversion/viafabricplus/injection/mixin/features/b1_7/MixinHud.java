@@ -72,7 +72,7 @@ public abstract class MixinHud {
         }
     }
 
-    @ModifyArgs(method = "extractArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), require = 0)
+    @ModifyArgs(method = "extractArmor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), require = 0)
     private static void moveArmorPositions(Args args) {
         if (ViaFabricPlusImpl.impl().visuals().hideModernHUDElements().isActive()) {
             final int width = 10 * viaFabricPlus$ARMOR_ICON_WIDTH;
@@ -81,7 +81,7 @@ public abstract class MixinHud {
         }
     }
 
-    @ModifyArg(method = "extractAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), index = 2, require = 0)
+    @ModifyArg(method = "extractAirBubbles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V"), index = 2, require = 0)
     private int moveAirBubbles(int value) {
         if (ViaFabricPlusImpl.impl().visuals().hideModernHUDElements().isActive()) {
             final Minecraft client = Minecraft.getInstance();

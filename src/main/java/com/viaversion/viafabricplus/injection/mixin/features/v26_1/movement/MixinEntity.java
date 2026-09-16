@@ -57,7 +57,7 @@ public abstract class MixinEntity {
 
     @Definition(id = "y", field = "Lnet/minecraft/world/phys/Vec3;y:D")
     @Definition(id = "currentMovement", local = @Local(type = Vec3.class, name = "currentMovement"))
-    @Expression("-currentMovement.y < ?")
+    @Expression("-currentMovement.y <= ?")
     @ModifyExpressionValue(method = "restituteMovementAfterCollisions", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean fixGravityCheck(boolean original, @Local(name = "currentMovement") Vec3 currentMovement) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
