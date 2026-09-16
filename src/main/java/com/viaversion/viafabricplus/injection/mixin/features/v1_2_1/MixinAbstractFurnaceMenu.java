@@ -51,11 +51,11 @@ public abstract class MixinAbstractFurnaceMenu {
         boolean isFuel;
 
         if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5) && ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.r1_3_1tor1_3_2))
-            isFuel = FurnaceFuels.fuels_1_2_5().isFuel(itemStack);
+            isFuel = FurnaceFuels.getFuels_1_2_5().isFuel(itemStack);
         else if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2) && ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_11))
-            isFuel = FurnaceFuels.fuels_1_3_1().isFuel(itemStack);
+            isFuel = FurnaceFuels.getFuels_1_3_1().isFuel(itemStack);
         else if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11) && ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_14))
-            isFuel = FurnaceFuels.fuels_1_11().isFuel(itemStack);
+            isFuel = FurnaceFuels.getFuels_1_11().isFuel(itemStack);
         else
             isFuel = this.isFuel(itemStack);
 

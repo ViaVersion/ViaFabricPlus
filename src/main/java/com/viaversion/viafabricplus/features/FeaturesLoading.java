@@ -27,7 +27,6 @@ import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.features.global.CollisionShapes;
 import com.viaversion.viafabricplus.features.global.ClassiCubeAccount;
 import com.viaversion.viafabricplus.features.c0_30cpe.CPEAdditions;
-import com.viaversion.viafabricplus.features.global.FurnaceFuels;
 import com.viaversion.viafabricplus.features.v1_20_5.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.features.global.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.global.FontCacheReload;
@@ -82,7 +81,6 @@ public final class FeaturesLoading {
         Recipes1_11_2.init();
         ArmorHudEmulation1_8.init();
         CPEAdditions.postInit();
-        FurnaceFuels.init();
     }
 
 }

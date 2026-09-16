@@ -35,15 +35,9 @@ import net.minecraft.world.level.block.Blocks;
 import java.util.ArrayList;
 
 public class FurnaceFuels {
-    public static FurnaceFuels FUELS_1_11 = null;
-    public static FurnaceFuels FUELS_1_3_1 = null;
-    public static FurnaceFuels FUELS_1_2_5 = null;
-
-    private static Minecraft client = null;
-
-    public static void init() {
-        client = Minecraft.getInstance();
-    }
+    private static FurnaceFuels FUELS_1_11 = null;
+    private static FurnaceFuels FUELS_1_3_1 = null;
+    private static FurnaceFuels FUELS_1_2_5 = null;
 
     private final ArrayList<Item> values;
 
@@ -55,9 +49,9 @@ public class FurnaceFuels {
         return this.values.contains(itemStack.getItem());
     }
     
-    public static FurnaceFuels fuels_1_11() {
+    public static FurnaceFuels getFuels_1_11() {
         if (FUELS_1_11 == null)
-            FUELS_1_11 = new FurnaceFuels.Builder(client.level.registryAccess())
+            FUELS_1_11 = new FurnaceFuels.Builder(Minecraft.getInstance().level.registryAccess())
                 .add(Items.LAVA_BUCKET)
                 .add(Blocks.COAL_BLOCK)
                 .add(Items.BLAZE_ROD)
@@ -102,9 +96,9 @@ public class FurnaceFuels {
         return FUELS_1_11;
     }
 
-    public static FurnaceFuels fuels_1_3_1() {
+    public static FurnaceFuels getFuels_1_3_1() {
         if (FUELS_1_3_1 == null)
-            FUELS_1_3_1 = new FurnaceFuels.Builder(client.level.registryAccess())
+            FUELS_1_3_1 = new FurnaceFuels.Builder(Minecraft.getInstance().level.registryAccess())
                 .add(Items.LAVA_BUCKET)
                 .add(Blocks.COAL_BLOCK)
                 .add(Items.BLAZE_ROD)
@@ -143,9 +137,9 @@ public class FurnaceFuels {
         return FUELS_1_3_1;
     }
 
-    public static FurnaceFuels fuels_1_2_5() {
+    public static FurnaceFuels getFuels_1_2_5() {
         if (FUELS_1_2_5 == null)
-            FUELS_1_2_5 = new FurnaceFuels.Builder(client.level.registryAccess())
+            FUELS_1_2_5 = new FurnaceFuels.Builder(Minecraft.getInstance().level.registryAccess())
                 .add(Items.LAVA_BUCKET)
                 .add(Blocks.COAL_BLOCK)
                 .add(Items.BLAZE_ROD)
