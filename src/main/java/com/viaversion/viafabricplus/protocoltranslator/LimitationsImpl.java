@@ -105,7 +105,6 @@ public final class LimitationsImpl implements Limitations {
     public boolean effectExists(final Holder<MobEffect> effect, final ProtocolVersion version) {
         return !this.effectDiff.containsKey(effect) || this.effectDiff.get(effect).contains(version);
     }
-
     @Override
     public boolean bannerPatternExists(final ResourceKey<BannerPattern> pattern, final ProtocolVersion version) {
         return !this.patternDiff.containsKey(pattern) || this.patternDiff.get(pattern).contains(version);
@@ -207,6 +206,23 @@ public final class LimitationsImpl implements Limitations {
 
             itemDiff.put(item, versions);
         }
+    }
+
+    public Reference2ObjectMap<Item, ProtocolVersionRange> getItemDiff() {
+        return itemDiff;
+    }
+
+    public Reference2ObjectMap<ResourceKey<Enchantment>, ProtocolVersionRange> getEnchantmentDiff() {
+        return enchantmentDiff;
+    }
+
+
+    public Reference2ObjectMap<Holder<MobEffect>, ProtocolVersionRange> getEffectDiff() {
+        return effectDiff;
+    }
+
+    public Reference2ObjectMap<ResourceKey<BannerPattern>, ProtocolVersionRange> getPatternDiff() {
+        return patternDiff;
     }
 
 }
