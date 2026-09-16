@@ -38,8 +38,8 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class MixinEntityFluidInteraction {
 
     @Definition(id = "eyeY", local = @Local(type = double.class, name = "eyeY"))
-    @Definition(id = "fluidTop", local = @Local(type = double.class, name = "fluidTop"))
-    @Expression("eyeY <= fluidTop")
+    @Definition(id = "fluidTopForCamera", local = @Local(type = double.class, name = "fluidTopForCamera"))
+    @Expression("eyeY <= fluidTopForCamera")
     @ModifyExpressionValue(method = "update", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean addMagicOffset(boolean original, @Local(name = "eyeY") double eyeY, @Local(name = "fluidBottom") double fluidBottom, @Local(name = "level") BlockGetter level, @Local(name = "fluidState") FluidState fluidState, @Local(name = "mutablePos") BlockPos.MutableBlockPos mutablePos) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2)) {
