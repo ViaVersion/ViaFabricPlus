@@ -22,6 +22,8 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_2_1;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.features.global.FurnaceFuels;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.item.ItemStack;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -46,7 +48,18 @@ public abstract class MixinAbstractFurnaceMenu {
 
     @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/AbstractFurnaceMenu;isFuel(Lnet/minecraft/world/item/ItemStack;)Z"))
     private boolean disableShiftClickFuelSlot(AbstractFurnaceMenu instance, ItemStack itemStack) {
-        return this.isFuel(itemStack) && ViaFabricPlus.api().targetVersion().newerThan(LegacyProtocolVersion.r1_2_1tor1_2_3);
+        boolean isFuel;
+
+        if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5) && ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.r1_3_1tor1_3_2))
+            isFuel = FurnaceFuels.fuels_1_2_5().isFuel(itemStack);
+        else if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2) && ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_11))
+            isFuel = FurnaceFuels.fuels_1_3_1().isFuel(itemStack);
+        else if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11) && ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_14))
+            isFuel = FurnaceFuels.fuels_1_11().isFuel(itemStack);
+        else
+            isFuel = this.isFuel(itemStack);
+
+        return isFuel && ViaFabricPlus.api().targetVersion().newerThan(LegacyProtocolVersion.r1_2_1tor1_2_3);
     }
 
 }
