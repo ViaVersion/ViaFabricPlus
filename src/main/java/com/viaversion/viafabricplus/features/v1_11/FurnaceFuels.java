@@ -19,12 +19,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.features.global;
+package com.viaversion.viafabricplus.features.v1_11;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -48,10 +46,10 @@ public class FurnaceFuels {
     public boolean isFuel(final ItemStack itemStack) {
         return this.values.contains(itemStack.getItem());
     }
-    
+
     public static FurnaceFuels getFuels_1_11() {
         if (FUELS_1_11 == null)
-            FUELS_1_11 = new FurnaceFuels.Builder(Minecraft.getInstance().level.registryAccess())
+            FUELS_1_11 = new FurnaceFuels.Builder()
                 .add(Items.LAVA_BUCKET)
                 .add(Blocks.COAL_BLOCK)
                 .add(Items.BLAZE_ROD)
@@ -75,7 +73,7 @@ public class FurnaceFuels {
                 .add(Items.BOW)
                 .add(Items.FISHING_ROD)
                 .add(Blocks.LADDER)
-                .add(Blocks.OAK_SIGN)
+                .add(ItemTags.SIGNS)
                 .add(Items.WOODEN_SHOVEL)
                 .add(Items.WOODEN_SWORD)
                 .add(Items.WOODEN_SPEAR)
@@ -98,7 +96,7 @@ public class FurnaceFuels {
 
     public static FurnaceFuels getFuels_1_3_1() {
         if (FUELS_1_3_1 == null)
-            FUELS_1_3_1 = new FurnaceFuels.Builder(Minecraft.getInstance().level.registryAccess())
+            FUELS_1_3_1 = new FurnaceFuels.Builder()
                 .add(Items.LAVA_BUCKET)
                 .add(Blocks.COAL_BLOCK)
                 .add(Items.BLAZE_ROD)
@@ -139,7 +137,7 @@ public class FurnaceFuels {
 
     public static FurnaceFuels getFuels_1_2_5() {
         if (FUELS_1_2_5 == null)
-            FUELS_1_2_5 = new FurnaceFuels.Builder(Minecraft.getInstance().level.registryAccess())
+            FUELS_1_2_5 = new FurnaceFuels.Builder()
                 .add(Items.LAVA_BUCKET)
                 .add(Blocks.COAL_BLOCK)
                 .add(Items.BLAZE_ROD)
@@ -173,24 +171,23 @@ public class FurnaceFuels {
     }
 
     public static class Builder {
-        private final HolderLookup<Item> items;
         private final ArrayList<Item> values = new ArrayList<>();
-
-        public Builder(final HolderLookup.Provider registries) {
-            this.items = registries.lookupOrThrow(Registries.ITEM);
-        }
 
         public FurnaceFuels build() {
             return new FurnaceFuels(this.values);
         }
 
         public FurnaceFuels.Builder remove(final TagKey<Item> tag) {
-            this.values.removeIf(item -> item.builtInRegistryHolder().is(tag));
+            BuiltInRegistries.ITEM.get(tag).ifPresent(items -> {
+                for (Holder<Item> item : items) {
+                    this.values.remove(item.value());
+                }
+            });
             return this;
         }
 
         public FurnaceFuels.Builder add(final TagKey<Item> tag) {
-            this.items.get(tag).ifPresent(items -> {
+            BuiltInRegistries.ITEM.get(tag).ifPresent(items -> {
                 for (Holder<Item> item : items) {
                     this.values.add(item.value());
                 }
