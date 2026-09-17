@@ -45,7 +45,7 @@ public abstract class MixinChestMenu extends AbstractContainerMenu {
      */
     @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ChestMenu;moveItemStackTo(Lnet/minecraft/world/item/ItemStack;IIZ)Z", ordinal = 0))
     private boolean reverseShiftClickItemPlacementOrdering(ChestMenu instance, ItemStack itemStack, int startSlot, int endSlot, boolean backwards) {
-        return this.moveItemStackTo(itemStack, startSlot, endSlot, ViaFabricPlus.api().targetVersion().equalTo(LegacyProtocolVersion.b1_5tob1_5_2) && backwards);
+        return this.moveItemStackTo(itemStack, startSlot, endSlot, ViaFabricPlus.api().targetVersion().newerThan(LegacyProtocolVersion.b1_5tob1_5_2) && backwards);
     }
 
 }
