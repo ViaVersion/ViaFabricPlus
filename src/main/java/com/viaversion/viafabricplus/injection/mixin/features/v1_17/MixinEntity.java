@@ -36,7 +36,7 @@ public abstract class MixinEntity implements IEntity {
 
     @Override
     public boolean viaFabricPlus$isInLoadedChunkAndShouldTick() {
-        return this.viaFabricPlus$isInLoadedChunkAndShouldTick || !ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_8, ProtocolVersion.v1_17);
+        return this.viaFabricPlus$isInLoadedChunkAndShouldTick || !ViaFabricPlus.api().targetVersion().betweenExclusive(ProtocolVersion.v1_8, ProtocolVersion.v1_17);
     }
 
     @Override
