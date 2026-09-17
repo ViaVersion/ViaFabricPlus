@@ -26,8 +26,6 @@ import com.viaversion.viafabricplus.features.v1_11.FurnaceFuels;
 import com.viaversion.viafabricplus.features.v1_11_1.Recipes1_11_2;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.RecipeBookMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
