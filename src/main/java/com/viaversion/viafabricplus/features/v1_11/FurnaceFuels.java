@@ -32,7 +32,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import java.util.ArrayList;
 
-public class FurnaceFuels {
+public final class FurnaceFuels {
+
     private static FurnaceFuels FUELS_1_11 = null;
     private static FurnaceFuels FUELS_1_3_1 = null;
     private static FurnaceFuels FUELS_1_2_5 = null;
@@ -171,6 +172,7 @@ public class FurnaceFuels {
     }
 
     public static class Builder {
+
         private final ArrayList<Item> values = new ArrayList<>();
 
         public FurnaceFuels build() {
@@ -200,5 +202,7 @@ public class FurnaceFuels {
             this.values.add(item);
             return this;
         }
+
     }
+
 }
