@@ -168,8 +168,6 @@ public final class FurnaceFuels {
                 .remove(ItemTags.NON_FLAMMABLE_WOOD)
                 .build();
 
-        ItemTags.
-
         return FUELS_1_2_5;
     }
 
