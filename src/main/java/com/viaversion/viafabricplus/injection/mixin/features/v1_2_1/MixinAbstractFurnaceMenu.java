@@ -27,6 +27,7 @@ import com.viaversion.viafabricplus.features.v1_11.FurnaceFuels;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -56,7 +57,6 @@ public abstract class MixinAbstractFurnaceMenu {
 
     @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/AbstractFurnaceMenu;canSmelt(Lnet/minecraft/world/item/ItemStack;)Z"))
     private boolean disableShiftClickSmeltingSlot(AbstractFurnaceMenu instance, ItemStack itemStack) {
-        ViaFabricPlusImpl.impl().logger().warn("can smelt : {}\n item is : {}", this.canSmelt(itemStack), itemStack.getItem().toString());
         return this.canSmelt(itemStack) && ViaFabricPlus.api().targetVersion().newerThan(LegacyProtocolVersion.r1_2_1tor1_2_3);
     }
 
