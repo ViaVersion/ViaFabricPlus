@@ -38,7 +38,7 @@ public abstract class MixinAbstractContainerMenu {
     private ItemStack disableQuickCraftMaxAmount(AbstractContainerMenu instance, Player player, int slotIndex) {
         ItemStack clicked = instance.quickMoveStack(player, slotIndex);
 
-        if ((Object) this instanceof AbstractCraftingMenu && slotIndex == 0 && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
+        if ((Object) this instanceof AbstractCraftingMenu && slotIndex == 0 && ViaFabricPlus.api().targetVersion().equalTo(LegacyProtocolVersion.b1_7tob1_7_3)) {
             return ItemStack.EMPTY;
         }
 
