@@ -59,3 +59,4 @@ accessible class net/minecraft/client/gui/screens/debug/GameModeSwitcherScreen$G
 accessible class net/minecraft/client/gui/Font$PreparedTextBuilder
 accessible class net/minecraft/world/inventory/BrewingStandMenu$PotionSlot
 accessible class net/minecraft/world/inventory/BrewingStandMenu$FuelSlot
+accessible class net/minecraft/world/inventory/BrewingStandMenu$IngredientsSlot

@@ -61,11 +61,11 @@ public abstract class MixinAbstractFurnaceMenu {
 
     @Inject(method = "isFuel", at = @At("HEAD"), cancellable = true)
     private void fuelSlotShiftClickWhitelist(ItemStack itemStack, CallbackInfoReturnable<Boolean> cir) {
-        if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_2_4tor1_2_5) && ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.r1_3_1tor1_3_2)) {
+        if (ViaFabricPlus.api().targetVersion().equalTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
             cir.setReturnValue(FurnaceFuels.getFuels_1_2_5().isFuel(itemStack));
-        } else if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_3_1tor1_3_2) && ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_11)) {
+        } else if (ViaFabricPlus.api().targetVersion().betweenInclusive(LegacyProtocolVersion.r1_3_1tor1_3_2, ProtocolVersion.v1_10)) {
             cir.setReturnValue(FurnaceFuels.getFuels_1_3_1().isFuel(itemStack));
-        } else if (ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_11) && ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_14)) {
+        } else if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_11, ProtocolVersion.v1_13_2)) {
             cir.setReturnValue(FurnaceFuels.getFuels_1_11().isFuel(itemStack));
         }
     }

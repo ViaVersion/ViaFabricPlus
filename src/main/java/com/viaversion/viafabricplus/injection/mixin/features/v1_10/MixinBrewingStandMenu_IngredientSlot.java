@@ -19,33 +19,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_9;
+package com.viaversion.viafabricplus.injection.mixin.features.v1_10;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.world.Container;
 import net.minecraft.world.inventory.BrewingStandMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionBrewing;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(BrewingStandMenu.class)
-public abstract class MixinBrewingStandMenu {
+@Mixin(BrewingStandMenu.IngredientsSlot.class)
+public abstract class MixinBrewingStandMenu_IngredientSlot extends Slot {
 
     @Shadow
     @Final
-    private Slot ingredientSlot;
+    private PotionBrewing potionBrewing;
 
-    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/BrewingStandMenu$FuelSlot;mayPlaceItem(Lnet/minecraft/world/item/ItemStack;)Z"))
-    private boolean disableShiftClickBlazePowderFuelSlotWhenIngredientSlotEmpty(ItemStack itemStack) {
-        if (ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_11)) {
-            return BrewingStandMenu.FuelSlot.mayPlaceItem(itemStack) && !this.ingredientSlot.getItem().isEmpty();
+    public MixinBrewingStandMenu_IngredientSlot(final Container container, final int slot, final int x, final int y) {
+        super(container, slot, x, y);
+    }
+
+    @Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
+    private void disableShiftClickIngredientWhenIngredientSlotNotEmpty(ItemStack itemStack, CallbackInfoReturnable<Boolean> cir) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_10)) {
+            cir.setReturnValue(this.potionBrewing.isIngredient(itemStack) && this.getItem().isEmpty());
         }
-
-        return BrewingStandMenu.FuelSlot.mayPlaceItem(itemStack);
     }
 
 }

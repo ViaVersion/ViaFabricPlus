@@ -19,26 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_9;
+package com.viaversion.viafabricplus.injection.mixin.features.v1_10;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.inventory.BrewingStandMenu;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(BrewingStandMenu.FuelSlot.class)
-public abstract class MixinBrewingStandMenu_FuelSlot {
+@Mixin(BrewingStandMenu.class)
+public abstract class MixinBrewingStandMenu {
 
-    @Inject(method = "mayPlaceItem", at = @At("HEAD"), cancellable = true)
-    private static void enableShiftClickBlazePowderFuelSlot(ItemStack itemStack, CallbackInfoReturnable<Boolean> cir) {
-        if (itemStack.is(Items.BLAZE_POWDER) && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_9) && ViaFabricPlus.api().targetVersion().olderThan(ProtocolVersion.v1_11)) {
-           cir.setReturnValue(true);
+    @Shadow
+    @Final
+    private Slot ingredientSlot;
+
+    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/BrewingStandMenu$FuelSlot;mayPlaceItem(Lnet/minecraft/world/item/ItemStack;)Z"))
+    private boolean disableShiftClickBlazePowderFuelSlotWhenIngredientSlotEmpty(ItemStack itemStack) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_9, ProtocolVersion.v1_10)) {
+            return BrewingStandMenu.FuelSlot.mayPlaceItem(itemStack) && !this.ingredientSlot.getItem().isEmpty();
         }
+
+        return BrewingStandMenu.FuelSlot.mayPlaceItem(itemStack);
     }
 
 }
