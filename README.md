@@ -40,16 +40,15 @@ entity interactions, graphics, and more. In short, it recreates the classic Mine
 
 ### Supported Client versions
 
-| **Version**                     | **Feature Updates** | **Bug Fixes** |
-|---------------------------------|---------------------|---------------|
-| Minecraft 26.2                  | Yes                 | Yes           |
-| Minecraft 26.1.x                | No                  | Yes           |
-| Minecraft 1.21.11               | No                  | Yes           |
-| Minecraft 1.21.10 *(and older)* | No                  | No            |
+| **Version**                    | **Feature Updates** | **Bug Fixes** |
+|--------------------------------|---------------------|---------------|
+| Minecraft 26.3                 | Yes                 | Yes           |
+| Minecraft 26.2                 | No                  | Yes           |
+| Minecraft 26.1.x *(and older)* | No                  | No            |
 
 ### Supported Server versions
 
-- Release (1.0.0–latest supported release*)
+- Release (1.0.0–26.3*)
 - Beta (b1.0 – b1.8.1)
 - Alpha (a1.0.15 – a1.2.6)
 - Classic (c0.0.15 – c0.30 including [CPE](https://wiki.vg/Classic_Protocol_Extension))
