@@ -391,6 +391,7 @@
     "features.v1_8.screen.MixinBrewingStandMenu_FuelSlot",
     "features.v1_8.screen.MixinCommandBlockEditScreen",
     "features.v1_8.screen.MixinInventoryMenu",
+    "features.v1_8.screen.MixinEnchantmentMenu",
     "features.v1_10.MixinBrewingStandMenu_IngredientSlot",
     "features.v1_10.MixinBrewingStandMenu",
     "features.v1_10.MixinBrewingStandMenu_FuelSlot",
