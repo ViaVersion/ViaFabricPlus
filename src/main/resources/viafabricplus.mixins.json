@@ -46,6 +46,7 @@
     "features.b1_5.MixinCraftingMenu",
     "features.b1_7.MixinDispenserMenu",
     "features.b1_7.MixinBowItem",
+    "features.b1_7.MixinAbstractContainerMenu",
     "features.b1_7.MixinHud",
     "features.b1_7.MixinMultiPlayerGameMode",
     "features.b1_7.MixinServerSelectionList_OnlineServerEntry",
