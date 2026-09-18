@@ -22,7 +22,6 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_4_4;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerInput;
