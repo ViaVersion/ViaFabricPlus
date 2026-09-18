@@ -37,9 +37,9 @@ public final class AdvancedSettingsImpl extends SettingGroupImpl implements Adva
     private final BooleanSetting printNetworkingErrorsToLogs = registerBoolean("print_networking_errors_to_logs", true);
     private final BooleanSetting ignoreFabricSyncErrors = registerBoolean("ignore_fabric_sync_errors", false);
     private final BooleanSetting filterNonExistingGlyphs = registerBoolean("filter_non_existing_glyphs", true);
-    private final VersionedBooleanSetting removeServerDescriptionSanitize = registerVersionedBoolean("remove_server_description_sanitize", andOlder(v1_21_11), false);
-    private final VersionedBooleanSetting dontCreatePacketErrorCrashReports = registerVersionedBoolean("dont_create_packet_error_crash_reports", andOlder(v1_20_3), false);
-    private final VersionedBooleanSetting disableSequencing = registerVersionedBoolean("disable_sequencing", andOlder(v1_18_2), false);
+    private final VersionedBooleanSetting removeServerDescriptionSanitize = registerVersionedBoolean("remove_server_description_sanitize", andOlder(v1_21_11), true);
+    private final VersionedBooleanSetting dontCreatePacketErrorCrashReports = registerVersionedBoolean("dont_create_packet_error_crash_reports", andOlder(v1_20_3), true);
+    private final VersionedBooleanSetting disableSequencing = registerVersionedBoolean("disable_sequencing", andOlder(v1_18_2), true);
 
     public AdvancedSettingsImpl() {
         super("advanced");
