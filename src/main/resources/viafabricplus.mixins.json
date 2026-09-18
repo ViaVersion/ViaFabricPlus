@@ -390,6 +390,8 @@
     "features.v1_8.screen.MixinBrewingStandMenu_FuelSlot",
     "features.v1_8.screen.MixinCommandBlockEditScreen",
     "features.v1_8.screen.MixinInventoryMenu",
+    "features.v1_9.MixinBrewingStandMenu",
+    "features.v1_9.MixinBrewingStandMenu_FuelSlot",
     "features.v1_9_3.MixinFarmlandBlock",
     "features.v1_9_3.MixinLivingEntity",
     "features.v1_9_3.network.MixinChatScreen",
