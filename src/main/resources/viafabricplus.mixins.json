@@ -425,6 +425,7 @@
     "features.v26_2.MixinLocalPlayer",
     "features.v26_2.MixinMinecraft",
     "features.v26_2.MixinMultiPlayerGameMode",
+    "features.v26_2.MixinPlayer",
     "features.v26_2.network.MixinClientPacketListener"
   ],
   "injectors": {
