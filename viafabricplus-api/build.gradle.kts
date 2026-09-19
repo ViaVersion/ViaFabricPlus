@@ -18,8 +18,8 @@ setupFabric()
 setupViaPublishing()
 
 dependencies {
-    api("com.viaversion:viaversion-common:5.12.0")
-    api("com.viaversion:viabackwards-common:5.12.0")
+    api("com.viaversion:viaversion-common:5.12.1-SNAPSHOT")
+    api("com.viaversion:viabackwards-common:5.12.1-SNAPSHOT")
     api("com.viaversion:viaaprilfools-common:4.2.3")
     api("net.raphimc:ViaLegacy:3.1.0")
 }
