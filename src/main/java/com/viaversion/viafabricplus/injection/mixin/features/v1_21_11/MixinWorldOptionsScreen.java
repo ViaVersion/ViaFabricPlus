@@ -24,7 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_21_11;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.options.WorldOptionsScreen;
+import net.minecraft.client.gui.screens.WorldOptionsScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

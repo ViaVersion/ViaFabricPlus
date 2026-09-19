@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_19_1.network;
 
-import com.mojang.authlib.yggdrasil.response.KeyPairResponse;
+import com.mojang.authlib.services.response.KeyPairResponse;
 import com.viaversion.viafabricplus.injection.access.v1_19_1.IProfilePublicKey_Data;
 import net.minecraft.client.multiplayer.AccountProfileKeyPairManager;
 import net.minecraft.world.entity.player.ProfilePublicKey;

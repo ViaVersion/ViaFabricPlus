@@ -19,28 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_20_5.item;
+package com.viaversion.viafabricplus.injection.mixin.features.v1_8.item;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.item.AxeItem;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.FlintAndSteelItem;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(AxeItem.class)
-public abstract class MixinAxeItem {
+@Mixin(FlintAndSteelItem.class)
+public abstract class MixinFlintAndSteelItem {
 
-    @Shadow
-    private static boolean playerHasBlockingItemUseIntent(UseOnContext context) {
-        return false;
-    }
-
-    @Redirect(method = "useOn", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/AxeItem;playerHasBlockingItemUseIntent(Lnet/minecraft/world/item/context/UseOnContext;)Z"))
-    private boolean neverCancelStripAttempt(UseOnContext context) {
-        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_20_5) && playerHasBlockingItemUseIntent(context);
+    @WrapWithCondition(method = "useOn", at = @At(value = "INVOKE",
+        target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/core/BlockPos;Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"))
+    private boolean disableItemPlaceSounds(Level instance, Entity except, BlockPos pos, SoundEvent sound, SoundSource source, float volume, float pitch) {
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_8);
     }
 
 }

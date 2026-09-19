@@ -21,22 +21,28 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_12_2;
 
+import com.mojang.blaze3d.platform.SDLEventHandler;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viafabricplus.injection.access.v1_12_2.IMouseKeyboardHandlers;
+import com.viaversion.viafabricplus.injection.access.v1_12_2.ISDLEventHandler;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.input.KeyEvent;
+import org.lwjgl.sdl.SDLEvents;
+import org.lwjgl.sdl.SDL_Event;
+import org.lwjgl.sdl.SDL_KeyboardEvent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(KeyboardHandler.class)
-public abstract class MixinKeyboardHandler implements IMouseKeyboardHandlers {
+@Mixin(SDLEventHandler.class)
+public abstract class MixinSDLEventHandler implements ISDLEventHandler {
 
     @Shadow
     @Final
@@ -45,13 +51,33 @@ public abstract class MixinKeyboardHandler implements IMouseKeyboardHandlers {
     @Unique
     private final Queue<Runnable> viaFabricPlus$pendingScreenEvents = new ConcurrentLinkedQueue<>();
 
-    @Redirect(method = {"lambda$setup$0", "lambda$setup$2"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;execute(Ljava/lang/Runnable;)V"))
+    @Redirect(method = {"handleTextInputEvent", "handleMouseButtonEvent", "handleMouseWheelEvent"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;execute(Ljava/lang/Runnable;)V"))
     private void storeEvent(Minecraft instance, Runnable runnable) {
-        if (this.minecraft.getConnection() != null && this.minecraft.gui.screen() != null && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+        if (this.viaFabricPlus$shouldStoreEvent()) {
             this.viaFabricPlus$pendingScreenEvents.offer(runnable);
         } else {
             instance.execute(runnable);
         }
+    }
+
+    // Vanilla's runnable resolves the window handle from the SDL_Event, which is already freed once the event loop returns, so the dispatch has to be rebuilt with every value read upfront
+    @Inject(method = "handleKeyEvent", at = @At("HEAD"), cancellable = true)
+    private void storeKeyEvent(SDL_Event event, CallbackInfo ci) {
+        if (!this.viaFabricPlus$shouldStoreEvent()) {
+            return;
+        }
+
+        final SDL_KeyboardEvent keyEvent = event.key();
+        final int action = event.type() == SDLEvents.SDL_EVENT_KEY_UP ? 0 : (keyEvent.repeat() ? -1 : 1);
+        final KeyEvent key = new KeyEvent(keyEvent.scancode(), keyEvent.key(), keyEvent.mod());
+        final long handle = SDLEvents.SDL_GetWindowFromEvent(event);
+        this.viaFabricPlus$pendingScreenEvents.offer(() -> this.minecraft.keyboardHandler.keyPress(handle, action, key));
+        ci.cancel();
+    }
+
+    @Unique
+    private boolean viaFabricPlus$shouldStoreEvent() {
+        return this.minecraft.getConnection() != null && this.minecraft.gui.screen() != null && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2);
     }
 
     @Override

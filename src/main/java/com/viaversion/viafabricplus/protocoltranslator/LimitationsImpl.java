@@ -209,4 +209,21 @@ public final class LimitationsImpl implements Limitations {
         }
     }
 
+    public Reference2ObjectMap<Item, ProtocolVersionRange> getItemDiff() {
+        return itemDiff;
+    }
+
+    public Reference2ObjectMap<ResourceKey<Enchantment>, ProtocolVersionRange> getEnchantmentDiff() {
+        return enchantmentDiff;
+    }
+
+
+    public Reference2ObjectMap<Holder<MobEffect>, ProtocolVersionRange> getEffectDiff() {
+        return effectDiff;
+    }
+
+    public Reference2ObjectMap<ResourceKey<BannerPattern>, ProtocolVersionRange> getPatternDiff() {
+        return patternDiff;
+    }
+
 }

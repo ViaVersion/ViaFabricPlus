@@ -19,27 +19,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_8.item;
+package com.viaversion.viafabricplus.injection.mixin.features.v1_12_2.movement;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import java.util.Map;
-import net.minecraft.world.item.ShovelItem;
-import org.objectweb.asm.Opcodes;
+import net.minecraft.world.entity.EntityFluidInteraction;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.Slice;
 
-@Mixin(ShovelItem.class)
-public abstract class MixinShovelItem {
+@Mixin(EntityFluidInteraction.CurrentAccumulator.class)
+public abstract class MixinEntityFluidInteraction_CurrentAccumulator {
 
-    @Redirect(method = "useOn", slice = @Slice(from = @At(value = "FIELD", target = "Lnet/minecraft/world/item/ShovelItem;FLATTENABLES:Ljava/util/Map;", opcode = Opcodes.GETSTATIC)), at = @At(value = "INVOKE", target = "Ljava/util/Map;get(Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0, remap = false))
-    private Object disablePathAction(Map<Object, Object> instance, Object grassBlock) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            return null;
+    @Redirect(method = "applyTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;", ordinal = 0))
+    private Vec3 normalizeInsteadScale(Vec3 instance, double scale) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return instance.normalize();
         } else {
-            return instance.get(grassBlock);
+            return instance.scale(scale);
+        }
+    }
+
+    @Redirect(method = "applyTo", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;length()D"))
+    private double dontScaleSmallValues(Vec3 instance) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return Double.MAX_VALUE;
+        } else {
+            return instance.length();
         }
     }
 

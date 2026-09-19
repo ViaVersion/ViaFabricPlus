@@ -44,9 +44,9 @@ public final class VisualSettingsImpl extends SettingGroupImpl implements Visual
     private final VersionedBooleanSetting hideModernHUDElements = registerVersionedBoolean("hide_modern_hud_elements", andOlder(b1_7tob1_7_3), false);
     private final VersionedBooleanSetting replaceCreativeInventory = registerVersionedBoolean("replace_creative_inventory_with_classic_inventory", andOlder(c0_28toc0_30), true);
     private final VersionedBooleanSetting oldWalkingAnimation = registerVersionedBoolean("old_walking_animation", andOlder(c0_28toc0_30), true);
-    private final VersionedBooleanSetting legacyPaneOutlines = registerVersionedBoolean("legacy_pane_outlines", andOlder(v1_12_2), false);
-    private final VersionedBooleanSetting legacyCropOutlines = registerVersionedBoolean("legacy_crop_outlines", andOlder(v1_8), false);
-    private final VersionedBooleanSetting disableServerPinging = registerVersionedBoolean("disable_server_pinging", andOlder(b1_7tob1_7_3), false);
+    private final VersionedBooleanSetting legacyPaneOutlines = registerVersionedBoolean("legacy_pane_outlines", andOlder(v1_12_2), true);
+    private final VersionedBooleanSetting legacyCropOutlines = registerVersionedBoolean("legacy_crop_outlines", andOlder(v1_8), true);
+    private final VersionedBooleanSetting disableServerPinging = registerVersionedBoolean("disable_server_pinging", andOlder(b1_7tob1_7_3), true);
 
     public VisualSettingsImpl() {
         super("visual");

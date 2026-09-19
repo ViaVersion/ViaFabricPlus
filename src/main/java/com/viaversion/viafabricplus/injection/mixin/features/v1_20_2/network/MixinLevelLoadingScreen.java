@@ -88,7 +88,8 @@ public abstract class MixinLevelLoadingScreen extends Screen implements ILevelLo
 
                         final BlockPos blockPos = this.minecraft.player.blockPosition();
                         final boolean isOutOfHeightLimit = this.minecraft.level != null && this.minecraft.level.isOutsideBuildHeight(blockPos.getY());
-                        if (isOutOfHeightLimit || this.minecraft.levelRenderer.isSectionCompiledAndVisible(blockPos) || this.minecraft.player.isSpectator() || !this.minecraft.player.isAlive()) {
+                        final long chunkFadeDuration = Util.toMillis(this.minecraft.options.chunkSectionFadeInTime().get());
+                        if (isOutOfHeightLimit || this.minecraft.levelRenderer.isSectionCompiledAndVisible(blockPos, chunkFadeDuration) || this.minecraft.player.isSpectator() || !this.minecraft.player.isAlive()) {
                             this.onClose();
                         }
                     } else {

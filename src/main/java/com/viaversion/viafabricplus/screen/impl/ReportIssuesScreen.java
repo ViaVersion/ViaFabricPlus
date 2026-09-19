@@ -21,17 +21,16 @@
 
 package com.viaversion.viafabricplus.screen.impl;
 
+import com.mojang.blaze3d.Blaze3D;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.screen.base.VFPPopup;
 import com.viaversion.viaversion.util.DumpUtil;
-import java.io.File;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Util;
 
 public final class ReportIssuesScreen extends VFPPopup {
 
@@ -45,11 +44,11 @@ public final class ReportIssuesScreen extends VFPPopup {
         super(Component.translatable("screen.viafabricplus.report_issues"), BUTTON_WIDTH + 2 * BUTTON_MARGIN, 4 * (BUTTON_HEIGHT + BUTTON_MARGIN) + BUTTON_MARGIN);
 
         actions.put("report.viafabricplus.bug_report", () -> {
-            Util.getPlatform().openUri(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml"));
+            Blaze3D.openUri(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml"));
             showToast(Component.translatable("report.viafabricplus.bug_report.response"));
         });
         actions.put("report.viafabricplus.feature_request", () -> {
-            Util.getPlatform().openUri(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml"));
+            Blaze3D.openUri(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml"));
             showToast(Component.translatable("report.viafabricplus.feature_request.response"));
         });
         actions.put("report.viafabricplus.create_via_dump", () -> DumpUtil.postDump(minecraft.getUser().getProfileId()).whenComplete((s, throwable) -> {
@@ -62,7 +61,7 @@ public final class ReportIssuesScreen extends VFPPopup {
             minecraft.keyboardHandler.setClipboard(s);
         }));
         actions.put("report.viafabricplus.open_logs", () -> {
-            Util.getPlatform().openFile(new File(minecraft.gameDirectory, "logs") /* there is no constant for this in the game */);
+            Blaze3D.openPath(minecraft.gameDirectory.toPath().resolve("logs"));
             showToast(Component.translatable("report.viafabricplus.open_logs.response"));
         });
     }
