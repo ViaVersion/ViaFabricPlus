@@ -22,13 +22,22 @@
 package com.viaversion.viafabricplus.injection.mixin.features.v1_2_1;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.features.v1_11.FurnaceFuels;
+import com.viaversion.viafabricplus.features.v1_11_1.Recipes1_11_2;
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.inventory.AbstractFurnaceMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.level.Level;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractFurnaceMenu.class)
 public abstract class MixinAbstractFurnaceMenu {
@@ -38,6 +47,28 @@ public abstract class MixinAbstractFurnaceMenu {
 
     @Shadow
     protected abstract boolean isFuel(ItemStack itemStack);
+
+    @Final
+    @Shadow
+    protected Level level;
+
+    @Inject(method = "canSmelt", at = @At("HEAD"), cancellable = true)
+    private void smeltingSlotShiftClickWhitelist(ItemStack itemStack, CallbackInfoReturnable<Boolean> cir) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
+            cir.setReturnValue(Recipes1_11_2.getRecipeManager(this.level.registryAccess().freeze()).getFirstMatch(RecipeType.SMELTING, new SingleRecipeInput(itemStack), this.level).isPresent());
+        }
+    }
+
+    @Inject(method = "isFuel", at = @At("HEAD"), cancellable = true)
+    private void fuelSlotShiftClickWhitelist(ItemStack itemStack, CallbackInfoReturnable<Boolean> cir) {
+        if (ViaFabricPlus.api().targetVersion().equalTo(LegacyProtocolVersion.r1_2_4tor1_2_5)) {
+            cir.setReturnValue(FurnaceFuels.getFuels_1_2_5().isFuel(itemStack));
+        } else if (ViaFabricPlus.api().targetVersion().betweenInclusive(LegacyProtocolVersion.r1_3_1tor1_3_2, ProtocolVersion.v1_10)) {
+            cir.setReturnValue(FurnaceFuels.getFuels_1_3_1().isFuel(itemStack));
+        } else if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_11, ProtocolVersion.v1_13_2)) {
+            cir.setReturnValue(FurnaceFuels.getFuels_1_11().isFuel(itemStack));
+        }
+    }
 
     @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/AbstractFurnaceMenu;canSmelt(Lnet/minecraft/world/item/ItemStack;)Z"))
     private boolean disableShiftClickSmeltingSlot(AbstractFurnaceMenu instance, ItemStack itemStack) {

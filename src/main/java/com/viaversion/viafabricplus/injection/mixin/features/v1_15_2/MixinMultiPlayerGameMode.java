@@ -29,6 +29,7 @@ import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractCraftingMenu;
 import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.level.block.Blocks;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
@@ -59,7 +60,9 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Inject(method = "handleContainerInput", at = @At("HEAD"), cancellable = true)
     private void removeClickActions(int containerId, int slotNum, int buttonNum, ContainerInput containerInput, Player player, CallbackInfo ci) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !containerInput.equals(ContainerInput.PICKUP)) {
+        if (ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.b1_5tob1_5_2) && !containerInput.equals(ContainerInput.PICKUP)) {
+            ci.cancel();
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_6tob1_6_6) && slotNum == 0 && player.containerMenu instanceof AbstractCraftingMenu && !containerInput.equals(ContainerInput.PICKUP)) {
             ci.cancel();
         } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !containerInput.equals(ContainerInput.PICKUP) && !containerInput.equals(ContainerInput.QUICK_MOVE) && !containerInput.equals(ContainerInput.SWAP) && !containerInput.equals(ContainerInput.CLONE)) {
             ci.cancel();
