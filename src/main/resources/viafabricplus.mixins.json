@@ -420,7 +420,8 @@
     "features.v26_1.entity.MixinZombifiedPiglin",
     "features.v26_1.movement.MixinBedBlock",
     "features.v26_1.movement.MixinEntity",
-    "features.v26_1.movement.MixinLivingEntity"
+    "features.v26_1.movement.MixinLivingEntity",
+    "features.v26_2.network.MixinClientPacketListener"
   ],
   "injectors": {
     "defaultRequire": 1
