@@ -34,19 +34,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MultiPlayerGameMode.class)
 public abstract class MixinMultiPlayerGameMode {
 
-    /**
-     * on 1.4.5 and below(?) if a server receives a container click packet with
-     * a negative slot number it will forcefully disconnect the player because
-     * the server does not check for the negative slot number and tries to index
-     * a list(?) with the negative slot number, causing a disconnect
-     * this can happen when you hold shift and spam click on the crafting result slot,
-     * especially when crafting multiple different tools
-     * this problem does not happen on the actual 1.4.5 and below clients
-     */
     @Inject(method = "handleContainerInput", at = @At("HEAD"), cancellable = true)
-    private void cancelContainerClickWithNegativeSlotNumber(int containerId, int slotNum, int buttonNum, ContainerInput containerInput, Player player, CallbackInfo ci) {
-        if (slotNum < 0 && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_4tor1_4_5)) {
-           ci.cancel();
+    private void cancelQuickMoveWithNegativeSlotNumber(int containerId, int slotNum, int buttonNum, ContainerInput containerInput, Player player, CallbackInfo ci) {
+        if (slotNum < 0 && containerInput.equals(ContainerInput.QUICK_MOVE) && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_4tor1_4_5)) {
+            ci.cancel();
         }
     }
 
