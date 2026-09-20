@@ -123,6 +123,11 @@ public final class ProtocolTranslationImpl implements ProtocolTranslation {
         return ((IServerData) serverData).viaFabricPlus$forcedVersion();
     }
 
+    @Override
+    public void setServerVersion(final ServerData serverData, final ProtocolVersion version) {
+        ((IServerData) serverData).viaFabricPlus$forceVersion(version);
+    }
+
     public void injectionPreviousVersionHandler(final Channel channel) {
         if (this.previousVersion != null) {
             channel.closeFuture().addListener(_ -> {

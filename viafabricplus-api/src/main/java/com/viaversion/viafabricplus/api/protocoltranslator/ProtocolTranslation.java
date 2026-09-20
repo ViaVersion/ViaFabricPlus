@@ -110,4 +110,12 @@ public interface ProtocolTranslation {
      */
     @Nullable ProtocolVersion serverVersion(final ServerData serverData);
 
+    /**
+     * Sets the pre-server version of the server.
+     *
+     * @param serverData the server data
+     * @param version    the version
+     */
+    void setServerVersion(final ServerData serverData, final ProtocolVersion version);
+
 }

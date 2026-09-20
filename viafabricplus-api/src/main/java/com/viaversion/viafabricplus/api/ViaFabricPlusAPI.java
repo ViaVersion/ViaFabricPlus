@@ -45,7 +45,7 @@ public interface ViaFabricPlusAPI {
      * @return API version incremented with meaningful API changes
      */
     default int apiVersion() {
-        return 7;
+        return 8;
     }
 
     /**
