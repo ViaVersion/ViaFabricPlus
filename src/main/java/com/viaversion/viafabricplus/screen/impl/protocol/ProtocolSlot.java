@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.screen.impl.protocol;
 
-import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
+import com.viaversion.viafabricplus.api.protocoltranslator.ProtocolTranslation;
 import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -60,7 +60,7 @@ public final class ProtocolSlot extends VFPListEntry {
 
     private static Identifier resolveIcon(final ProtocolVersion protocolVersion) {
         // Auto Detect is no Minecraft version and therefore has no metadata to take an icon from
-        if (protocolVersion == ProtocolVersionDetector.AUTO_DETECT_VERSION) {
+        if (protocolVersion == ProtocolTranslation.AUTO_DETECT_VERSION) {
             return AUTO_DETECT_ICON;
         }
 

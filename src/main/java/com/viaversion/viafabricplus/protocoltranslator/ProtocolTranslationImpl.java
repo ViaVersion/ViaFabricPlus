@@ -34,7 +34,6 @@ import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPl
 import com.viaversion.viafabricplus.protocoltranslator.impl.platform.ViaFabricPlusViaVersionPlatform;
 import com.viaversion.viafabricplus.protocoltranslator.impl.viaversion.ViaFabricPlusPlatformLoader;
 import com.viaversion.viafabricplus.protocoltranslator.protocol.ViaFabricPlusProtocol;
-import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
 import com.viaversion.viaversion.ViaManagerImpl;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
@@ -163,7 +162,7 @@ public final class ProtocolTranslationImpl implements ProtocolTranslation {
                     new ViaAprilFoolsPlatformImpl();
                 }
             );
-            ProtocolVersion.register(ProtocolVersionDetector.AUTO_DETECT_VERSION);
+            ProtocolVersion.register(ProtocolTranslation.AUTO_DETECT_VERSION);
             ViaFabricPlusProtocol.INSTANCE.initialize();
         }, Util.backgroundExecutor());
     }

@@ -21,7 +21,7 @@
 
 package com.viaversion.viafabricplus.screen.impl.protocol;
 
-import com.viaversion.viafabricplus.protocoltranslator.util.ProtocolVersionDetector;
+import com.viaversion.viafabricplus.api.protocoltranslator.ProtocolTranslation;
 import com.viaversion.viafabricplus.screen.base.VFPTabbedScreen;
 import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
@@ -70,11 +70,11 @@ public abstract class AbstractProtocolSelectionScreen extends VFPTabbedScreen<Pr
         final List<VFPListEntry> entries = new ArrayList<>();
         if (tab == ProtocolCategory.MODERN) {
             // Auto Detect is no Minecraft version, it is pinned to the first tab as it is not limited to a single category
-            entries.add(new ProtocolSlot(ProtocolVersionDetector.AUTO_DETECT_VERSION, this));
+            entries.add(new ProtocolSlot(ProtocolTranslation.AUTO_DETECT_VERSION, this));
         }
 
         for (final ProtocolVersion version : ProtocolVersion.getReversedProtocols()) {
-            if (version != ProtocolVersionDetector.AUTO_DETECT_VERSION && ProtocolCategory.of(version) == tab) {
+            if (version != ProtocolTranslation.AUTO_DETECT_VERSION && ProtocolCategory.of(version) == tab) {
                 entries.add(new ProtocolSlot(version, this));
             }
         }
@@ -95,7 +95,7 @@ public abstract class AbstractProtocolSelectionScreen extends VFPTabbedScreen<Pr
         for (final ProtocolVersion version : ProtocolVersion.getReversedProtocols()) {
             if (this.selected(version)) {
                 // Auto Detect is no Minecraft version and therefore has no category of its own
-                return version == ProtocolVersionDetector.AUTO_DETECT_VERSION ? ProtocolCategory.MODERN : ProtocolCategory.of(version);
+                return version == ProtocolTranslation.AUTO_DETECT_VERSION ? ProtocolCategory.MODERN : ProtocolCategory.of(version);
             }
         }
 
