@@ -35,6 +35,7 @@ import com.viaversion.viafabricplus.features.v1_8.ArmorHudEmulation1_8;
 import com.viaversion.viafabricplus.features.global.ResourcePackHeaderDiff;
 import com.viaversion.viafabricplus.features.v1_11_1.Recipes1_11_2;
 import com.viaversion.viafabricplus.features.v1_12_2.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.features.v26_2.PotionBrewing26_2;
 import com.viaversion.viafabricplus.util.network.SyncTasks;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
@@ -81,6 +82,7 @@ public final class FeaturesLoading {
         Recipes1_11_2.init();
         ArmorHudEmulation1_8.init();
         CPEAdditions.postInit();
+        PotionBrewing26_2.init();
     }
 
 }
