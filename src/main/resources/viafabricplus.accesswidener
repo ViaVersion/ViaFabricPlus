@@ -39,6 +39,7 @@ accessible method net/minecraft/client/gui/components/EditBox getMaxLength ()I
 accessible method net/minecraft/world/level/block/entity/BlockEntity saveMetadata (Lnet/minecraft/world/level/storage/ValueOutput;)V
 accessible method net/minecraft/client/renderer/debug/GameTestBlockHighlightRenderer$Marker <init> (ILjava/lang/String;J)V
 accessible method net/minecraft/client/gui/font/FontSet$SelectedGlyphs <init> (Ljava/util/function/Supplier;Ljava/util/function/Supplier;)V
+accessible method net/minecraft/client/multiplayer/ClientLevel playBreakingSound (Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V
 
 extendable method net/minecraft/world/entity/Entity moveOrInterpolateTo (Lnet/minecraft/world/phys/Vec3;FF)V
 

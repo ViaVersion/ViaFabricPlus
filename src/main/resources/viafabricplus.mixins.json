@@ -434,7 +434,14 @@
     "features.v26_1.entity.MixinZombifiedPiglin",
     "features.v26_1.movement.MixinBedBlock",
     "features.v26_1.movement.MixinEntity",
-    "features.v26_1.movement.MixinLivingEntity"
+    "features.v26_1.movement.MixinLivingEntity",
+    "features.v26_2.MixinLivingEntity",
+    "features.v26_2.MixinLocalPlayer",
+    "features.v26_2.MixinMinecraft",
+    "features.v26_2.MixinMultiPlayerGameMode",
+    "features.v26_2.MixinPlayer",
+    "features.v26_2.MixinSkullBlock",
+    "features.v26_2.network.MixinClientPacketListener"
   ],
   "injectors": {
     "defaultRequire": 1

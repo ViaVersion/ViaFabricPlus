@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_12_2;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.platform.SDLEventHandler;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.injection.access.v1_12_2.ISDLEventHandler;
@@ -29,17 +30,13 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.input.KeyEvent;
-import org.lwjgl.sdl.SDLEvents;
 import org.lwjgl.sdl.SDL_Event;
-import org.lwjgl.sdl.SDL_KeyboardEvent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(SDLEventHandler.class)
 public abstract class MixinSDLEventHandler implements ISDLEventHandler {
@@ -47,6 +44,11 @@ public abstract class MixinSDLEventHandler implements ISDLEventHandler {
     @Shadow
     @Final
     private Minecraft minecraft;
+
+    @Shadow
+    private static long getWindowHandle(final SDL_Event event) {
+        throw new UnsupportedOperationException("Implemented via mixin");
+    }
 
     @Unique
     private final Queue<Runnable> viaFabricPlus$pendingScreenEvents = new ConcurrentLinkedQueue<>();
@@ -60,19 +62,14 @@ public abstract class MixinSDLEventHandler implements ISDLEventHandler {
         }
     }
 
-    // Vanilla's runnable resolves the window handle from the SDL_Event, which is already freed once the event loop returns, so the dispatch has to be rebuilt with every value read upfront
-    @Inject(method = "handleKeyEvent", at = @At("HEAD"), cancellable = true)
-    private void storeKeyEvent(SDL_Event event, CallbackInfo ci) {
-        if (!this.viaFabricPlus$shouldStoreEvent()) {
-            return;
+    @Redirect(method = "handleKeyEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;execute(Ljava/lang/Runnable;)V"))
+    private void storeKeyEvent(Minecraft instance, Runnable runnable, @Local(argsOnly = true) SDL_Event event, @Local int action, @Local KeyEvent key) {
+        if (this.viaFabricPlus$shouldStoreEvent()) {
+            final long handle = getWindowHandle(event);
+            this.viaFabricPlus$pendingScreenEvents.offer(() -> this.minecraft.keyboardHandler.keyPress(handle, action, key));
+        } else {
+            instance.execute(runnable);
         }
-
-        final SDL_KeyboardEvent keyEvent = event.key();
-        final int action = event.type() == SDLEvents.SDL_EVENT_KEY_UP ? 0 : (keyEvent.repeat() ? -1 : 1);
-        final KeyEvent key = new KeyEvent(keyEvent.scancode(), keyEvent.key(), keyEvent.mod());
-        final long handle = SDLEvents.SDL_GetWindowFromEvent(event);
-        this.viaFabricPlus$pendingScreenEvents.offer(() -> this.minecraft.keyboardHandler.keyPress(handle, action, key));
-        ci.cancel();
     }
 
     @Unique
