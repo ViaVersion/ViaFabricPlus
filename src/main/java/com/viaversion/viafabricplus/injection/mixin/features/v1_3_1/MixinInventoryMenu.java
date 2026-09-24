@@ -19,22 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_6_1;
+package com.viaversion.viafabricplus.injection.mixin.features.v1_3_1;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.inventory.Slot;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(AbstractContainerScreen.class)
-public abstract class MixinAbstractContainerScreen {
+@Mixin(InventoryMenu.class)
+public abstract class MixinInventoryMenu {
 
-    @Redirect(method = {"mouseClicked", "mouseReleased"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/MouseButtonEvent;hasShiftDown()Z"))
-    private boolean disableShiftClickItems(final MouseButtonEvent instance) {
-        return instance.hasShiftDown() && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_6_1);
+    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/Slot;hasItem()Z", ordinal = 1))
+    private boolean disableShiftClickArmor(Slot instance) {
+        return instance.hasItem() || ViaFabricPlus.api().targetVersion().olderThan(LegacyProtocolVersion.r1_3_1tor1_3_2);
     }
 
 }
