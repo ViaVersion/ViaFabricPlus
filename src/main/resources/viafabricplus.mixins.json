@@ -429,6 +429,7 @@
     "features.v26_2.MixinSkullBlock",
     "features.v26_2.entity.MixinCamel",
     "features.v26_2.entity.MixinMinecart",
+    "features.v26_2.entity.MixinWanderingTrader",
     "features.v26_2.network.MixinClientPacketListener"
   ],
   "injectors": {
