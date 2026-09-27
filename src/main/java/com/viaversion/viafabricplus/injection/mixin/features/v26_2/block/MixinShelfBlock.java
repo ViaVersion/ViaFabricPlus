@@ -19,22 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v26_2;
+package com.viaversion.viafabricplus.injection.mixin.features.v26_2.block;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.block.ShelfBlock;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(LocalPlayer.class)
-public abstract class MixinLocalPlayer {
+@Mixin(ShelfBlock.class)
+public abstract class MixinShelfBlock {
 
-    @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", ordinal = 1, target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z"))
-    private boolean moveOutOfBlocksWhileRiding(boolean original) {
-        // 26.3 no longer pushes the player out of blocks while riding
-        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v26_3) && original;
+    @ModifyExpressionValue(method = "useItemOn", at = @At(value = "FIELD", target = "Lnet/minecraft/world/InteractionResult;CONSUME:Lnet/minecraft/world/InteractionResult$Success;", opcode = Opcodes.GETSTATIC, ordinal = 0))
+    private InteractionResult.Success swingHand(InteractionResult.Success original) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2)) {
+            return InteractionResult.SUCCESS;
+        } else {
+            return original;
+        }
     }
 
 }

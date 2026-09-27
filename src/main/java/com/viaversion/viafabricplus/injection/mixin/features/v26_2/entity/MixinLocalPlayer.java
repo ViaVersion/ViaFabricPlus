@@ -19,33 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v26_2;
+package com.viaversion.viafabricplus.injection.mixin.features.v26_2.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.SkullBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(SkullBlock.class)
-public abstract class MixinSkullBlock {
+@Mixin(LocalPlayer.class)
+public abstract class MixinLocalPlayer {
 
-    @Shadow
-    protected abstract VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context);
-
-    @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
-    private void dontOutlineDragonHeadsSeparately(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2)) {
-            cir.setReturnValue(this.getCollisionShape(state, level, pos, context));
-        }
+    @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", ordinal = 1, target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z"))
+    private boolean moveOutOfBlocksWhileRiding(boolean original) {
+        // 26.3 no longer pushes the player out of blocks while riding
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v26_3) && original;
     }
 
 }

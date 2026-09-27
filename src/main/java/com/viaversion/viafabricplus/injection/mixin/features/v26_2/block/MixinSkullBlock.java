@@ -19,40 +19,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v26_2;
+package com.viaversion.viafabricplus.injection.mixin.features.v26_2.block;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.SkullBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(Player.class)
-public abstract class MixinPlayer {
+@Mixin(SkullBlock.class)
+public abstract class MixinSkullBlock {
 
-    @ModifyExpressionValue(method = "getDestroySpeed", at = @At(value = "INVOKE", target = "Ljava/lang/Math;pow(DD)D"))
-    private double changeMiningFatigueCalculation(double original, @Local(name = "amplifier") int amplifier) {
+    @Shadow
+    protected abstract VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context);
+
+    @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
+    private void dontOutlineDragonHeadsSeparately(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2)) {
-            return switch (amplifier) {
-                case 0 -> 0.3F;
-                case 1 -> 0.09F;
-                case 2 -> 0.0027F;
-                default -> 8.1E-4F;
-            };
-        } else {
-            return original;
-        }
-    }
-
-    @Redirect(method = "tryToStartFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isInLiquid()Z"))
-    private boolean allowFallFlyingInLava(Player instance) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2)) {
-            return instance.isInWater();
-        } else {
-            return instance.isInLiquid();
+            cir.setReturnValue(this.getCollisionShape(state, level, pos, context));
         }
     }
 
