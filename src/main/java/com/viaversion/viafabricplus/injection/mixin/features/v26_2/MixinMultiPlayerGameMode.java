@@ -25,6 +25,7 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -55,6 +56,12 @@ public abstract class MixinMultiPlayerGameMode {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2) && this.destroyTicks % 4.0F == 0.0F) {
             this.minecraft.level.playBreakingSound(pos, this.minecraft.level.getBlockState(pos));
         }
+    }
+
+    @WrapWithCondition(method = "lambda$startDestroyBlock$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;addBreakingBlockEffects(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Z)V"))
+    private boolean dontAddStartBreakingEffects(ClientLevel instance, BlockPos pos, Direction direction, boolean playSound) {
+        // 26.2 only spawned breaking effects while continuing to destroy, see MixinMinecraft
+        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v26_3);
     }
 
     @WrapWithCondition(method = "attack", at = @At(value = "FIELD", opcode = Opcodes.PUTFIELD, target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;destroyDelay:I"))
