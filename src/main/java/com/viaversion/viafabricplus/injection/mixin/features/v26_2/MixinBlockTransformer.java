@@ -23,7 +23,6 @@ package com.viaversion.viafabricplus.injection.mixin.features.v26_2;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.BlockTransformer;
@@ -31,7 +30,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.component.BlockTransformers;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,6 +39,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockTransformer.class)
 public abstract class MixinBlockTransformer {
+
+    @Inject(method = "playerHasBlockingItemUseIntent", at = @At("RETURN"), cancellable = true)
+    private static void onlyCheckBlockingIntentForAxes(UseOnContext context, CallbackInfoReturnable<Boolean> cir) {
+        // 26.2 only had the blocking item check in AxeItem, hoes and shovels ignored it
+        if (cir.getReturnValueZ() && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2)) {
+            final Holder<BlockTransformer> transformer = context.getItemInHand().get(DataComponents.BLOCK_TRANSFORMER);
+            cir.setReturnValue(transformer != null && transformer.is(BlockTransformers.AXE));
+        }
+    }
 
     @Inject(method = "transformBlock", at = @At("HEAD"), cancellable = true)
     private void douseCampfires(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
