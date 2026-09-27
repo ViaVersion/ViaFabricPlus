@@ -433,6 +433,7 @@
     "features.v26_2.entity.MixinCamel",
     "features.v26_2.entity.MixinMinecart",
     "features.v26_2.entity.MixinWanderingTrader",
+    "features.v26_2.movement.MixinEntityFluidInteraction",
     "features.v26_2.movement.MixinFlowingFluid",
     "features.v26_2.network.MixinClientPacketListener"
   ],
