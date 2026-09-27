@@ -28,6 +28,7 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Player.class)
 public abstract class MixinPlayer {
@@ -43,6 +44,15 @@ public abstract class MixinPlayer {
             };
         } else {
             return original;
+        }
+    }
+
+    @Redirect(method = "tryToStartFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isInLiquid()Z"))
+    private boolean allowFallFlyingInLava(Player instance) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2)) {
+            return instance.isInWater();
+        } else {
+            return instance.isInLiquid();
         }
     }
 
