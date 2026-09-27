@@ -23,11 +23,17 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_21_2;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import com.viaversion.viaversion.api.type.Types;
+import com.viaversion.viaversion.protocols.v1_21_11to26_1.packet.ServerboundPackets26_1;
+import com.viaversion.viaversion.protocols.v26_2to26_3.Protocol26_2To26_3;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundPlayerPositionPacket;
+import net.minecraft.network.protocol.game.ServerboundAcceptTeleportationPacket;
+import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.VecDeltaCodec;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,7 +52,7 @@ public abstract class MixinClientPacketListener {
     public abstract Connection getConnection();
 
     @Unique
-    private Packet<?> viaFabricPlus$teleportConfirmPacket;
+    private ServerboundAcceptTeleportationPacket viaFabricPlus$teleportConfirmPacket;
 
     @Redirect(method = "handleMoveVehicle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;distanceTo(Lnet/minecraft/world/phys/Vec3;)D"))
     private double allowSmallValues(Vec3 instance, Vec3 vec) {
@@ -61,7 +67,7 @@ public abstract class MixinClientPacketListener {
     private boolean changePacketOrder(Connection instance, Packet<?> packet) {
         final boolean cancel = ViaFabricPlus.api().targetVersion().equalTo(ProtocolVersion.v1_21_2);
         if (cancel) {
-            this.viaFabricPlus$teleportConfirmPacket = packet;
+            this.viaFabricPlus$teleportConfirmPacket = (ServerboundAcceptTeleportationPacket) packet;
         }
         return !cancel;
     }
@@ -69,8 +75,14 @@ public abstract class MixinClientPacketListener {
     @Inject(method = "handleMovePlayer", at = @At("RETURN"))
     private void changePacketOrder(ClientboundPlayerPositionPacket packet, CallbackInfo ci) {
         if (viaFabricPlus$teleportConfirmPacket != null) {
-            this.getConnection().send(viaFabricPlus$teleportConfirmPacket);
+            final ServerboundAcceptTeleportationPacket confirm = viaFabricPlus$teleportConfirmPacket;
             viaFabricPlus$teleportConfirmPacket = null;
+            this.getConnection().send(new ServerboundMovePlayerPacket.PosRot(confirm.x(), confirm.y(), confirm.z(), confirm.yRot(), confirm.xRot(), false, false));
+
+            // The 26.3 packet also carries the position and would be split into confirm + move again, send the plain 26.2 confirm instead
+            final PacketWrapper acceptTeleportation = PacketWrapper.create(ServerboundPackets26_1.ACCEPT_TELEPORTATION, ViaFabricPlus.api().userConnection());
+            acceptTeleportation.write(Types.VAR_INT, confirm.id());
+            acceptTeleportation.scheduleSendToServer(Protocol26_2To26_3.class);
         }
     }
 
