@@ -1,0 +1,30 @@
+[versions]
+minecraft = "26.3"
+fabric-loader = "0.19.5"
+fabric-api = "0.160.4+26.3"
+fabric-loom = "1.17-SNAPSHOT"
+
+[libraries]
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+fabric-loader-junit = { module = "net.fabricmc:fabric-loader-junit", version.ref = "fabric-loader" }
+fabric-loom-plugin = { module = "net.fabricmc.fabric-loom:net.fabricmc.fabric-loom.gradle.plugin", version.ref = "fabric-loom" }
+foojay-resolver-convention-plugin = { module = "org.gradle.toolchains.foojay-resolver-convention:org.gradle.toolchains.foojay-resolver-convention.gradle.plugin", version = "1.0.0" }
+viaversion-common = { module = "com.viaversion:viaversion-common", version = "5.12.1-20260927.122410-10" }
+viabackwards-common = { module = "com.viaversion:viabackwards-common", version = "5.12.1-20260925.130410-7" }
+viaaprilfools-common = { module = "com.viaversion:viaaprilfools-common", version = "4.2.3" }
+vialegacy = { module = "net.raphimc:ViaLegacy", version = "3.1.0" }
+reflect = { module = "net.lenni0451:Reflect", version = "1.6.4" }
+classic4j = { module = "de.florianreuth:classic4j", version = "2.3.1" }
+modmenu = { module = "com.terraformersmc:modmenu", version = "21.0.0-beta.1" }
+
+# Versions of the Fabric API modules below are managed by the BOM.
+fabric-api-bom = { module = "net.fabricmc.fabric-api:fabric-api-bom", version.ref = "fabric-api" }
+fabric-api-base = { module = "net.fabricmc.fabric-api:fabric-api-base" }
+fabric-resource-loader-v1 = { module = "net.fabricmc.fabric-api:fabric-resource-loader-v1" }
+fabric-resource-loader-v0 = { module = "net.fabricmc.fabric-api:fabric-resource-loader-v0" }
+fabric-networking-api-v1 = { module = "net.fabricmc.fabric-api:fabric-networking-api-v1" }
+fabric-command-api-v2 = { module = "net.fabricmc.fabric-api:fabric-command-api-v2" }
+fabric-lifecycle-events-v1 = { module = "net.fabricmc.fabric-api:fabric-lifecycle-events-v1" }
+fabric-particles-v1 = { module = "net.fabricmc.fabric-api:fabric-particles-v1" }
+fabric-registry-sync-v0 = { module = "net.fabricmc.fabric-api:fabric-registry-sync-v0" }

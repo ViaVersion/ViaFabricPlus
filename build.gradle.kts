@@ -1,53 +1,34 @@
-import de.florianreuth.baseproject.core.unlockBuildErrors
-import de.florianreuth.baseproject.integration.configureJarInJar
-import de.florianreuth.baseproject.integration.configureTest
-import de.florianreuth.baseproject.integration.fabricApiVersion
-import de.florianreuth.baseproject.integration.includeTransitiveJijDependencies
-import de.florianreuth.baseproject.integration.setupFabric
-import de.florianreuth.baseproject.setupProject
-import de.florianreuth.baseproject.setupViaPublishing
-
 plugins {
-    id("net.fabricmc.fabric-loom")
-    id("de.florianreuth.baseproject")
+    id("base.java")
+    id("base.fabric")
+    id("configuration.transitive_jar_in_jar")
+    id("via.maven_publish")
+    id("base.junit")
+    id("extra.unlock_build_errors")
 }
 
-repositories {
-    maven("https://repo.viaversion.com")
-    maven("https://maven.terraformersmc.com/releases")
-    //mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
+// Comment during Minecraft updates to update data diff files
+tasks.test {
+    enabled = false
 }
-
-setupProject()
-setupFabric()
-setupViaPublishing()
-
-configureTest().also {
-    // Comment during Minecraft updates to update data diff files
-    tasks.test.get().enabled = false
-}
-unlockBuildErrors()
-
-val shade = configureJarInJar()
 
 dependencies {
-    shade(project(":viafabricplus-api")) {
+    jarInJar(projects.viafabricplusApi) {
         exclude("net.fabricmc", "fabric-loader")
     }
 
-    shade(fabricApi.module("fabric-api-base", fabricApiVersion))
-    shade(fabricApi.module("fabric-resource-loader-v1", fabricApiVersion))
-    shade(fabricApi.module("fabric-resource-loader-v0", fabricApiVersion))
-    shade(fabricApi.module("fabric-networking-api-v1", fabricApiVersion))
-    shade(fabricApi.module("fabric-command-api-v2", fabricApiVersion))
-    shade(fabricApi.module("fabric-lifecycle-events-v1", fabricApiVersion))
-    shade(fabricApi.module("fabric-particles-v1", fabricApiVersion))
-    shade(fabricApi.module("fabric-registry-sync-v0", fabricApiVersion))
+    jarInJar(platform(libs.fabric.api.bom))
+    jarInJar(libs.fabric.api.base)
+    jarInJar(libs.fabric.resource.loader.v1)
+    jarInJar(libs.fabric.resource.loader.v0)
+    jarInJar(libs.fabric.networking.api.v1)
+    jarInJar(libs.fabric.command.api.v2)
+    jarInJar(libs.fabric.lifecycle.events.v1)
+    jarInJar(libs.fabric.particles.v1)
+    jarInJar(libs.fabric.registry.sync.v0)
 
-    shade("net.lenni0451:Reflect:1.6.4")
-    shade("de.florianreuth:classic4j:2.3.1")
+    jarInJar(libs.reflect)
+    jarInJar(libs.classic4j)
 
-    compileOnly("com.terraformersmc:modmenu:21.0.0-beta.1")
+    compileOnly(libs.modmenu)
 }
-
-includeTransitiveJijDependencies()

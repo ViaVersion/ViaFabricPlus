@@ -1,27 +1,15 @@
-import de.florianreuth.baseproject.integration.setupFabric
-import de.florianreuth.baseproject.setupProject
-import de.florianreuth.baseproject.setupViaPublishing
-
 plugins {
     id("java")
-    id("net.fabricmc.fabric-loom")
-    id("de.florianreuth.baseproject")
+    id("base.java")
+    id("base.fabric")
+    id("via.maven_publish")
 }
-
-repositories {
-    maven("https://repo.viaversion.com")
-    //mavenLocal() // Uncomment during Minecraft updates for preview VV/VB builds
-}
-
-setupProject()
-setupFabric()
-setupViaPublishing()
 
 dependencies {
-    api("com.viaversion:viaversion-common:5.12.1-20260927.122410-10")
-    api("com.viaversion:viabackwards-common:5.12.1-20260925.130410-7")
-    api("com.viaversion:viaaprilfools-common:4.2.3")
-    api("net.raphimc:ViaLegacy:3.1.0")
+    api(libs.viaversion.common)
+    api(libs.viabackwards.common)
+    api(libs.viaaprilfools.common)
+    api(libs.vialegacy)
 }
 
 tasks {

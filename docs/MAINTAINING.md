@@ -7,15 +7,14 @@ If you're unsure about anything, feel free to ask in the [ViaVersion Discord](ht
 
 ## 1. Update Dependencies
 
-Update all upstream versions in `gradle.properties`. The main ones are:
+Update all upstream versions in `gradle/libs.versions.toml`. The main ones are:
 
-- `minecraft_version`
-- `fabric_loader_version`
-- `fabric_api_version`
-- `supported_minecraft_versions` (if needed)
+- `minecraft`
+- `fabric-loader`
+- `fabric-api`
 
-Also update versions in the `dependencies` block of `build.gradle.kts`, and the Via\* versions in the one of
-`viafabricplus-api/build.gradle.kts`.
+Also update `supported_minecraft_versions` in `gradle.properties` (if needed), and the Via\* versions in
+`gradle/libs.versions.toml`.
 
 ---
 
