@@ -38,7 +38,7 @@ public final class SettingsCommand implements VFPSubCommand {
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
-        ViaFabricPlusImpl.impl().screens().settingsScreen().open(null);
+        ViaFabricPlusImpl.impl().screens().openSettingsScreen(null);
         return true;
     }
 

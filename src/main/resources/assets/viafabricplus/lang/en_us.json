@@ -30,10 +30,12 @@
   "base.viafabricplus.search": "Search",
 
   "screen.viafabricplus.force_version": "Force Version",
+  "force_version.viafabricplus.title": "Please select the version with which the server should be pinged/connected",
   "screen.viafabricplus.report_issues": "Report issues",
   "screen.viafabricplus.classicube_login": "Classicube Login",
   "screen.viafabricplus.classicube_mfa": "Classicube MFA",
   "screen.viafabricplus.settings": "Settings",
+  "general_settings.viafabricplus.legacy_user_interface": "Use old ViaFabricPlus style",
 
   "general_settings.viafabricplus": "General",
   "general_settings.viafabricplus.save_selected_protocol_version": "Save selected protocol version",

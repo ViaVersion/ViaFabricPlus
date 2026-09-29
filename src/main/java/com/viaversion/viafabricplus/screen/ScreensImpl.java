@@ -21,8 +21,11 @@
 
 package com.viaversion.viafabricplus.screen;
 
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.screen.Screens;
 import com.viaversion.viafabricplus.features.c0_28.GridItemSelectionScreen;
+import com.viaversion.viafabricplus.screen.impl.LegacyProtocolSelectionScreen;
+import com.viaversion.viafabricplus.screen.impl.LegacySettingsScreen;
 import com.viaversion.viafabricplus.screen.impl.ReportIssuesScreen;
 import com.viaversion.viafabricplus.screen.impl.SettingsScreen;
 import com.viaversion.viafabricplus.screen.impl.ViaFabricPlusScreen;
@@ -36,6 +39,8 @@ public final class ScreensImpl implements Screens {
 
     private final ViaFabricPlusScreen viaFabricPlusScreen = new ViaFabricPlusScreen();
     private final SettingsScreen settingsScreen = new SettingsScreen();
+    private final LegacyProtocolSelectionScreen legacyProtocolSelectionScreen = new LegacyProtocolSelectionScreen();
+    private final LegacySettingsScreen legacySettingsScreen = new LegacySettingsScreen();
     private final ReportIssuesScreen reportIssuesScreen = new ReportIssuesScreen();
     private final ClassiCubeLoginScreen classiCubeLoginScreen = new ClassiCubeLoginScreen();
     private final ClassiCubeMFAScreen classiCubeMFAScreen = new ClassiCubeMFAScreen();
@@ -45,12 +50,20 @@ public final class ScreensImpl implements Screens {
 
     @Override
     public void openViaFabricPlusScreen(final Screen parent) {
-        this.viaFabricPlusScreen.open(parent);
+        if (ViaFabricPlusImpl.impl().settings().general().legacyUserInterface().isActive()) {
+            this.legacyProtocolSelectionScreen.open(parent);
+        } else {
+            this.viaFabricPlusScreen.open(parent);
+        }
     }
 
     @Override
     public void openSettingsScreen(final Screen parent) {
-        this.settingsScreen.open(parent);
+        if (ViaFabricPlusImpl.impl().settings().general().legacyUserInterface().isActive()) {
+            this.legacySettingsScreen.open(parent);
+        } else {
+            this.settingsScreen.open(parent);
+        }
     }
 
     @Override

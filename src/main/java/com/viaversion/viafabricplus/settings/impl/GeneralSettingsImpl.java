@@ -40,6 +40,7 @@ public final class GeneralSettingsImpl extends SettingGroupImpl implements Gener
     private final EnumSetting<PacketTranslationError> ignorePacketTranslationErrors = registerEnum("ignore_packet_translation_errors", PacketTranslationError.KICK);
     private final BooleanSetting loadSkinsAndSkullsInLegacyVersions = registerBoolean("load_skins_and_skulls_in_legacy_versions", true);
     private final BooleanSetting betaCraftAuthentication = registerBoolean("beta_craft_authentication", true);
+    private final BooleanSetting legacyUserInterface = registerBoolean("legacy_user_interface", false);
 
     public GeneralSettingsImpl() {
         super("general");
@@ -88,6 +89,10 @@ public final class GeneralSettingsImpl extends SettingGroupImpl implements Gener
     @Override
     public BooleanSetting betaCraftAuthentication() {
         return this.betaCraftAuthentication;
+    }
+
+    public BooleanSetting legacyUserInterface() {
+        return this.legacyUserInterface;
     }
 
 }

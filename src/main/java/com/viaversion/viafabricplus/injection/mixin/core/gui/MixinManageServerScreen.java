@@ -84,7 +84,11 @@ public abstract class MixinManageServerScreen extends Screen {
                 viaFabricPlus$nameField = nameEdit.getValue();
                 viaFabricPlus$addressField = ipEdit.getValue();
 
-                minecraft.gui.setScreen(new PerServerVersionScreen(this, mixinServerInfo::viaFabricPlus$forceVersion, mixinServerInfo::viaFabricPlus$forcedVersion));
+                minecraft.gui.setScreen(ViaFabricPlusImpl.impl().settings().general().legacyUserInterface().isActive()
+                    ? new com.viaversion.viafabricplus.screen.impl.LegacyProtocolSelectionScreen(this,
+                        mixinServerInfo::viaFabricPlus$forceVersion, mixinServerInfo::viaFabricPlus$forcedVersion)
+                    : new PerServerVersionScreen(this,
+                        mixinServerInfo::viaFabricPlus$forceVersion, mixinServerInfo::viaFabricPlus$forcedVersion));
             }).size(98, 20);
             orientation.getPositioner().setPosition(this.addRenderableWidget(buttonBuilder.build()), width, height);
         }

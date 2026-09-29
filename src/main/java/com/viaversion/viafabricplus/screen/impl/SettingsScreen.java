@@ -48,6 +48,16 @@ public final class SettingsScreen extends VFPTabbedScreen<SettingGroup> {
     }
 
     @Override
+    public void onClose() {
+        if (this.prevScreen instanceof ViaFabricPlusScreen parent
+            && ViaFabricPlusImpl.impl().settings().general().legacyUserInterface().isActive()) {
+            ViaFabricPlusImpl.impl().screens().openViaFabricPlusScreen(parent.prevScreen);
+        } else {
+            super.onClose();
+        }
+    }
+
+    @Override
     protected List<SettingGroup> tabs() {
         return ViaFabricPlusImpl.impl().settings().groups();
     }
@@ -90,7 +100,7 @@ public final class SettingsScreen extends VFPTabbedScreen<SettingGroup> {
             .toList();
     }
 
-    private static @Nullable VFPListEntry entry(final Setting setting) {
+    static @Nullable VFPListEntry entry(final Setting setting) {
         return switch (setting) {
             case final VersionedBooleanSetting versionedBooleanSetting ->
                 new VersionedBooleanListEntry(versionedBooleanSetting);

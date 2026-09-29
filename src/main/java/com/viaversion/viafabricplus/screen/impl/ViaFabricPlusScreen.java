@@ -54,7 +54,7 @@ public final class ViaFabricPlusScreen extends AbstractProtocolSelectionScreen {
         betaCraft.active = disconnected;
 
         this.addFooter(classiCube, betaCraft,
-            Button.builder(Component.translatable("base.viafabricplus.settings"), _ -> screens.settingsScreen().open(this)).build(),
+            Button.builder(Component.translatable("base.viafabricplus.settings"), _ -> screens.openSettingsScreen(this)).build(),
             Button.builder(Component.translatable("report.viafabricplus.button"), _ -> screens.reportIssuesScreen().open(this)).build());
     }
 
