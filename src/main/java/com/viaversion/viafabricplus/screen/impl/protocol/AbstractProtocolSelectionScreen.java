@@ -21,9 +21,11 @@
 
 package com.viaversion.viafabricplus.screen.impl.protocol;
 
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.protocoltranslator.ProtocolTranslation;
 import com.viaversion.viafabricplus.screen.base.VFPTabbedScreen;
 import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
+import com.viaversion.viafabricplus.settings.SettingsImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +70,18 @@ public abstract class AbstractProtocolSelectionScreen extends VFPTabbedScreen<Pr
     @Override
     protected List<VFPListEntry> entries(final ProtocolCategory tab) {
         final List<VFPListEntry> entries = new ArrayList<>();
+        if (tab == ProtocolCategory.FAVORITES) {
+            final SettingsImpl settings = ViaFabricPlusImpl.impl().settings();
+            for (final ProtocolVersion version : ProtocolVersion.getReversedProtocols()) {
+                if (settings.isFavorite(version)) {
+                    entries.add(new ProtocolSlot(version, this));
+                }
+            }
+            return entries;
+        }
+
         if (tab == ProtocolCategory.MODERN) {
-            // Auto Detect is no Minecraft version, it is pinned to the first tab as it is not limited to a single category
+            // Auto Detect is no Minecraft version, it is pinned to the modern tab as it is not limited to a single category
             entries.add(new ProtocolSlot(ProtocolTranslation.AUTO_DETECT_VERSION, this));
         }
 
@@ -94,12 +106,21 @@ public abstract class AbstractProtocolSelectionScreen extends VFPTabbedScreen<Pr
         // Open the tab holding the selected version so it doesn't have to be searched for
         for (final ProtocolVersion version : ProtocolVersion.getReversedProtocols()) {
             if (this.selected(version)) {
+                if (ViaFabricPlusImpl.impl().settings().isFavorite(version)) {
+                    return ProtocolCategory.FAVORITES;
+                }
+
                 // Auto Detect is no Minecraft version and therefore has no category of its own
                 return version == ProtocolTranslation.AUTO_DETECT_VERSION ? ProtocolCategory.MODERN : ProtocolCategory.of(version);
             }
         }
 
         return ProtocolCategory.MODERN;
+    }
+
+    protected void toggleFavorite(final ProtocolVersion version) {
+        ViaFabricPlusImpl.impl().settings().toggleFavorite(version);
+        this.refreshTab(ProtocolCategory.FAVORITES);
     }
 
     private static boolean matches(final ProtocolVersion version, final String query) {

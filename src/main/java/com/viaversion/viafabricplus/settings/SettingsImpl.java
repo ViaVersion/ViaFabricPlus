@@ -22,6 +22,8 @@
 package com.viaversion.viafabricplus.settings;
 
 import com.google.common.base.Preconditions;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.api.entrypoint.ViaFabricPlusEntrypoint;
@@ -36,7 +38,9 @@ import com.viaversion.viafabricplus.util.JsonSave;
 import com.viaversion.viafabricplus.util.LegacySaveMigrator;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import net.fabricmc.loader.api.FabricLoader;
 
 public final class SettingsImpl implements Settings {
@@ -54,6 +58,7 @@ public final class SettingsImpl implements Settings {
     }
 
     private String selectedProtocolVersion;
+    private final Set<String> favoriteProtocolVersions = new LinkedHashSet<>();
 
     public void init() {
         Preconditions.checkState(this.selectedProtocolVersion == null, "Settings already initialized!");
@@ -69,6 +74,14 @@ public final class SettingsImpl implements Settings {
                 group.read(settings);
             }
             this.selectedProtocolVersion = settings.get("selected_protocol_version").getAsString();
+            if (settings.has("favorite_protocol_versions")) {
+                final String savedNativeVersion = settings.has("native_protocol_version") ? settings.get("native_protocol_version").getAsString() : null;
+                for (final JsonElement element : settings.getAsJsonArray("favorite_protocol_versions")) {
+                    final String version = element.getAsString();
+                    // A favorited native version is meant as the latest one, so it follows the native version across updates
+                    this.favoriteProtocolVersions.add(version.equals(savedNativeVersion) ? ProtocolTranslationImpl.NATIVE_VERSION.getName() : version);
+                }
+            }
         }, this::snapshot);
 
         FabricLoader.getInstance().invokeEntrypoints("viafabricplus", ViaFabricPlusEntrypoint.class, ViaFabricPlusEntrypoint::onPostSettingsLoading);
@@ -80,6 +93,11 @@ public final class SettingsImpl implements Settings {
             group.write(object);
         }
         object.addProperty("selected_protocol_version", ViaFabricPlus.api().targetVersion().getName());
+
+        final JsonArray favorites = new JsonArray();
+        this.favoriteProtocolVersions.forEach(favorites::add);
+        object.add("favorite_protocol_versions", favorites);
+        object.addProperty("native_protocol_version", ProtocolTranslationImpl.NATIVE_VERSION.getName());
         return object;
     }
 
@@ -94,6 +112,16 @@ public final class SettingsImpl implements Settings {
             } else {
                 ViaFabricPlus.api().setTargetVersion(ProtocolTranslationImpl.NATIVE_VERSION);
             }
+        }
+    }
+
+    public boolean isFavorite(final ProtocolVersion version) {
+        return this.favoriteProtocolVersions.contains(version.getName());
+    }
+
+    public void toggleFavorite(final ProtocolVersion version) {
+        if (!this.favoriteProtocolVersions.remove(version.getName())) {
+            this.favoriteProtocolVersions.add(version.getName());
         }
     }
 

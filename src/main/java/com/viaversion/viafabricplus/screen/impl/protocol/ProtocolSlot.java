@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.screen.impl.protocol;
 
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.api.protocoltranslator.ProtocolTranslation;
 import com.viaversion.viafabricplus.screen.base.VFPScreen;
 import com.viaversion.viafabricplus.screen.base.list.VFPListEntry;
@@ -28,6 +29,8 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -40,6 +43,11 @@ public final class ProtocolSlot extends VFPListEntry {
 
     private static final int ICON_SIZE = 16;
     private static final int TEXT_OFFSET = SLOT_MARGIN + ICON_SIZE + SLOT_MARGIN;
+    private static final int STAR_AREA = SLOT_MARGIN + ICON_SIZE + SLOT_MARGIN; // Mirrors the icon on the left side
+
+    private static final String STAR = "★";
+    private static final int FAVORITE_COLOR = 0xFFFFAA00;
+    private static final int NO_FAVORITE_COLOR = 0xFF555555;
 
     private static final int SELECTED_COLOR = VFPScreen.ACCENT_COLOR;
     private static final int SELECTED_BACKGROUND_COLOR = 0x4058A6FF; // ACCENT_COLOR at 25% opacity
@@ -73,6 +81,18 @@ public final class ProtocolSlot extends VFPListEntry {
     }
 
     @Override
+    public boolean mouseClicked(final MouseButtonEvent click, final boolean doubled) {
+        if (click.x() < this.getContentRight() - STAR_AREA) {
+            return super.mouseClicked(click, doubled);
+        }
+
+        this.screen.toggleFavorite(this.protocolVersion);
+        AbstractWidget.playButtonClickSound(Minecraft.getInstance().getSoundManager());
+        // Not taking focus as unfavoriting removes this entry from the favorites list it may be part of
+        return false;
+    }
+
+    @Override
     public void mappedMouseClicked() {
         if (this.screen.selectable()) {
             this.screen.select(this.protocolVersion);
@@ -92,6 +112,10 @@ public final class ProtocolSlot extends VFPListEntry {
         final Font font = Minecraft.getInstance().font;
         final int nameColor = !selectable ? DISABLED_COLOR : selected ? SELECTED_COLOR : -1;
         final int centeredY = entryHeight / 2 - font.lineHeight / 2;
+
+        final int starColor = ViaFabricPlusImpl.impl().settings().isFavorite(this.protocolVersion) ? FAVORITE_COLOR : NO_FAVORITE_COLOR;
+        context.text(font, STAR, entryWidth - STAR_AREA + (STAR_AREA - font.width(STAR)) / 2, centeredY, starColor);
+
         if (this.metadata == null) {
             context.text(font, this.protocolVersion.getName(), TEXT_OFFSET, centeredY, nameColor);
             return;
@@ -99,7 +123,7 @@ public final class ProtocolSlot extends VFPListEntry {
 
         final int subtitleColor = !selectable ? DISABLED_COLOR : SUBTITLE_COLOR;
         final Component releaseDate = this.metadata.formattedReleaseDate();
-        final int releaseDateX = entryWidth - font.width(releaseDate) - SLOT_MARGIN;
+        final int releaseDateX = entryWidth - STAR_AREA - font.width(releaseDate);
         context.text(font, releaseDate, releaseDateX, centeredY, subtitleColor);
 
         if (this.metadata.title() == null) {

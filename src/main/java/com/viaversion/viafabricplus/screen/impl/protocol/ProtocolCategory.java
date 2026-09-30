@@ -28,6 +28,7 @@ import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 public enum ProtocolCategory {
 
+    FAVORITES, // Filled from the settings instead of by #of
     MODERN,
     LEGACY,
     BETA,

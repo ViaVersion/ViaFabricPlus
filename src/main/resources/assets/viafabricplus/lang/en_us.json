@@ -68,6 +68,7 @@
   "advanced_settings.viafabricplus.filter_non_existing_glyphs": "Filter non existing glyphs",
   "advanced_settings.viafabricplus.remove_server_description_sanitize": "Remove server description sanitize",
 
+  "protocol_selection.viafabricplus.favorites": "Favorites",
   "protocol_selection.viafabricplus.modern": "Modern",
   "protocol_selection.viafabricplus.legacy": "Legacy",
   "protocol_selection.viafabricplus.beta": "Beta",

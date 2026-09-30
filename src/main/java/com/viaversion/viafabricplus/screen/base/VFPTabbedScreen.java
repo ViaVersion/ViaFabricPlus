@@ -129,6 +129,18 @@ public abstract class VFPTabbedScreen<T> extends VFPScreen {
         this.tabManager.setCurrentTab(this.searchTab, false);
     }
 
+    /**
+     * Rebuilds the entries of a tab from {@link #entries(Object)} while keeping its scroll position.
+     *
+     * @param tab the tab to rebuild, ignored if not part of {@link #tabs()}
+     */
+    protected void refreshTab(final T tab) {
+        final int index = this.tabKeys.indexOf(tab);
+        if (index != -1) {
+            ((ListTab) this.tabWidgets.get(index)).list.refresh();
+        }
+    }
+
     private void onTabSelected(final Tab tab) {
         if (tab == this.searchTab) {
             return;
@@ -202,6 +214,11 @@ public abstract class VFPTabbedScreen<T> extends VFPScreen {
         private void showResults(final String query) {
             this.replaceEntries(results(query));
             this.setScrollAmount(0D); // Also repositions the new entries
+        }
+
+        private void refresh() {
+            this.replaceEntries(entries(this.tab));
+            this.setScrollAmount(this.scrollAmount()); // Clamps to the new size and repositions the new entries
         }
 
         @Override
