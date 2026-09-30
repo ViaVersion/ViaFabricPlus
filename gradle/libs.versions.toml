@@ -10,8 +10,8 @@ fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-l
 fabric-loader-junit = { module = "net.fabricmc:fabric-loader-junit", version.ref = "fabric-loader" }
 fabric-loom-plugin = { module = "net.fabricmc.fabric-loom:net.fabricmc.fabric-loom.gradle.plugin", version.ref = "fabric-loom" }
 foojay-resolver-convention-plugin = { module = "org.gradle.toolchains.foojay-resolver-convention:org.gradle.toolchains.foojay-resolver-convention.gradle.plugin", version = "1.0.0" }
-viaversion-common = { module = "com.viaversion:viaversion-common", version = "5.12.1-20260927.122410-10" }
-viabackwards-common = { module = "com.viaversion:viabackwards-common", version = "5.12.1-20260925.130410-7" }
+viaversion-common = { module = "com.viaversion:viaversion-common", version = "5.12.1-SNAPSHOT" }
+viabackwards-common = { module = "com.viaversion:viabackwards-common", version = "5.12.1-SNAPSHOT" }
 viaaprilfools-common = { module = "com.viaversion:viaaprilfools-common", version = "4.2.3" }
 vialegacy = { module = "net.raphimc:ViaLegacy", version = "3.1.0" }
 reflect = { module = "net.lenni0451:Reflect", version = "1.6.4" }
