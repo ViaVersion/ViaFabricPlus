@@ -1,7 +1,7 @@
 [versions]
 minecraft = "26.3"
 fabric-loader = "0.19.5"
-fabric-api = "0.160.4+26.3"
+fabric-api = "0.161.0+26.3"
 fabric-loom = "1.17-SNAPSHOT"
 
 [libraries]
@@ -16,7 +16,7 @@ viaaprilfools-common = { module = "com.viaversion:viaaprilfools-common", version
 vialegacy = { module = "net.raphimc:ViaLegacy", version = "3.1.0" }
 reflect = { module = "net.lenni0451:Reflect", version = "1.6.4" }
 classic4j = { module = "de.florianreuth:classic4j", version = "2.3.1" }
-modmenu = { module = "com.terraformersmc:modmenu", version = "21.0.0-beta.1" }
+modmenu = { module = "com.terraformersmc:modmenu", version = "21.0.0" }
 
 # Versions of the Fabric API modules below are managed by the BOM.
 fabric-api-bom = { module = "net.fabricmc.fabric-api:fabric-api-bom", version.ref = "fabric-api" }
