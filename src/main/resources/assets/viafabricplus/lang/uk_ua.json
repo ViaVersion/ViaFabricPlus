@@ -62,6 +62,7 @@
   "advanced_settings.viafabricplus.ignore_fabric_sync_errors": "Ігнорувати помилки синхронізації Fabric",
   "advanced_settings.viafabricplus.filter_non_existing_glyphs": "Фільтрувати відсутні гліфи",
   "advanced_settings.viafabricplus.remove_server_description_sanitize": "Видалити санітизацію опису сервера",
+  "protocol_selection.viafabricplus.favorites": "Улюблені",
   "protocol_selection.viafabricplus.modern": "Сучасний",
   "protocol_selection.viafabricplus.legacy": "Застарілий",
   "protocol_selection.viafabricplus.beta": "Beta",
