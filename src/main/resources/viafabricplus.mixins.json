@@ -423,6 +423,7 @@
     "features.v26_1.movement.MixinLivingEntity",
     "features.v26_2.MixinBlockTransformer",
     "features.v26_2.MixinItemStack",
+    "features.v26_2.MixinMapRenderer",
     "features.v26_2.MixinMinecraft",
     "features.v26_2.MixinMultiPlayerGameMode",
     "features.v26_2.block.MixinCampfireBlock",
