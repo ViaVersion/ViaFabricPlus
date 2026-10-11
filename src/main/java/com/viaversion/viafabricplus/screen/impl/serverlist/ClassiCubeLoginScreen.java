@@ -47,7 +47,7 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
         super.init();
         this.addRenderableWidget(nameField = new EditBox(font, width / 2 - 150, 70 + 10, 300, 20, Component.empty()));
         this.addRenderableWidget(passwordField = new EditBox(font, width / 2 - 150, nameField.getY() + 20 + 5, 300, 20, Component.empty()));
-        passwordField.addFormatter((s, integer) -> Component.nullToEmpty("*".repeat(s.length())).getVisualOrderText());
+        passwordField.addFormatter((s, _) -> Component.nullToEmpty("*".repeat(s.length())).getVisualOrderText());
 
         nameField.setHint(Component.translatable("base.viafabricplus.name"));
         passwordField.setHint(Component.translatable("base.viafabricplus.password"));
