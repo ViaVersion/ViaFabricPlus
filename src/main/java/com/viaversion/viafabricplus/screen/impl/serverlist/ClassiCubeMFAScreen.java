@@ -61,6 +61,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
 
                 @Override
                 public void handleException(Throwable throwable) {
+                    ClassiCubeAccount.set(null);
                     ViaFabricPlusImpl.impl().logger().error("Error while logging in to ClassiCube!", throwable);
                     showToast(Component.nullToEmpty(throwable.getMessage()));
                 }
