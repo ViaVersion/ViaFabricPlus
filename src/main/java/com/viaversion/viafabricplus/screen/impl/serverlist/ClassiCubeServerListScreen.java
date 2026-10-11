@@ -166,7 +166,7 @@ public final class ClassiCubeServerListScreen extends VFPScreen {
         }
 
         private static boolean matches(final CCServerInfo server, final String query) {
-            return server.name().toLowerCase(Locale.ROOT).contains(query) || server.software().toLowerCase(Locale.ROOT).contains(query);
+            return server.name().toLowerCase(Locale.ROOT).contains(query) || server.software().toLowerCase(Locale.ROOT).contains(query) || server.ip().toLowerCase(Locale.ROOT).contains(query);
         }
 
         @Override
