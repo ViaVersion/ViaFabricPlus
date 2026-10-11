@@ -36,6 +36,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 @SuppressWarnings("DataFlowIssue")
 public final class GridItemSelectionScreen extends Screen {
@@ -44,9 +45,13 @@ public final class GridItemSelectionScreen extends Screen {
     private static final int ITEM_XY_BOX_DIMENSION_CLASSIC = 25;
     private static final int SIDE_OFFSET = 15;
     private static final int ITEM_XY_BOX_DIMENSION_MODERN = 16;
+    private static final int WOOL_PANEL_COLUMNS = 7;
+    private static final List<Item> WOOL_COLORS = Items.WOOL.asList();
 
     public Item[][] itemGrid = null;
     public ItemStack selectedItem = null;
+    public boolean woolSelectionMode = false;
+    public Item selectedWoolColor = null;
 
     public GridItemSelectionScreen() {
         super(Component.nullToEmpty("Classic item selection"));
@@ -54,6 +59,8 @@ public final class GridItemSelectionScreen extends Screen {
 
     @Override
     protected void init() {
+        woolSelectionMode = false;
+        selectedWoolColor = null;
         if (itemGrid != null) {
             return;
         }
@@ -83,13 +90,27 @@ public final class GridItemSelectionScreen extends Screen {
 
     @Override
     public boolean mouseClicked(final MouseButtonEvent click, final boolean doubled) {
-        if (selectedItem != null) {
-            this.minecraft.gameMode.handleCreativeModeItemAdd(selectedItem, minecraft.player.getInventory().getSelectedSlot() + 36); // Beta Inventory Tracker
-            this.minecraft.player.getInventory().setSelectedItem(selectedItem);
-            this.minecraft.player.inventoryMenu.broadcastChanges();
+        if (woolSelectionMode) {
+            if (isInsideWoolPanel(click.x(), click.y())) {
+                if (selectedWoolColor != null) {
+                    selectItem(selectedWoolColor);
+                }
+            } else {
+                woolSelectionMode = false;
+                selectedWoolColor = null;
+            }
+            return true;
+        }
 
-            AbstractWidget.playButtonClickSound(this.minecraft.getSoundManager());
-            this.onClose();
+        if (selectedItem != null) {
+            if (shouldOpenWoolSelector(selectedItem.getItem())) {
+                woolSelectionMode = true;
+                selectedItem = null;
+                return true;
+            }
+
+            selectItem(selectedItem.getItem());
+            return true;
         }
         return super.mouseClicked(click, doubled);
     }
@@ -97,7 +118,18 @@ public final class GridItemSelectionScreen extends Screen {
     @Override
     public boolean keyPressed(final KeyEvent input) {
         if (minecraft.options.keyInventory.matches(input)) {
+            if (woolSelectionMode) {
+                woolSelectionMode = false;
+                selectedWoolColor = null;
+                return true;
+            }
+
             this.onClose();
+            return true;
+        }
+        if (input.isEscape() && woolSelectionMode) {
+            woolSelectionMode = false;
+            selectedWoolColor = null;
             return true;
         }
         return super.keyPressed(input);
@@ -106,6 +138,11 @@ public final class GridItemSelectionScreen extends Screen {
     @Override
     public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
         super.extractRenderState(context, mouseX, mouseY, delta);
+        if (woolSelectionMode) {
+            renderWoolColors(context, mouseX, mouseY);
+            return;
+        }
+
         final int halfWidth = this.width / 2;
         final int halfHeight = this.height / 2;
 
@@ -136,6 +173,79 @@ public final class GridItemSelectionScreen extends Screen {
             }
             y += ITEM_XY_BOX_DIMENSION_CLASSIC;
         }
+    }
+
+    private void renderWoolColors(final GuiGraphicsExtractor context, final int mouseX, final int mouseY) {
+        final int renderX = getWoolPanelX();
+        final int renderY = getWoolPanelY();
+        final int boxWidth = getWoolPanelWidth();
+        final int boxHeight = getWoolPanelHeight();
+
+        context.fill(renderX, renderY, renderX + boxWidth, renderY + boxHeight, Integer.MIN_VALUE);
+        context.centeredText(font, "Select wool color", renderX + boxWidth / 2, renderY + SIDE_OFFSET, -1);
+        selectedWoolColor = null;
+
+        int woolIndex = 0;
+        int y = SIDE_OFFSET + SIDE_OFFSET;
+        for (int row = 0; row < Mth.ceil(WOOL_COLORS.size() / (double) WOOL_PANEL_COLUMNS); row++) {
+            int x = SIDE_OFFSET;
+            for (int column = 0; column < WOOL_PANEL_COLUMNS; column++) {
+                if (woolIndex >= WOOL_COLORS.size()) {
+                    break;
+                }
+
+                final Item item = WOOL_COLORS.get(woolIndex);
+                if (mouseX > renderX + x && mouseY > renderY + y && mouseX < renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC && mouseY < renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC) {
+                    context.fill(renderX + x, renderY + y, renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC, renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC, Integer.MAX_VALUE);
+                    selectedWoolColor = item;
+                }
+                context.item(item.getDefaultInstance(), renderX + x + ITEM_XY_BOX_DIMENSION_MODERN / 4, renderY + y + ITEM_XY_BOX_DIMENSION_MODERN / 4);
+                x += ITEM_XY_BOX_DIMENSION_CLASSIC;
+                woolIndex++;
+            }
+            y += ITEM_XY_BOX_DIMENSION_CLASSIC;
+        }
+    }
+
+    private void selectItem(final Item item) {
+        final ItemStack stack = item.getDefaultInstance();
+        this.minecraft.gameMode.handleCreativeModeItemAdd(stack, minecraft.player.getInventory().getSelectedSlot() + 36); // Beta Inventory Tracker
+        this.minecraft.player.getInventory().setSelectedItem(stack);
+        this.minecraft.player.inventoryMenu.broadcastChanges();
+
+        AbstractWidget.playButtonClickSound(this.minecraft.getSoundManager());
+        this.onClose();
+    }
+
+    private static boolean shouldOpenWoolSelector(final Item item) {
+        return item == Items.WOOL.white() && supportsClassicWoolColors();
+    }
+
+    private static boolean supportsClassicWoolColors() {
+        return ViaFabricPlus.api().targetVersion().equals(LegacyProtocolVersion.c0_30cpe)
+            || ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30);
+    }
+
+    private int getWoolPanelWidth() {
+        return ITEM_XY_BOX_DIMENSION_CLASSIC * WOOL_PANEL_COLUMNS + SIDE_OFFSET * 2;
+    }
+
+    private int getWoolPanelHeight() {
+        return ITEM_XY_BOX_DIMENSION_CLASSIC * Mth.ceil(WOOL_COLORS.size() / (double) WOOL_PANEL_COLUMNS) + SIDE_OFFSET * 2 + SIDE_OFFSET;
+    }
+
+    private int getWoolPanelX() {
+        return this.width / 2 - getWoolPanelWidth() / 2;
+    }
+
+    private int getWoolPanelY() {
+        return this.height / 2 - getWoolPanelHeight() / 2;
+    }
+
+    private boolean isInsideWoolPanel(final double mouseX, final double mouseY) {
+        final int renderX = getWoolPanelX();
+        final int renderY = getWoolPanelY();
+        return mouseX > renderX && mouseY > renderY && mouseX < renderX + getWoolPanelWidth() && mouseY < renderY + getWoolPanelHeight();
     }
 
 }
