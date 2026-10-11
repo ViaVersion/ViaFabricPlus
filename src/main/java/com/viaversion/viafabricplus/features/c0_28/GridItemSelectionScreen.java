@@ -36,7 +36,6 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 
 @SuppressWarnings("DataFlowIssue")
 public final class GridItemSelectionScreen extends Screen {
@@ -50,8 +49,9 @@ public final class GridItemSelectionScreen extends Screen {
 
     public Item[][] itemGrid = null;
     public ItemStack selectedItem = null;
-    public boolean woolSelectionMode = false;
-    public Item selectedWoolColor = null;
+    private List<Item> availableWoolColors = List.of();
+    private boolean woolSelectionMode = false;
+    private Item selectedWoolColor = null;
 
     public GridItemSelectionScreen() {
         super(Component.nullToEmpty("Classic item selection"));
@@ -61,6 +61,8 @@ public final class GridItemSelectionScreen extends Screen {
     protected void init() {
         woolSelectionMode = false;
         selectedWoolColor = null;
+        // Not cached with the grid since CPE CustomBlocks support differs per server, not per version
+        availableWoolColors = WOOL_COLORS.stream().filter(ViaFabricPlus.api().limitations()::itemExistsInConnection).toList();
         if (itemGrid != null) {
             return;
         }
@@ -68,6 +70,9 @@ public final class GridItemSelectionScreen extends Screen {
         // Calculate all visible items
         for (Item item : BuiltInRegistries.ITEM) {
             if (item == Items.AIR || !item.requiredFeatures().contains(FeatureFlags.VANILLA)) {
+                continue;
+            }
+            if (item != Items.WOOL.white() && WOOL_COLORS.contains(item)) {
                 continue;
             }
             if (ViaFabricPlus.api().limitations().itemExistsInConnection(item)) {
@@ -103,7 +108,7 @@ public final class GridItemSelectionScreen extends Screen {
         }
 
         if (selectedItem != null) {
-            if (shouldOpenWoolSelector(selectedItem.getItem())) {
+            if (selectedItem.getItem() == Items.WOOL.white()) {
                 woolSelectionMode = true;
                 selectedItem = null;
                 return true;
@@ -187,14 +192,14 @@ public final class GridItemSelectionScreen extends Screen {
 
         int woolIndex = 0;
         int y = SIDE_OFFSET + SIDE_OFFSET;
-        for (int row = 0; row < Mth.ceil(WOOL_COLORS.size() / (double) WOOL_PANEL_COLUMNS); row++) {
+        for (int row = 0; row < Mth.ceil(availableWoolColors.size() / (double) WOOL_PANEL_COLUMNS); row++) {
             int x = SIDE_OFFSET;
             for (int column = 0; column < WOOL_PANEL_COLUMNS; column++) {
-                if (woolIndex >= WOOL_COLORS.size()) {
+                if (woolIndex >= availableWoolColors.size()) {
                     break;
                 }
 
-                final Item item = WOOL_COLORS.get(woolIndex);
+                final Item item = availableWoolColors.get(woolIndex);
                 if (mouseX > renderX + x && mouseY > renderY + y && mouseX < renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC && mouseY < renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC) {
                     context.fill(renderX + x, renderY + y, renderX + x + ITEM_XY_BOX_DIMENSION_CLASSIC, renderY + y + ITEM_XY_BOX_DIMENSION_CLASSIC, Integer.MAX_VALUE);
                     selectedWoolColor = item;
@@ -217,21 +222,12 @@ public final class GridItemSelectionScreen extends Screen {
         this.onClose();
     }
 
-    private static boolean shouldOpenWoolSelector(final Item item) {
-        return item == Items.WOOL.white() && supportsClassicWoolColors();
-    }
-
-    private static boolean supportsClassicWoolColors() {
-        return ViaFabricPlus.api().targetVersion().equals(LegacyProtocolVersion.c0_30cpe)
-            || ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.c0_28toc0_30);
-    }
-
     private int getWoolPanelWidth() {
         return ITEM_XY_BOX_DIMENSION_CLASSIC * WOOL_PANEL_COLUMNS + SIDE_OFFSET * 2;
     }
 
     private int getWoolPanelHeight() {
-        return ITEM_XY_BOX_DIMENSION_CLASSIC * Mth.ceil(WOOL_COLORS.size() / (double) WOOL_PANEL_COLUMNS) + SIDE_OFFSET * 2 + SIDE_OFFSET;
+        return ITEM_XY_BOX_DIMENSION_CLASSIC * Mth.ceil(availableWoolColors.size() / (double) WOOL_PANEL_COLUMNS) + SIDE_OFFSET * 2 + SIDE_OFFSET;
     }
 
     private int getWoolPanelX() {
