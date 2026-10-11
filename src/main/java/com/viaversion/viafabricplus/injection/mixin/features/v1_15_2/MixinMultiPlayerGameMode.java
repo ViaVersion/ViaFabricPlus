@@ -29,7 +29,13 @@ import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractCraftingMenu;
+import net.minecraft.world.inventory.BrewingStandMenu;
+import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.DispenserMenu;
+import net.minecraft.world.inventory.EnchantmentMenu;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
@@ -59,14 +65,45 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Inject(method = "handleContainerInput", at = @At("HEAD"), cancellable = true)
     private void removeClickActions(int containerId, int slotNum, int buttonNum, ContainerInput containerInput, Player player, CallbackInfo ci) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2) && !containerInput.equals(ContainerInput.PICKUP)) {
-            ci.cancel();
-        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && !containerInput.equals(ContainerInput.PICKUP) && !containerInput.equals(ContainerInput.QUICK_MOVE) && !containerInput.equals(ContainerInput.SWAP) && !containerInput.equals(ContainerInput.CLONE)) {
+        if (this.viaFabricPlus$shouldCancel(slotNum, buttonNum, containerInput, player)) {
             ci.cancel();
         }
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_15_2) && containerInput == ContainerInput.SWAP && buttonNum == 40) { // Pressing 'F' in inventory
-            ci.cancel();
+    }
+
+    @Unique
+    private boolean viaFabricPlus$shouldCancel(final int slotNum, final int buttonNum, final ContainerInput containerInput, final Player player) {
+        final ProtocolVersion version = ViaFabricPlus.api().targetVersion();
+        if (version.olderThanOrEqualTo(LegacyProtocolVersion.b1_4tob1_4_1) && containerInput != ContainerInput.PICKUP) {
+            return true;
         }
+        if (version.olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7) && containerInput != ContainerInput.PICKUP && containerInput != ContainerInput.QUICK_MOVE && containerInput != ContainerInput.SWAP && containerInput != ContainerInput.CLONE) {
+            return true;
+        }
+        if (version.olderThanOrEqualTo(ProtocolVersion.v1_15_2) && containerInput == ContainerInput.SWAP && buttonNum == 40) { // Pressing 'F' in inventory
+            return true;
+        }
+        if (containerInput != ContainerInput.QUICK_MOVE) {
+            return false;
+        }
+
+        if (version.olderThanOrEqualTo(LegacyProtocolVersion.b1_5tob1_5_2)) {
+            final boolean allowed = player.containerMenu instanceof InventoryMenu ? slotNum >= 5 && slotNum <= 8 : player.containerMenu instanceof ChestMenu;
+            if (!allowed) {
+                return true;
+            }
+        }
+        if (version.olderThanOrEqualTo(LegacyProtocolVersion.b1_7tob1_7_3) && (player.containerMenu instanceof AbstractCraftingMenu && slotNum == 0 || player.containerMenu instanceof DispenserMenu)) {
+            return true;
+        }
+        if (version.olderThan(LegacyProtocolVersion.r1_3_1tor1_3_2)) {
+            if (player.containerMenu instanceof BrewingStandMenu) { // needs new legacy recipe entries for shift click to work properly still on 1.3.2+
+                return true;
+            }
+            if (player.containerMenu instanceof EnchantmentMenu && slotNum != 0) {
+                return true;
+            }
+        }
+        return version.olderThanOrEqualTo(LegacyProtocolVersion.r1_4_4tor1_4_5) && slotNum < 0;
     }
 
     @Unique
