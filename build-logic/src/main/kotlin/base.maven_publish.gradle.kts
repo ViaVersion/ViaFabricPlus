@@ -1,7 +1,9 @@
+// https://github.com/florianreuth/BaseProject
+
 plugins {
-    `java-library`
-    `maven-publish`
-    signing
+    id("base.java")
+    id("maven-publish")
+    id("signing")
 }
 
 val projectName = property("project_name") as String
@@ -29,7 +31,9 @@ publishing {
             pom {
                 name = projectName
                 // Lazy so that a description set in the build script body is picked up
-                description = provider { project.description }
+                description = provider {
+                    project.description
+                }
                 url = "https://$githubRepository"
                 licenses {
                     license {

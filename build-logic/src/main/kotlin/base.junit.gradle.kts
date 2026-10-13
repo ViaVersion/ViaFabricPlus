@@ -1,5 +1,11 @@
+// https://github.com/florianreuth/BaseProject
+
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+
+plugins {
+    id("base.java")
+}
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()

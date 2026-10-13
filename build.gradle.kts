@@ -1,6 +1,4 @@
 plugins {
-    id("base.java")
-    id("base.fabric")
     id("configuration.transitive_jar_in_jar")
     id("via.maven_publish")
     id("base.junit")

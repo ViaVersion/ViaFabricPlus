@@ -1,11 +1,19 @@
+// https://github.com/florianreuth/BaseProject
+
 plugins {
-    id("net.fabricmc.fabric-loom")
+    id("base.fabric")
 }
 
 val jarInJar = configurations.create("jarInJar")
 
 configurations {
-    implementation { extendsFrom(jarInJar) }
-    include { extendsFrom(jarInJar) }
-    api { extendsFrom(jarInJar) }
+    implementation {
+        extendsFrom(jarInJar)
+    }
+    include {
+        extendsFrom(jarInJar)
+    }
+    api {
+        extendsFrom(jarInJar)
+    }
 }

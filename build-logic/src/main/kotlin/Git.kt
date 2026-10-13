@@ -1,4 +1,4 @@
-package de.florianreuth.baseproject
+// https://github.com/florianreuth/BaseProject
 
 import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
@@ -30,7 +30,9 @@ fun Project.branchName(): String = runGitCommand(listOf("rev-parse", "--abbrev-r
  * @return the trimmed output, or "unknown" if the command fails or prints nothing
  */
 fun Project.runGitCommand(args: List<String>): String {
-    return providers.of(GitCommand::class.java) { parameters.args.set(args) }.getOrNull() ?: "unknown"
+    return providers.of(GitCommand::class.java) {
+        parameters.args.set(args)
+    }.getOrNull() ?: "unknown"
 }
 
 abstract class GitCommand : ValueSource<String, GitCommand.GitCommandParameters> {
@@ -51,7 +53,9 @@ abstract class GitCommand : ValueSource<String, GitCommand.GitCommandParameters>
                 isIgnoreExitValue = true
             }
 
-            return output.toString(Charsets.UTF_8).trim().takeIf { it.isNotBlank() }
+            return output.toString(Charsets.UTF_8).trim().takeIf {
+                it.isNotBlank()
+            }
         } catch (_: Exception) {
             return null
         }
