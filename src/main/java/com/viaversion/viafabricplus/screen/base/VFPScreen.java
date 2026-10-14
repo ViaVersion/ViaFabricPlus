@@ -40,7 +40,7 @@ public abstract class VFPScreen extends Screen {
 
     public static final int ACCENT_COLOR = 0xFF58A6FF;
 
-    protected static final Component SEARCH_TITLE = Component.translatable("base.viafabricplus.search");
+    protected static final Component SEARCH_TITLE = Component.translatable("gui.selectWorld.search");
 
     protected static final int SEARCH_TOP = 36; // Below the title
     protected static final int SEARCH_HEIGHT = 20;
