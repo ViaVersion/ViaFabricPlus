@@ -47,6 +47,7 @@ public final class VisualSettingsImpl extends SettingGroupImpl implements Visual
     private final VersionedBooleanSetting legacyPaneOutlines = registerVersionedBoolean("legacy_pane_outlines", andOlder(v1_12_2), true);
     private final VersionedBooleanSetting legacyCropOutlines = registerVersionedBoolean("legacy_crop_outlines", andOlder(v1_8), true);
     private final VersionedBooleanSetting disableServerPinging = registerVersionedBoolean("disable_server_pinging", andOlder(b1_7tob1_7_3), true);
+    private final VersionedBooleanSetting allowItemUsageWhileMining = registerVersionedBoolean("allow_item_usage_while_mining", andOlder(v1_8), false);
 
     public VisualSettingsImpl() {
         super("visual");
@@ -105,6 +106,11 @@ public final class VisualSettingsImpl extends SettingGroupImpl implements Visual
     @Override
     public VersionedBooleanSetting disableServerPinging() {
         return this.disableServerPinging;
+    }
+
+    @Override
+    public VersionedBooleanSetting allowItemUsageWhileMining() {
+        return this.allowItemUsageWhileMining;
     }
 
 }

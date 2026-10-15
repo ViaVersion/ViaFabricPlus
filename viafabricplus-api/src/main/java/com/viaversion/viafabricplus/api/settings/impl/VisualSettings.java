@@ -48,4 +48,6 @@ public interface VisualSettings extends SettingGroup {
 
     VersionedBooleanSetting disableServerPinging();
 
+    VersionedBooleanSetting allowItemUsageWhileMining();
+
 }

@@ -57,6 +57,7 @@
   "visual_settings.viafabricplus.legacy_crop_outlines": "Legacy crop outlines",
   "visual_settings.viafabricplus.disable_server_pinging": "Disable server pinging",
   "visual_settings.viafabricplus.legacy_pane_outlines": "Legacy pane outlines",
+  "visual_settings.viafabricplus.allow_item_usage_while_mining": "Allow item usage while mining",
 
   "advanced_settings.viafabricplus": "Advanced",
   "advanced_settings.viafabricplus.queue_config_packets": "Queue config packets",
