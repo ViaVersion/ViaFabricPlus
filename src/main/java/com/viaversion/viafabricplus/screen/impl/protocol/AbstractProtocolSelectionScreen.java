@@ -135,7 +135,7 @@ public abstract class AbstractProtocolSelectionScreen extends VFPTabbedScreen<Pr
         }
 
         final ProtocolVersionMetadata metadata = ProtocolVersionMetadata.of(version);
-        return metadata != null && metadata.title() != null && metadata.title().toLowerCase(Locale.ROOT).contains(query);
+        return metadata != null && metadata.title() != null && metadata.title().getString().toLowerCase(Locale.ROOT).contains(query);
     }
 
 }

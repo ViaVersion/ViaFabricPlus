@@ -28,18 +28,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-public record ProtocolVersionMetadata(@Nullable String title, LocalDate releaseDate, Identifier icon) {
+public record ProtocolVersionMetadata(@Nullable Component title, LocalDate releaseDate, Identifier icon) {
 
     private static final Identifier UNKNOWN_ICON = Identifier.withDefaultNamespace("textures/item/barrier.png");
 
     private static final Map<String, ProtocolVersionMetadata> BY_VERSION_NAME = load();
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(Locale.US);
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
 
     public static @Nullable ProtocolVersionMetadata of(final ProtocolVersion version) {
         return BY_VERSION_NAME.get(version.getName());
@@ -59,7 +58,7 @@ public record ProtocolVersionMetadata(@Nullable String title, LocalDate releaseD
         final Map<String, ProtocolVersionMetadata> metadata = new HashMap<>(data.size());
         for (final String versionName : data.keySet()) {
             final JsonObject entry = data.getAsJsonObject(versionName);
-            final String title = entry.has("title") ? entry.get("title").getAsString() : null;
+            final Component title = entry.has("key") ? Component.translatable("version_title.viafabricplus." + entry.get("key").getAsString()) : null;
 
             // Vanilla textures are blitted directly as item stacks can't be created before a server bound their components
             final Identifier icon = Identifier.withDefaultNamespace("textures/" + entry.get("icon").getAsString() + ".png");
