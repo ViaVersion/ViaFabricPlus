@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.function.BiConsumer;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -40,7 +41,7 @@ public interface ProtocolTranslation {
      * The protocol version used when version auto-detection is enabled. Note that this won't be returned on any
      * version getters after the initial connection has been established (e.g., {@link #targetVersion()}).
      */
-    ProtocolVersion AUTO_DETECT_VERSION = new ProtocolVersion(VersionType.SPECIAL, -2, -1, "Auto Detect (1.7+ servers)", null) {
+    ProtocolVersion AUTO_DETECT_VERSION = new ProtocolVersion(VersionType.SPECIAL, -2, -1, "version_title.viafabricplus.auto_detect", null) {
         @Override
         protected Comparator<ProtocolVersion> customComparator() {
             return (o1, o2) -> {
@@ -52,6 +53,11 @@ public interface ProtocolTranslation {
                     return 0;
                 }
             };
+        }
+
+        @Override
+        public String getName() {
+            return Component.translatable(super.getName()).getString();
         }
 
         @Override

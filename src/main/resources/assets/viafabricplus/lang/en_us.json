@@ -76,6 +76,8 @@
   "protocol_selection.viafabricplus.classic": "Classic",
   "protocol_selection.viafabricplus.april_fools": "April Fools",
 
+  "version_title.viafabricplus.auto_detect": "Auto Detect (1.7+ servers)",
+
   "version_title.viafabricplus.multiplayer_test_1": "Multiplayer Test 1",
   "version_title.viafabricplus.classic_protocol_extension": "Classic Protocol Extension",
   "version_title.viafabricplus.halloween_update": "Halloween Update",
