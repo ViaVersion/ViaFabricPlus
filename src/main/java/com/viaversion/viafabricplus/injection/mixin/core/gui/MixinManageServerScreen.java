@@ -22,6 +22,7 @@
 package com.viaversion.viafabricplus.injection.mixin.core.gui;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.api.protocoltranslator.ProtocolTranslation;
 import com.viaversion.viafabricplus.api.settings.impl.Orientation;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
 import com.viaversion.viafabricplus.screen.impl.PerServerVersionScreen;
@@ -79,7 +80,15 @@ public abstract class MixinManageServerScreen extends Screen {
                 viaFabricPlus$addressField = null;
             }
 
-            final Button.Builder buttonBuilder = Button.builder(forcedVersion == null ? Component.translatable("base.viafabricplus.set_version") : Component.nullToEmpty(forcedVersion.getName()), _ -> {
+            final Component forcedVersionName;
+            if (forcedVersion == null) {
+                forcedVersionName = Component.translatable("base.viafabricplus.set_version");
+            } else if (forcedVersion == ProtocolTranslation.AUTO_DETECT_VERSION) {
+                forcedVersionName = ProtocolTranslation.AUTO_DETECT_VERSION_NAME;
+            } else {
+                forcedVersionName = Component.nullToEmpty(forcedVersion.getName());
+            }
+            final Button.Builder buttonBuilder = Button.builder(forcedVersionName, _ -> {
                 // Store current input in case the user cancels the version selection
                 viaFabricPlus$nameField = nameEdit.getValue();
                 viaFabricPlus$addressField = ipEdit.getValue();

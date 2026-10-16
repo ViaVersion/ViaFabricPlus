@@ -29,12 +29,15 @@ import java.util.Comparator;
 import java.util.function.BiConsumer;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Protocol translator.
  */
 public interface ProtocolTranslation {
+
+    Component AUTO_DETECT_VERSION_NAME = Component.translatable("version_title.viafabricplus.auto_detect");
 
     /**
      * The protocol version used when version auto-detection is enabled. Note that this won't be returned on any

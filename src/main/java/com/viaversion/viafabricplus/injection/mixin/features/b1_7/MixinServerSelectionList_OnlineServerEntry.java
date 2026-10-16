@@ -27,6 +27,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
+import com.viaversion.viafabricplus.api.protocoltranslator.ProtocolTranslation;
 import com.viaversion.viafabricplus.injection.access.core.IServerData;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import java.util.List;
@@ -75,7 +76,9 @@ public abstract class MixinServerSelectionList_OnlineServerEntry {
 
         viaFabricPlus$disableServerPinging = ViaFabricPlusImpl.impl().visuals().disableServerPinging().isActive(version);
         if (viaFabricPlus$disableServerPinging) {
-            this.serverData.version = Component.nullToEmpty(version.getName()); // Show target version
+            this.serverData.version = version == ProtocolTranslation.AUTO_DETECT_VERSION
+                ? ProtocolTranslation.AUTO_DETECT_VERSION_NAME
+                : Component.nullToEmpty(version.getName()); // Show target version
             return null;
         }
         return original.call(instance, runnable);

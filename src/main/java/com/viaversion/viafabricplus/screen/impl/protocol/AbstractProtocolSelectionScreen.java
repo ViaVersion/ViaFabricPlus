@@ -124,7 +124,10 @@ public abstract class AbstractProtocolSelectionScreen extends VFPTabbedScreen<Pr
     }
 
     private static boolean matches(final ProtocolVersion version, final String query) {
-        if (version.getName().toLowerCase(Locale.ROOT).contains(query)) {
+        final String versionName = version == ProtocolTranslation.AUTO_DETECT_VERSION
+            ? ProtocolTranslation.AUTO_DETECT_VERSION_NAME.getString()
+            : version.getName();
+        if (versionName.toLowerCase(Locale.ROOT).contains(query)) {
             return true;
         }
         // Ranges like 1.7.6-1.7.10 are matched by every version they include as well

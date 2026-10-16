@@ -77,7 +77,9 @@ public final class ProtocolSlot extends VFPListEntry {
 
     @Override
     public @NonNull Component getNarration() {
-        return Component.nullToEmpty(this.protocolVersion.getName());
+        return this.protocolVersion == ProtocolTranslation.AUTO_DETECT_VERSION
+            ? ProtocolTranslation.AUTO_DETECT_VERSION_NAME
+            : Component.nullToEmpty(this.protocolVersion.getName());
     }
 
     @Override
@@ -110,6 +112,9 @@ public final class ProtocolSlot extends VFPListEntry {
         context.blit(RenderPipelines.GUI_TEXTURED, this.icon, SLOT_MARGIN, (entryHeight - ICON_SIZE) / 2, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
 
         final Font font = Minecraft.getInstance().font;
+        final Component versionName = this.protocolVersion == ProtocolTranslation.AUTO_DETECT_VERSION
+            ? ProtocolTranslation.AUTO_DETECT_VERSION_NAME
+            : Component.nullToEmpty(this.protocolVersion.getName());
         final int nameColor = !selectable ? DISABLED_COLOR : selected ? SELECTED_COLOR : -1;
         final int centeredY = entryHeight / 2 - font.lineHeight / 2;
 
@@ -117,7 +122,7 @@ public final class ProtocolSlot extends VFPListEntry {
         context.text(font, STAR, entryWidth - STAR_AREA + (STAR_AREA - font.width(STAR)) / 2, centeredY, starColor);
 
         if (this.metadata == null) {
-            context.text(font, this.protocolVersion.getName(), TEXT_OFFSET, centeredY, nameColor);
+            context.text(font, versionName, TEXT_OFFSET, centeredY, nameColor);
             return;
         }
 
@@ -128,11 +133,11 @@ public final class ProtocolSlot extends VFPListEntry {
 
         if (this.metadata.title() == null) {
             // Versions without an update name only have a single line of text to center
-            context.text(font, this.protocolVersion.getName(), TEXT_OFFSET, centeredY, nameColor);
+            context.text(font, versionName, TEXT_OFFSET, centeredY, nameColor);
             return;
         }
 
-        context.text(font, this.protocolVersion.getName(), TEXT_OFFSET, entryHeight / 2 - font.lineHeight - 1, nameColor);
+        context.text(font, versionName, TEXT_OFFSET, entryHeight / 2 - font.lineHeight - 1, nameColor);
 
         // Long update names are cut off instead of overlapping the release date
         context.enableScissor(TEXT_OFFSET, 0, releaseDateX - SLOT_MARGIN, entryHeight);
