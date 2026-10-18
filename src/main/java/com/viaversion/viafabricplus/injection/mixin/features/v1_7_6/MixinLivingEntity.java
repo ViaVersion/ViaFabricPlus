@@ -23,20 +23,13 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_7_6;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(LivingEntity.class)
-public abstract class MixinLivingEntity extends Entity {
-
-    public MixinLivingEntity(final EntityType<?> type, final Level level) {
-        super(type, level);
-    }
+public abstract class MixinLivingEntity {
 
     @Redirect(method = "aiStep", at = {
         @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;canSimulateMovement()Z", ordinal = 1),
