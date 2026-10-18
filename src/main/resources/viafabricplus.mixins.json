@@ -345,6 +345,7 @@
     "features.v1_6_1.MixinAbstractContainerScreen",
     "features.v1_6_4.MixinEntityPacketRewriter1_20_5",
     "features.v1_7_6.MixinCarpetBlock",
+    "features.v1_7_6.MixinLivingEntity",
     "features.v1_7_6.MixinMinecraft",
     "features.v1_7_6.MixinPlayer",
     "features.v1_7_6.network.MixinClientPacketListener",
