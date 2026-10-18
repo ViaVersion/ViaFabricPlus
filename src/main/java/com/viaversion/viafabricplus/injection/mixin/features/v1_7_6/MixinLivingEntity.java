@@ -31,12 +31,14 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
 
-    @Redirect(method = "aiStep", at = {
-        @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;canSimulateMovement()Z", ordinal = 1),
-        @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isEffectiveAi()Z", ordinal = 1)
-    })
-    private boolean useClientSideMovement(final boolean original) {
-        return ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) || original;
+    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;canSimulateMovement()Z", ordinal = 1))
+    private boolean useClientSideMovement(final LivingEntity instance) {
+        return ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) || instance.canSimulateMovement();
+    }
+
+    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isEffectiveAi()Z", ordinal = 1))
+    private boolean useClientSideAI(final LivingEntity instance) {
+        return ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_7_6) || instance.isEffectiveAi();
     }
 
 }
