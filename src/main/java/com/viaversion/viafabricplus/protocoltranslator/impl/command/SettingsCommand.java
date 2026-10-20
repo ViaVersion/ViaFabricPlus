@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.protocoltranslator.impl.command;
 
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.command.ViaCommandSender;
+import net.minecraft.client.Minecraft;
 
 public final class SettingsCommand implements VFPSubCommand {
 
@@ -38,7 +39,7 @@ public final class SettingsCommand implements VFPSubCommand {
 
     @Override
     public boolean execute(ViaCommandSender sender, String[] args) {
-        ViaFabricPlusImpl.impl().screens().settingsScreen().open(null);
+        Minecraft.getInstance().execute(() -> ViaFabricPlusImpl.impl().screens().settingsScreen().open(null));
         return true;
     }
 
