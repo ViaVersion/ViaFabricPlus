@@ -25,7 +25,6 @@ import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import java.util.function.Function;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -37,9 +36,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.NonNull;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -49,15 +46,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(WallBlock.class)
 public abstract class MixinWallBlock extends Block {
 
-    @Shadow
-    @Final
-    private Function<BlockState, VoxelShape> shapes;
+    @Unique
+    private VoxelShape[] viaFabricPlus$shapes_r1_12_2;
 
     @Unique
-    private VoxelShape[] viaFabricPlus$collision_shape_r1_12_2;
-
-    @Unique
-    private VoxelShape[] viaFabricPlus$outline_shape_r1_12_2;
+    private VoxelShape[] viaFabricPlus$collision_shapes_r1_12_2;
 
     @Unique
     private final Object2IntMap<BlockState> viaFabricPlus$shapeIndexCache_r1_12_2 = new Object2IntOpenHashMap<>();
@@ -68,97 +61,76 @@ public abstract class MixinWallBlock extends Block {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void initShapes1_12_2(Properties properties, CallbackInfo ci) {
-        this.viaFabricPlus$collision_shape_r1_12_2 = this.viaFabricPlus$createShapes1_12_2(24.0F, 24.0F);
-        this.viaFabricPlus$outline_shape_r1_12_2 = this.viaFabricPlus$createShapes1_12_2(16.0F, 14.0F);
+        this.viaFabricPlus$shapes_r1_12_2 = this.viaFabricPlus$createShapes1_12_2(false);
+        this.viaFabricPlus$collision_shapes_r1_12_2 = this.viaFabricPlus$createShapes1_12_2(true);
     }
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     private void changeCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (state.getValue(WallBlock.UP) && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(this.viaFabricPlus$collision_shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)]);
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            cir.setReturnValue(this.viaFabricPlus$collision_shapes_r1_12_2[this.viaFabricPlus$getShapeIndex(state)]);
         }
     }
 
     @Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
     private void changeOutlineShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (state.getValue(WallBlock.UP) && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            cir.setReturnValue(this.viaFabricPlus$outline_shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)]);
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            cir.setReturnValue(this.viaFabricPlus$shapes_r1_12_2[this.viaFabricPlus$getShapeIndex(state)]);
         }
     }
 
     @Override
     public @NonNull VoxelShape getOcclusionShape(BlockState state) {
-        if (state.getValue(WallBlock.UP) && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return this.shapes.apply(state);
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return this.viaFabricPlus$shapes_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getOcclusionShape(state);
         }
     }
 
     @Unique
-    private static int viaFabricPlus$getDirectionMask(Direction dir) {
-        return 1 << dir.get2DDataValue();
-    }
-
-    @Unique
-    private VoxelShape[] viaFabricPlus$createShapes1_12_2(final float height1, final float height2) {
-        final float f = 4.0F;
-        final float g = 12.0F;
-        final float h = 5.0F;
-        final float i = 11.0F;
-
-        final VoxelShape baseShape = Block.box(f, 0.0D, f, g, height1, g);
-        final VoxelShape northShape = Block.box(h, 0.0, 0.0D, i, height2, i);
-        final VoxelShape southShape = Block.box(h, 0.0, h, i, height2, 16.0D);
-        final VoxelShape westShape = Block.box(0.0D, 0.0, h, i, height2, i);
-        final VoxelShape eastShape = Block.box(h, 0.0, h, 16.0D, height2, i);
-        final VoxelShape[] voxelShapes = new VoxelShape[]{
-            Shapes.empty(),
-            Block.box(f, 0.0, h, g, height1, 16.0D),
-            Block.box(0.0D, 0.0, f, i, height1, g),
-            Block.box(f - 4, 0.0, h - 1, g, height1, 16.0D),
-            Block.box(f, 0.0, 0.0D, g, height1, i),
-            Shapes.or(southShape, northShape),
-            Block.box(f - 4, 0.0, 0.0D, g, height1, i + 1),
-            Block.box(f - 4, 0.0, h - 5, g, height1, 16.0D),
-            Block.box(h, 0.0, f, 16.0D, height1, g),
-            Block.box(h - 1, 0.0, f, 16.0D, height1, g + 4),
-            Shapes.or(westShape, eastShape),
-            Block.box(h - 5, 0.0, f, 16.0D, height1, g + 4),
-            Block.box(f, 0.0, 0.0D, g + 4, height1, i + 1),
-            Block.box(f, 0.0, 0.0D, g + 4, height1, i + 5),
-            Block.box(h - 5, 0.0, f - 4, 16.0D, height1, g),
-            Block.box(0, 0.0, 0, 16.0D, height1, 16.0D)
+    private VoxelShape[] viaFabricPlus$createShapes1_12_2(boolean overrideY) {
+        return new VoxelShape[]{
+            Shapes.box(0.25, 0.0, 0.25, 0.75, overrideY ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.25, 0.0, 0.25, 0.75, overrideY ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.0, 0.0, 0.25, 0.75, overrideY ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.0, 0.0, 0.25, 0.75, overrideY ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.25, 0.0, 0.0, 0.75, overrideY ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.3125, 0.0, 0.0, 0.6875, overrideY ? 1.5 : 0.875, 1.0),
+            Shapes.box(0.0, 0.0, 0.0, 0.75, overrideY ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.0, 0.0, 0.0, 0.75, overrideY ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.25, 0.0, 0.25, 1.0, overrideY ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.25, 0.0, 0.25, 1.0, overrideY ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.0, 0.0, 0.3125, 1.0, overrideY ? 1.5 : 0.875, 0.6875),
+            Shapes.box(0.0, 0.0, 0.25, 1.0, overrideY ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.25, 0.0, 0.0, 1.0, overrideY ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.25, 0.0, 0.0, 1.0, overrideY ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.0, 0.0, 0.0, 1.0, overrideY ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.0, 0.0, 0.0, 1.0, overrideY ? 1.5 : 1.0, 1.0)
         };
-
-        for (int j = 0; j < 16; ++j) {
-            voxelShapes[j] = Shapes.or(baseShape, voxelShapes[j]);
-        }
-
-        return voxelShapes;
     }
 
     @Unique
     private int viaFabricPlus$getShapeIndex(BlockState state) {
-        return this.viaFabricPlus$shapeIndexCache_r1_12_2.computeIntIfAbsent(state, statex -> {
-            int i = 0;
-            if (!WallSide.NONE.equals(statex.getValue(WallBlock.NORTH))) {
-                i |= viaFabricPlus$getDirectionMask(Direction.NORTH);
+        return this.viaFabricPlus$shapeIndexCache_r1_12_2.computeIfAbsent(state, _ -> {
+            int index = 0;
+            if (!WallSide.NONE.equals(state.getValue(WallBlock.NORTH))) {
+                index |= 1 << Direction.NORTH.get2DDataValue();
             }
 
-            if (!WallSide.NONE.equals(statex.getValue(WallBlock.EAST))) {
-                i |= viaFabricPlus$getDirectionMask(Direction.EAST);
+            if (!WallSide.NONE.equals(state.getValue(WallBlock.EAST))) {
+                index |= 1 << Direction.EAST.get2DDataValue();
             }
 
-            if (!WallSide.NONE.equals(statex.getValue(WallBlock.SOUTH))) {
-                i |= viaFabricPlus$getDirectionMask(Direction.SOUTH);
+            if (!WallSide.NONE.equals(state.getValue(WallBlock.SOUTH))) {
+                index |= 1 << Direction.SOUTH.get2DDataValue();
             }
 
-            if (!WallSide.NONE.equals(statex.getValue(WallBlock.WEST))) {
-                i |= viaFabricPlus$getDirectionMask(Direction.WEST);
+            if (!WallSide.NONE.equals(state.getValue(WallBlock.WEST))) {
+                index |= 1 << Direction.WEST.get2DDataValue();
             }
 
-            return i;
+            return index;
         });
     }
 
