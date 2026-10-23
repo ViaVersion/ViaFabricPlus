@@ -24,17 +24,18 @@ package com.viaversion.viafabricplus.features;
 import com.viaversion.viaaprilfools.api.AprilFoolsProtocolVersion;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
-import com.viaversion.viafabricplus.features.global.CollisionShapes;
-import com.viaversion.viafabricplus.features.global.ClassiCubeAccount;
 import com.viaversion.viafabricplus.features.c0_30cpe.CPEAdditions;
-import com.viaversion.viafabricplus.features.v1_20_5.EnchantmentAttributesEmulation1_20_6;
+import com.viaversion.viafabricplus.features.global.ClassiCubeAccount;
+import com.viaversion.viafabricplus.features.global.CollisionShapes;
 import com.viaversion.viafabricplus.features.global.EntityDimensionDiff;
 import com.viaversion.viafabricplus.features.global.FontCacheReload;
-import com.viaversion.viafabricplus.features.v1_12_2.RenderableGlyphDiff;
-import com.viaversion.viafabricplus.features.v1_8.ArmorHudEmulation1_8;
 import com.viaversion.viafabricplus.features.global.ResourcePackHeaderDiff;
+import com.viaversion.viafabricplus.features.v1_11_1.FurnaceFuels1_11_2;
 import com.viaversion.viafabricplus.features.v1_11_1.Recipes1_11_2;
 import com.viaversion.viafabricplus.features.v1_12_2.FootStepParticle1_12_2;
+import com.viaversion.viafabricplus.features.v1_12_2.RenderableGlyphDiff;
+import com.viaversion.viafabricplus.features.v1_20_5.EnchantmentAttributesEmulation1_20_6;
+import com.viaversion.viafabricplus.features.v1_8.ArmorHudEmulation1_8;
 import com.viaversion.viafabricplus.util.network.SyncTasks;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
@@ -63,6 +64,7 @@ public final class FeaturesLoading {
             if (newVersion.olderThanOrEqualTo(ProtocolVersion.v1_11_1)) {
                 Recipes1_11_2.reset();
             }
+            FurnaceFuels1_11_2.reset();
 
             EnvironmentAttributes.RESPAWN_ANCHOR_WORKS.isSyncable = newVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_9);
         }));
@@ -79,6 +81,7 @@ public final class FeaturesLoading {
         EntityDimensionDiff.init();
         EnchantmentAttributesEmulation1_20_6.init();
         Recipes1_11_2.init();
+        FurnaceFuels1_11_2.init();
         ArmorHudEmulation1_8.init();
         CPEAdditions.postInit();
     }
