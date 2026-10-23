@@ -120,7 +120,7 @@ public interface ViaFabricPlusAPI {
 
     /**
      * Protocol translation conversions. Can be used to convert Items and other data types between versions and
-     * Minecraft<->ViaVersion formats.
+     * Minecraft and ViaVersion formats.
      *
      * @return Protocol translation conversions
      */

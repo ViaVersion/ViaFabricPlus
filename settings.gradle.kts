@@ -8,7 +8,6 @@ pluginManagement {
 }
 
 plugins {
-    id("base.settings")
     id("base.fabric_settings")
 }
 

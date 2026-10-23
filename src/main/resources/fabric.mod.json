@@ -49,7 +49,7 @@
   "mixins": [
     "viafabricplus.mixins.json"
   ],
-  "accessWidener": "viafabricplus.accesswidener",
+  "accessWidener": "viafabricplus.classtweaker",
   "depends": {
     "fabric-resource-loader-v1": ">=1.0.2",
     "fabric-networking-api-v1": ">=3.1.1",

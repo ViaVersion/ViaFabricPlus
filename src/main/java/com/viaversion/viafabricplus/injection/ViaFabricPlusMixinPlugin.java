@@ -57,11 +57,6 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public String getRefMapperConfig() {
-        return null;
-    }
-
-    @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         return switch (mixinClassName) {
             case MIXINS_PACKAGE + "compat.ipnext.MixinAutoRefillHandler_ItemSlotMonitor" -> IPNEXT_PRESENT;
@@ -70,23 +65,6 @@ public final class ViaFabricPlusMixinPlugin implements IMixinConfigPlugin {
             case MIXINS_PACKAGE + "features.v1_10.MixinGuiGraphicsExtractor" -> !LEGACY_PRESENT;
             default -> true;
         };
-    }
-
-    @Override
-    public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
-    }
-
-    @Override
-    public List<String> getMixins() {
-        return null;
-    }
-
-    @Override
-    public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
-    }
-
-    @Override
-    public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
     }
 
 }

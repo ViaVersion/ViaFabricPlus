@@ -1,3 +1,5 @@
+// https://github.com/florianreuth/BaseProject
+
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention")
 }

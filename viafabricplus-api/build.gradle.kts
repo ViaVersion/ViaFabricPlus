@@ -1,7 +1,5 @@
 plugins {
-    id("java")
-    id("base.java")
-    id("base.fabric")
+    id("base.fabric_subproject")
     id("via.maven_publish")
 }
 
@@ -10,10 +8,4 @@ dependencies {
     api(libs.viabackwards.common)
     api(libs.viaaprilfools.common)
     api(libs.vialegacy)
-}
-
-tasks {
-    runClient {
-        enabled = false
-    }
 }

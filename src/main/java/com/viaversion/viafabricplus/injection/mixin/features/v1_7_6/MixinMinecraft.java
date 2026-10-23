@@ -25,6 +25,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
@@ -41,7 +42,7 @@ public abstract class MixinMinecraft {
 
     @ModifyExpressionValue(method = "startUseItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;isDestroying()Z"))
     private boolean allowItemUsageAndBlockBreakAtTheSameTime(boolean original) {
-        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_7_6) && original;
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_7_6) && !ViaFabricPlusImpl.impl().visuals().allowItemUsageWhileMining().isActive() && original;
     }
 
     @WrapOperation(method = "startAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;hasMissTime()Z", ordinal = 1))
