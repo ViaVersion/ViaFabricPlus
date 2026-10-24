@@ -80,7 +80,7 @@ public abstract class MixinWallBlock extends Block {
     }
 
     @Override
-    public @NonNull VoxelShape getOcclusionShape(BlockState state) {
+    public @NonNull VoxelShape getOcclusionShape(@NonNull BlockState state) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
             return this.viaFabricPlus$shapes_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
         } else {
@@ -89,24 +89,24 @@ public abstract class MixinWallBlock extends Block {
     }
 
     @Unique
-    private VoxelShape[] viaFabricPlus$createShapes1_12_2(boolean overrideY) {
+    private VoxelShape[] viaFabricPlus$createShapes1_12_2(final boolean collision) {
         return new VoxelShape[]{
-            Shapes.box(0.25, 0.0, 0.25, 0.75, overrideY ? 1.5 : 1.0, 0.75),
-            Shapes.box(0.25, 0.0, 0.25, 0.75, overrideY ? 1.5 : 1.0, 1.0),
-            Shapes.box(0.0, 0.0, 0.25, 0.75, overrideY ? 1.5 : 1.0, 0.75),
-            Shapes.box(0.0, 0.0, 0.25, 0.75, overrideY ? 1.5 : 1.0, 1.0),
-            Shapes.box(0.25, 0.0, 0.0, 0.75, overrideY ? 1.5 : 1.0, 0.75),
-            Shapes.box(0.3125, 0.0, 0.0, 0.6875, overrideY ? 1.5 : 0.875, 1.0),
-            Shapes.box(0.0, 0.0, 0.0, 0.75, overrideY ? 1.5 : 1.0, 0.75),
-            Shapes.box(0.0, 0.0, 0.0, 0.75, overrideY ? 1.5 : 1.0, 1.0),
-            Shapes.box(0.25, 0.0, 0.25, 1.0, overrideY ? 1.5 : 1.0, 0.75),
-            Shapes.box(0.25, 0.0, 0.25, 1.0, overrideY ? 1.5 : 1.0, 1.0),
-            Shapes.box(0.0, 0.0, 0.3125, 1.0, overrideY ? 1.5 : 0.875, 0.6875),
-            Shapes.box(0.0, 0.0, 0.25, 1.0, overrideY ? 1.5 : 1.0, 1.0),
-            Shapes.box(0.25, 0.0, 0.0, 1.0, overrideY ? 1.5 : 1.0, 0.75),
-            Shapes.box(0.25, 0.0, 0.0, 1.0, overrideY ? 1.5 : 1.0, 1.0),
-            Shapes.box(0.0, 0.0, 0.0, 1.0, overrideY ? 1.5 : 1.0, 0.75),
-            Shapes.box(0.0, 0.0, 0.0, 1.0, overrideY ? 1.5 : 1.0, 1.0)
+            Shapes.box(0.25, 0.0, 0.25, 0.75, collision ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.25, 0.0, 0.25, 0.75, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.0, 0.0, 0.25, 0.75, collision ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.0, 0.0, 0.25, 0.75, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.25, 0.0, 0.0, 0.75, collision ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.3125, 0.0, 0.0, 0.6875, collision ? 1.5 : 0.875, 1.0),
+            Shapes.box(0.0, 0.0, 0.0, 0.75, collision ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.0, 0.0, 0.0, 0.75, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.25, 0.0, 0.25, 1.0, collision ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.25, 0.0, 0.25, 1.0, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.0, 0.0, 0.3125, 1.0, collision ? 1.5 : 0.875, 0.6875),
+            Shapes.box(0.0, 0.0, 0.25, 1.0, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.25, 0.0, 0.0, 1.0, collision ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.25, 0.0, 0.0, 1.0, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.0, 0.0, 0.0, 1.0, collision ? 1.5 : 1.0, 0.75),
+            Shapes.box(0.0, 0.0, 0.0, 1.0, collision ? 1.5 : 1.0, 1.0)
         };
     }
 
