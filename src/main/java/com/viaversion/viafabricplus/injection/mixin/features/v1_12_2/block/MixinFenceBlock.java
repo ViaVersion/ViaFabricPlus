@@ -45,55 +45,33 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICrossCollisionBlock {
 
     @Unique
-    private final VoxelShape[] viaFabricPlus$outline_shape_r1_12_2 = new VoxelShape[]{
-        Shapes.box(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D),
-        Shapes.box(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D),
-        Shapes.box(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D),
-        Shapes.box(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D),
-        Shapes.box(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),
-        Shapes.box(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),
-        Shapes.box(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),
-        Shapes.box(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),
-        Shapes.box(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D),
-        Shapes.box(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D),
-        Shapes.box(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D),
-        Shapes.box(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D),
-        Shapes.box(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),
-        Shapes.box(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
-        Shapes.box(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),
-        Shapes.box(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)
-    };
+    private VoxelShape[] viaFabricPlus$shapes_r1_12_2;
 
     @Unique
-    private VoxelShape[] viaFabricPlus$collision_shape_r1_4_7;
-
-    @Unique
-    private VoxelShape[] viaFabricPlus$outline_shape_r1_4_7;
+    private VoxelShape[] viaFabricPlus$collision_shapes_r1_4_7;
 
     @Unique
     private final VoxelShape viaFabricPlus$shape_b1_8_1 = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 24.0D, 16.0D);
 
-    protected MixinFenceBlock(float radius1, float radius2, float boundingHeight1, float boundingHeight2, float collisionHeight, Properties settings) {
-        super(radius1, radius2, boundingHeight1, boundingHeight2, collisionHeight, settings);
+    protected MixinFenceBlock(final float postWidth, final float postHeight, final float wallWidth, final float wallHeight, final float collisionHeight, final Properties properties) {
+        super(postWidth, postHeight, wallWidth, wallHeight, collisionHeight, properties);
+    }
+
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void initShapes1_12_2(Properties properties, CallbackInfo ci) {
+        this.viaFabricPlus$shapes_r1_12_2 = this.viaFabricPlus$createShapes1_12_2(false);
+        this.viaFabricPlus$collision_shapes_r1_4_7 = this.viaFabricPlus$createShapes1_12_2(true);
     }
 
     @Override
     public @NonNull VoxelShape getShape(@NonNull BlockState state, @NonNull BlockGetter world, @NonNull BlockPos pos, @NonNull CollisionContext context) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return Shapes.block();
-        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            return this.viaFabricPlus$outline_shape_r1_4_7[this.viaFabricPlus$getShapeIndex(state)];
         } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return this.viaFabricPlus$outline_shape_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
+            return this.viaFabricPlus$shapes_r1_12_2[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getShape(state, world, pos, context);
         }
-    }
-
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void init1_4_7Shapes(Properties properties, CallbackInfo ci) {
-        this.viaFabricPlus$collision_shape_r1_4_7 = this.viaFabricPlus$createShapes1_4_7(24.0F);
-        this.viaFabricPlus$outline_shape_r1_4_7 = this.viaFabricPlus$createShapes1_4_7(16.0F);
     }
 
     @Override
@@ -101,49 +79,32 @@ public abstract class MixinFenceBlock extends CrossCollisionBlock implements ICr
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.b1_8tob1_8_1)) {
             return viaFabricPlus$shape_b1_8_1;
         } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(LegacyProtocolVersion.r1_4_6tor1_4_7)) {
-            return this.viaFabricPlus$collision_shape_r1_4_7[this.viaFabricPlus$getShapeIndex(state)];
+            return this.viaFabricPlus$collision_shapes_r1_4_7[this.viaFabricPlus$getShapeIndex(state)];
         } else {
             return super.getCollisionShape(state, world, pos, context);
         }
     }
 
     @Unique
-    private VoxelShape[] viaFabricPlus$createShapes1_4_7(final float height) {
-        final float f = 6.0F;
-        final float g = 10.0F;
-        final float h = 6.0F;
-        final float i = 10.0F;
-        final VoxelShape baseShape = Block.box(f, 0.0, f, g, height, g);
-        final VoxelShape northShape = Block.box(h, (float) 0.0, 0.0, i, height, i);
-        final VoxelShape southShape = Block.box(h, (float) 0.0, h, i, height, 16.0);
-        final VoxelShape westShape = Block.box(0.0, (float) 0.0, h, i, height, i);
-        final VoxelShape eastShape = Block.box(h, (float) 0.0, h, 16.0, height, i);
-        final VoxelShape[] voxelShapes = new VoxelShape[]{
-            Shapes.empty(),
-            Block.box(f, (float) 0.0, h, g, height, 16.0D),
-            Block.box(0.0D, (float) 0.0, f, i, height, g),
-            Block.box(f - 6, (float) 0.0, h, g, height, 16.0D),
-            Block.box(f, (float) 0.0, 0.0D, g, height, i),
-
-            Shapes.or(southShape, northShape),
-            Block.box(f - 6, (float) 0.0, 0.0D, g, height, i),
-            Block.box(f - 6, (float) 0.0, h - 5, g, height, 16.0D),
-            Block.box(h, (float) 0.0, f, 16.0D, height, g),
-            Block.box(h, (float) 0.0, f, 16.0D, height, g + 6),
-
-            Shapes.or(westShape, eastShape),
-            Block.box(h - 5, (float) 0.0, f, 16.0D, height, g + 6),
-            Block.box(f, (float) 0.0, 0.0D, g + 6, height, i),
-            Block.box(f, (float) 0.0, 0.0D, g + 6, height, i + 5),
-            Block.box(h - 5, (float) 0.0, f - 6, 16.0D, height, g),
-            Block.box(0, (float) 0.0, 0, 16.0D, height, 16.0D)
+    private VoxelShape[] viaFabricPlus$createShapes1_12_2(final boolean collision) {
+        return new VoxelShape[]{
+            Shapes.box(0.375, 0.0, 0.375, 0.625, collision ? 1.5 : 1.0, 0.625),
+            Shapes.box(0.375, 0.0, 0.375, 0.625, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.0, 0.0, 0.375, 0.625, collision ? 1.5 : 1.0, 0.625),
+            Shapes.box(0.0, 0.0, 0.375, 0.625, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.375, 0.0, 0.0, 0.625, collision ? 1.5 : 1.0, 0.625),
+            Shapes.box(0.375, 0.0, 0.0, 0.625, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.0, 0.0, 0.0, 0.625, collision ? 1.5 : 1.0, 0.625),
+            Shapes.box(0.0, 0.0, 0.0, 0.625, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.375, 0.0, 0.375, 1.0, collision ? 1.5 : 1.0, 0.625),
+            Shapes.box(0.375, 0.0, 0.375, 1.0, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.0, 0.0, 0.375, 1.0, collision ? 1.5 : 1.0, 0.625),
+            Shapes.box(0.0, 0.0, 0.375, 1.0, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.375, 0.0, 0.0, 1.0, collision ? 1.5 : 1.0, 0.625),
+            Shapes.box(0.375, 0.0, 0.0, 1.0, collision ? 1.5 : 1.0, 1.0),
+            Shapes.box(0.0, 0.0, 0.0, 1.0, collision ? 1.5 : 1.0, 0.625),
+            Shapes.box(0.0, 0.0, 0.0, 1.0, collision ? 1.5 : 1.0, 1.0)
         };
-
-        for (int j = 0; j < 16; ++j) {
-            voxelShapes[j] = Shapes.or(baseShape, voxelShapes[j]);
-        }
-
-        return voxelShapes;
     }
 
 }
