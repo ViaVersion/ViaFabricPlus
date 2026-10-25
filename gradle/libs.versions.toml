@@ -1,8 +1,8 @@
 [versions]
 minecraft = "26.3"
-fabric-loader = "0.19.5"
-fabric-api = "0.163.0+26.3"
-fabric-loom = "1.18-SNAPSHOT"
+fabric-loader = "0.20.1"
+fabric-api = "0.165.0+26.3"
+fabric-loom = "1.19-SNAPSHOT"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
