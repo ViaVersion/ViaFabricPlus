@@ -25,8 +25,7 @@ import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viafabricplus.ViaFabricPlusImpl;
 import com.viaversion.viafabricplus.screen.ScreensImpl;
 import com.viaversion.viafabricplus.screen.impl.protocol.AbstractProtocolSelectionScreen;
-import com.viaversion.viafabricplus.screen.impl.serverlist.BetaCraftServerListScreen;
-import com.viaversion.viafabricplus.screen.impl.serverlist.ClassiCubeServerListScreen;
+import com.viaversion.viafabricplus.screen.impl.serverlist.ServerListsScreen;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -47,13 +46,10 @@ public final class ViaFabricPlusScreen extends AbstractProtocolSelectionScreen {
         // The server lists connect to a server, which is not possible while already being connected to one
         final boolean disconnected = Minecraft.getInstance().getConnection() == null;
 
-        final Button classiCube = Button.builder(ClassiCubeServerListScreen.TITLE, _ -> screens.openClassiCubeServerListScreen(this)).build();
-        classiCube.active = disconnected;
+        final Button serverLists = Button.builder(ServerListsScreen.TITLE, _ -> screens.serverListsScreen().open(this)).build();
+        serverLists.active = disconnected;
 
-        final Button betaCraft = Button.builder(BetaCraftServerListScreen.TITLE, _ -> screens.openBetaCraftServerListScreen(this)).build();
-        betaCraft.active = disconnected;
-
-        this.addFooter(classiCube, betaCraft,
+        this.addFooter(serverLists,
             Button.builder(Component.translatable("base.viafabricplus.settings"), _ -> screens.settingsScreen().open(this)).build(),
             Button.builder(Component.translatable("report.viafabricplus.button"), _ -> screens.reportIssuesScreen().open(this)).build());
     }

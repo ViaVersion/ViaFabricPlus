@@ -30,6 +30,7 @@ import com.viaversion.viafabricplus.screen.impl.serverlist.BetaCraftServerListSc
 import com.viaversion.viafabricplus.screen.impl.serverlist.ClassiCubeLoginScreen;
 import com.viaversion.viafabricplus.screen.impl.serverlist.ClassiCubeMFAScreen;
 import com.viaversion.viafabricplus.screen.impl.serverlist.ClassiCubeServerListScreen;
+import com.viaversion.viafabricplus.screen.impl.serverlist.ServerListsScreen;
 import net.minecraft.client.gui.screens.Screen;
 
 public final class ScreensImpl implements Screens {
@@ -37,6 +38,7 @@ public final class ScreensImpl implements Screens {
     private final ViaFabricPlusScreen viaFabricPlusScreen = new ViaFabricPlusScreen();
     private final SettingsScreen settingsScreen = new SettingsScreen();
     private final ReportIssuesScreen reportIssuesScreen = new ReportIssuesScreen();
+    private final ServerListsScreen serverListsScreen = new ServerListsScreen();
     private final ClassiCubeLoginScreen classiCubeLoginScreen = new ClassiCubeLoginScreen();
     private final ClassiCubeMFAScreen classiCubeMFAScreen = new ClassiCubeMFAScreen();
     private final ClassiCubeServerListScreen classiCubeServerListScreen = new ClassiCubeServerListScreen();
@@ -77,6 +79,10 @@ public final class ScreensImpl implements Screens {
 
     public ReportIssuesScreen reportIssuesScreen() {
         return this.reportIssuesScreen;
+    }
+
+    public ServerListsScreen serverListsScreen() {
+        return this.serverListsScreen;
     }
 
     public ClassiCubeLoginScreen classiCubeLoginScreen() {
