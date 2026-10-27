@@ -53,6 +53,12 @@ public final class ViaFabricPlusConfig extends AbstractViaConfig {
             set("send-player-details", false);
             modified = true;
         }
+
+        // 5.12.2 additions
+        if (modified || !existingConfig.contains("backup-nested-items")) {
+            set("backup-nested-items", true);
+            modified = true;
+        }
         return super.updateConfig() || modified;
     }
 
