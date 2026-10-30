@@ -34,6 +34,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.CommonColors;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
@@ -52,7 +53,6 @@ public final class ProtocolSlot extends VFPListEntry {
     private static final int SELECTED_COLOR = VFPScreen.ACCENT_COLOR;
     private static final int SELECTED_BACKGROUND_COLOR = 0x4058A6FF; // ACCENT_COLOR at 25% opacity
     private static final int SUBTITLE_COLOR = 0xFFAAAAAA;
-    private static final int DISABLED_COLOR = 0xFF808080;
 
     private final ProtocolVersion protocolVersion;
     private final AbstractProtocolSelectionScreen screen;
@@ -110,7 +110,7 @@ public final class ProtocolSlot extends VFPListEntry {
         context.blit(RenderPipelines.GUI_TEXTURED, this.icon, SLOT_MARGIN, (entryHeight - ICON_SIZE) / 2, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
 
         final Font font = Minecraft.getInstance().font;
-        final int nameColor = !selectable ? DISABLED_COLOR : selected ? SELECTED_COLOR : -1;
+        final int nameColor = !selectable ? CommonColors.GRAY : selected ? SELECTED_COLOR : -1;
         final int centeredY = entryHeight / 2 - font.lineHeight / 2;
 
         final int starColor = ViaFabricPlusImpl.impl().settings().isFavorite(this.protocolVersion) ? FAVORITE_COLOR : NO_FAVORITE_COLOR;
@@ -121,7 +121,7 @@ public final class ProtocolSlot extends VFPListEntry {
             return;
         }
 
-        final int subtitleColor = !selectable ? DISABLED_COLOR : SUBTITLE_COLOR;
+        final int subtitleColor = !selectable ? CommonColors.GRAY : SUBTITLE_COLOR;
         final Component releaseDate = this.metadata.formattedReleaseDate();
         final int releaseDateX = entryWidth - STAR_AREA - font.width(releaseDate);
         context.text(font, releaseDate, releaseDateX, centeredY, subtitleColor);

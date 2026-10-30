@@ -33,7 +33,6 @@ import net.minecraft.util.Mth;
 public final class VFPTabBar extends MenuTabBar {
 
     private static final int LABEL_MARGIN = 4;
-    private static final int SCREEN_MARGIN = 28; // Same as vanilla
 
     public VFPTabBar(final int y, final int width, final int height, final TabManager tabManager, final ImmutableList<TabButton> tabButtons, final ImmutableList<Tab> tabs) {
         super(0, y, width, height, tabManager, tabButtons, tabs);
@@ -46,7 +45,7 @@ public final class VFPTabBar extends MenuTabBar {
         // Vanilla spreads a fixed width over all tabs, which leaves too little room for longer labels with many tabs
         final Font font = Minecraft.getInstance().font;
         final int labelWidth = this.tabButtons.stream().mapToInt(button -> font.width(button.getMessage())).max().orElse(0);
-        final int tabWidth = Math.min(labelWidth + LABEL_MARGIN * 2, (width - SCREEN_MARGIN) / this.tabButtons.size()) & ~1; // Even like vanilla
+        final int tabWidth = Math.min(labelWidth + LABEL_MARGIN * 2, (width - 2 * MARGIN) / this.tabButtons.size()) & ~1; // Even like vanilla
         if (tabWidth > this.tabButtons.getFirst().getWidth()) {
             this.tabButtons.forEach(button -> button.setWidth(tabWidth));
             this.layout.arrangeElements();

@@ -65,7 +65,7 @@ public final class ClassiCubeMFAScreen extends VFPScreen {
                     showToast(Component.nullToEmpty(throwable.getMessage()));
                 }
             });
-        }).pos(width / 2 - 75, mfaField.getY() + (20 * 4) + 5).size(150, 20).build());
+        }).pos(width / 2 - Button.DEFAULT_WIDTH / 2, mfaField.getY() + (20 * 4) + 5).size(Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT).build());
     }
 
     @Override

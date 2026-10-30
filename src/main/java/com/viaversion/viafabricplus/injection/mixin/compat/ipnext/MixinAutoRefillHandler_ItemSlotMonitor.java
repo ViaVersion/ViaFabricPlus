@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.compat.ipnext;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.world.inventory.InventoryMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
@@ -47,14 +48,18 @@ public abstract class MixinAutoRefillHandler_ItemSlotMonitor {
     @Inject(method = {"checkHandle", "checkShouldHandle"}, at = @At("HEAD"), cancellable = true)
     public void dontHandleOffhandSlot(CallbackInfo ci) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            if (currentSlotId == 45) ci.cancel();
+            if (currentSlotId == InventoryMenu.SHIELD_SLOT) {
+                ci.cancel();
+            }
         }
     }
 
     @Inject(method = "updateCurrent", at = @At(value = "FIELD", target = "Lorg/anti_ad/mc/ipnext/event/AutoRefillHandler$ItemSlotMonitor;currentSlotId:I", shift = At.Shift.AFTER), cancellable = true)
     public void dontUpdateCurrentOffhandSlot(CallbackInfo ci) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
-            if (currentSlotId == 45) ci.cancel();
+            if (currentSlotId == InventoryMenu.SHIELD_SLOT) {
+                ci.cancel();
+            }
         }
     }
 

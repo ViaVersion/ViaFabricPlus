@@ -88,7 +88,7 @@ public abstract class VFPScreen extends Screen {
     @Override
     protected void init() {
         if (this.backButton) {
-            this.addRenderableWidget(Button.builder(CommonComponents.GUI_BACK, _ -> this.onClose()).pos(5, 5).size(BACK_BUTTON_WIDTH, 20).build());
+            this.addRenderableWidget(Button.builder(CommonComponents.GUI_BACK, _ -> this.onClose()).pos(5, 5).size(BACK_BUTTON_WIDTH, Button.DEFAULT_HEIGHT).build());
         }
     }
 

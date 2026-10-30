@@ -28,12 +28,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.CommonColors;
 import org.jspecify.annotations.NonNull;
 
 public final class VersionedBooleanListEntry extends VFPListEntry {
 
-    private static final int ACTIVE_COLOR = 0xFF00FF00;
-    private static final int INACTIVE_COLOR = 0xFFFF0000;
     private static final int STATE_MARGIN = 2;
 
     private final VersionedBooleanSetting value;
@@ -60,7 +59,7 @@ public final class VersionedBooleanListEntry extends VFPListEntry {
 
         final int offset = textRenderer.width(text) + STATE_MARGIN;
         renderScrollableText(context, Component.nullToEmpty(ChatFormatting.GRAY + this.value.name().getString() + " " + ChatFormatting.RESET + this.value.versionRange().toString()), offset);
-        context.text(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, this.value.value() ? ACTIVE_COLOR : INACTIVE_COLOR);
+        context.text(textRenderer, text, entryWidth - offset, entryHeight / 2 - textRenderer.lineHeight / 2, this.value.value() ? CommonColors.GREEN : CommonColors.RED);
     }
 
 }

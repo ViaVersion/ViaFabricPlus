@@ -30,6 +30,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.Blocks;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Final;
@@ -73,7 +74,7 @@ public abstract class MixinMultiPlayerGameMode {
     private boolean viaFabricPlus$extinguishFire(BlockPos blockPos, final Direction direction) {
         blockPos = blockPos.relative(direction);
         if (this.minecraft.level.getBlockState(blockPos).getBlock() == Blocks.FIRE) {
-            this.minecraft.level.levelEvent(this.minecraft.player, 1009, blockPos, 0);
+            this.minecraft.level.levelEvent(this.minecraft.player, LevelEvent.SOUND_EXTINGUISH_FIRE, blockPos, 0);
             this.minecraft.level.removeBlock(blockPos, false);
             return true;
         }

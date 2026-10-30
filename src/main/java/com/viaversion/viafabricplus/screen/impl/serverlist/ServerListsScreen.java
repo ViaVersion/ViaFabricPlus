@@ -32,24 +32,22 @@ public final class ServerListsScreen extends VFPPopup {
 
     public static final Component TITLE = Component.translatable("screen.viafabricplus.server_lists");
 
-    private static final int BUTTON_WIDTH = 200;
-    private static final int BUTTON_HEIGHT = 20;
     private static final int BUTTON_MARGIN = 3;
 
     public ServerListsScreen() {
-        super(TITLE, BUTTON_WIDTH + 2 * BUTTON_MARGIN, 2 * (BUTTON_HEIGHT + BUTTON_MARGIN) + BUTTON_MARGIN);
+        super(TITLE, Button.BIG_WIDTH + 2 * BUTTON_MARGIN, 2 * (Button.DEFAULT_HEIGHT + BUTTON_MARGIN) + BUTTON_MARGIN);
     }
 
     @Override
     protected void initBody(final ScreenRectangle body) {
         final ScreensImpl screens = ViaFabricPlusImpl.impl().screens();
-        final int x = body.left() + (body.width() - BUTTON_WIDTH) / 2;
+        final int x = body.left() + (body.width() - Button.BIG_WIDTH) / 2;
 
         // Opened with the parent of the popup, so going back from a server list skips the popup
         this.addRenderableWidget(Button.builder(ClassiCubeServerListScreen.TITLE, _ -> screens.openClassiCubeServerListScreen(this.prevScreen))
-            .pos(x, body.top() + BUTTON_MARGIN).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
+            .pos(x, body.top() + BUTTON_MARGIN).size(Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build());
         this.addRenderableWidget(Button.builder(BetaCraftServerListScreen.TITLE, _ -> screens.openBetaCraftServerListScreen(this.prevScreen))
-            .pos(x, body.top() + BUTTON_MARGIN + BUTTON_HEIGHT + BUTTON_MARGIN).size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
+            .pos(x, body.top() + BUTTON_MARGIN + Button.DEFAULT_HEIGHT + BUTTON_MARGIN).size(Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build());
     }
 
 }

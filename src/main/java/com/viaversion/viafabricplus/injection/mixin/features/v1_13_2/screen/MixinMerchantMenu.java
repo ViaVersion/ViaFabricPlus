@@ -54,6 +54,14 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
     private MerchantContainer tradeContainer;
 
     @Shadow
+    @Final
+    private static int INV_SLOT_START;
+
+    @Shadow
+    @Final
+    private static int USE_ROW_SLOT_END;
+
+    @Shadow
     public abstract MerchantOffers getOffers();
 
     protected MixinMerchantMenu(@Nullable MenuType<?> type, int syncId) {
@@ -109,7 +117,7 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
     @Unique
     private void viaFabricPlus$autofill(MultiPlayerGameMode interactionManager, LocalPlayer player, int inputSlot, ItemCost stackNeeded) {
         int slot;
-        for (slot = 3; slot < 39; slot++) {
+        for (slot = INV_SLOT_START; slot < USE_ROW_SLOT_END; slot++) {
             final ItemStack itemStack = this.slots.get(slot).getItem();
             if (!itemStack.isEmpty() && stackNeeded.test(itemStack)) {
                 final ItemStack itemStack2 = this.tradeContainer.getItem(inputSlot);
@@ -118,7 +126,7 @@ public abstract class MixinMerchantMenu extends AbstractContainerMenu {
                 }
             }
         }
-        if (slot == 39) {
+        if (slot == USE_ROW_SLOT_END) {
             return;
         }
 

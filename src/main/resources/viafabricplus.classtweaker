@@ -2,11 +2,7 @@ classTweaker v1 official
 
 accessible field net/minecraft/network/Connection channel Lio/netty/channel/Channel;
 accessible field net/minecraft/client/multiplayer/resolver/ServerNameResolver redirectHandler Lnet/minecraft/client/multiplayer/resolver/ServerRedirectHandler;
-accessible field net/minecraft/client/gui/screens/PauseScreen disconnectButton Lnet/minecraft/client/gui/components/Button;
-accessible field net/minecraft/network/Connection bandwidthDebugMonitor Lnet/minecraft/network/BandwidthDebugMonitor;
 accessible field net/minecraft/world/entity/EntityType dimensions Lnet/minecraft/world/entity/EntityDimensions;
-accessible field net/minecraft/world/level/block/state/BlockBehaviour speedFactor F
-accessible field net/minecraft/client/gui/screens/options/controls/KeyBindsList$KeyEntry RESET_BUTTON_TITLE Lnet/minecraft/network/chat/Component;
 accessible field net/minecraft/client/Minecraft fontManager Lnet/minecraft/client/gui/font/FontManager;
 accessible field net/minecraft/client/gui/font/FontManager fontSets Ljava/util/Map;
 accessible field net/minecraft/client/gui/font/FontSet glyphCache Lnet/minecraft/client/gui/font/CodepointMap;
@@ -20,13 +16,13 @@ accessible field net/minecraft/world/entity/animal/equine/AbstractHorse standAni
 accessible field net/minecraft/network/Connection pendingActions Ljava/util/Queue;
 accessible field net/minecraft/world/attribute/EnvironmentAttribute isSyncable Z
 accessible field net/minecraft/client/resources/language/ClientLanguage storage Ljava/util/Map;
-accessible field net/minecraft/client/gui/screens/social/SocialInteractionsScreen TITLE Lnet/minecraft/network/chat/Component;
 accessible field net/minecraft/client/gui/components/ImageButton sprites Lnet/minecraft/client/gui/components/WidgetSprites;
 accessible field net/minecraft/client/gui/components/PopupScreen BACKGROUND_SPRITE Lnet/minecraft/resources/Identifier;
 accessible field net/minecraft/client/gui/components/PopupScreen BG_BORDER_WITH_SPACING I
+accessible field net/minecraft/client/gui/components/tabs/MenuTabBar HEIGHT I
+accessible field net/minecraft/client/gui/components/tabs/MenuTabBar MARGIN I
 
 mutable field net/minecraft/world/entity/EntityType dimensions Lnet/minecraft/world/entity/EntityDimensions;
-mutable field net/minecraft/world/level/block/state/BlockBehaviour speedFactor F
 mutable field net/minecraft/client/player/ClientInput moveVector Lnet/minecraft/world/phys/Vec2;
 mutable field net/minecraft/world/attribute/EnvironmentAttribute isSyncable Z
 
@@ -41,13 +37,10 @@ accessible method net/minecraft/world/level/block/entity/BlockEntity saveMetadat
 accessible method net/minecraft/client/renderer/debug/GameTestBlockHighlightRenderer$Marker <init> (ILjava/lang/String;J)V
 accessible method net/minecraft/client/gui/font/FontSet$SelectedGlyphs <init> (Ljava/util/function/Supplier;Ljava/util/function/Supplier;)V
 accessible method com/mojang/realmsclient/RealmsMainScreen$CrossButton <init> (Lnet/minecraft/client/gui/components/Button$OnPress;Lnet/minecraft/network/chat/Component;)V
-accessible method net/minecraft/client/multiplayer/ClientLevel playBreakingSound (Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V
 accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData calculateRotation (Lnet/minecraft/world/level/LevelAccessor;D)B
 
 extendable method net/minecraft/world/entity/Entity moveOrInterpolateTo (Lnet/minecraft/world/phys/Vec3;FF)V
 
-accessible method net/minecraft/world/level/block/StairBlock getStairsShape (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/properties/StairsShape;
-accessible method net/minecraft/world/level/block/FireBlock canBurn (Lnet/minecraft/world/level/block/state/BlockState;)Z
 
 accessible class net/minecraft/client/gui/font/FontSet$SelectedGlyphs
 accessible class net/minecraft/world/entity/Entity$Movement

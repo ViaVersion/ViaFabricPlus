@@ -86,7 +86,7 @@ public final class ClassiCubeLoginScreen extends VFPScreen {
                     showToast(Component.nullToEmpty(throwable.getMessage()));
                 }
             });
-        }).pos(width / 2 - 75, passwordField.getY() + (20 * 4) + 5).size(150, 20).build());
+        }).pos(width / 2 - Button.DEFAULT_WIDTH / 2, passwordField.getY() + (20 * 4) + 5).size(Button.DEFAULT_WIDTH, Button.DEFAULT_HEIGHT).build());
     }
 
     @Override
