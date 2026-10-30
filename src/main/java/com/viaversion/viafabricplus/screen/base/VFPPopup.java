@@ -21,16 +21,17 @@
 
 package com.viaversion.viafabricplus.screen.base;
 
+import com.mojang.realmsclient.RealmsMainScreen;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.PopupScreen;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 
 public abstract class VFPPopup extends VFPScreen {
 
-    private static final int SPRITE_BORDER = 18; // Space the nine sliced background sprites need it around the content
     private static final int TITLE_HEIGHT = 20;
 
     private final int bodyWidth;
@@ -51,11 +52,15 @@ public abstract class VFPPopup extends VFPScreen {
             this.prevScreen.init(this.width, this.height);
         }
 
-        final int panelWidth = Math.min(this.bodyWidth, this.width - 2 * SPRITE_BORDER);
-        final int panelHeight = Math.min(TITLE_HEIGHT + this.bodyHeight, this.height - 2 * SPRITE_BORDER);
+        final int panelWidth = Math.min(this.bodyWidth, this.width - 2 * PopupScreen.BG_BORDER_WITH_SPACING);
+        final int panelHeight = Math.min(TITLE_HEIGHT + this.bodyHeight, this.height - 2 * PopupScreen.BG_BORDER_WITH_SPACING);
         this.panel = new ScreenRectangle((this.width - panelWidth) / 2, (this.height - panelHeight) / 2, panelWidth, panelHeight);
 
         this.initBody(new ScreenRectangle(this.panel.left(), this.panel.top() + TITLE_HEIGHT, panelWidth, panelHeight - TITLE_HEIGHT));
+
+        final RealmsMainScreen.CrossButton closeButton = this.addRenderableWidget(new RealmsMainScreen.CrossButton(_ -> this.onClose(), CommonComponents.GUI_BACK));
+        final int closeMargin = (TITLE_HEIGHT - closeButton.getHeight()) / 2;
+        closeButton.setPosition(this.panel.right() - closeButton.getWidth() - closeMargin, this.panel.top() + closeMargin);
 
         super.init();
     }
@@ -93,10 +98,10 @@ public abstract class VFPPopup extends VFPScreen {
             this.extractTransparentBackground(graphics);
         }
 
-        final int x = this.panel.left() - SPRITE_BORDER;
-        final int y = this.panel.top() - SPRITE_BORDER;
-        final int width = this.panel.width() + 2 * SPRITE_BORDER;
-        final int height = this.panel.height() + 2 * SPRITE_BORDER;
+        final int x = this.panel.left() - PopupScreen.BG_BORDER_WITH_SPACING;
+        final int y = this.panel.top() - PopupScreen.BG_BORDER_WITH_SPACING;
+        final int width = this.panel.width() + 2 * PopupScreen.BG_BORDER_WITH_SPACING;
+        final int height = this.panel.height() + 2 * PopupScreen.BG_BORDER_WITH_SPACING;
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, PopupScreen.BACKGROUND_SPRITE, x, y, width, height);
     }
 

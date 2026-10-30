@@ -23,6 +23,7 @@ accessible field net/minecraft/client/resources/language/ClientLanguage storage 
 accessible field net/minecraft/client/gui/screens/social/SocialInteractionsScreen TITLE Lnet/minecraft/network/chat/Component;
 accessible field net/minecraft/client/gui/components/ImageButton sprites Lnet/minecraft/client/gui/components/WidgetSprites;
 accessible field net/minecraft/client/gui/components/PopupScreen BACKGROUND_SPRITE Lnet/minecraft/resources/Identifier;
+accessible field net/minecraft/client/gui/components/PopupScreen BG_BORDER_WITH_SPACING I
 
 mutable field net/minecraft/world/entity/EntityType dimensions Lnet/minecraft/world/entity/EntityDimensions;
 mutable field net/minecraft/world/level/block/state/BlockBehaviour speedFactor F
@@ -39,6 +40,7 @@ accessible method net/minecraft/client/gui/components/EditBox getMaxLength ()I
 accessible method net/minecraft/world/level/block/entity/BlockEntity saveMetadata (Lnet/minecraft/world/level/storage/ValueOutput;)V
 accessible method net/minecraft/client/renderer/debug/GameTestBlockHighlightRenderer$Marker <init> (ILjava/lang/String;J)V
 accessible method net/minecraft/client/gui/font/FontSet$SelectedGlyphs <init> (Ljava/util/function/Supplier;Ljava/util/function/Supplier;)V
+accessible method com/mojang/realmsclient/RealmsMainScreen$CrossButton <init> (Lnet/minecraft/client/gui/components/Button$OnPress;Lnet/minecraft/network/chat/Component;)V
 accessible method net/minecraft/client/multiplayer/ClientLevel playBreakingSound (Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)V
 accessible method net/minecraft/world/level/saveddata/maps/MapItemSavedData calculateRotation (Lnet/minecraft/world/level/LevelAccessor;D)B
 
