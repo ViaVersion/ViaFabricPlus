@@ -1,0 +1,152 @@
+{
+  "": [
+    {
+      "item": "minecraft:lava_bucket",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:coal_block",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:blaze_rod",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:coal",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:charcoal",
+      "version": "*"
+    },
+    {
+      "tag": "minecraft:logs",
+      "version": "*"
+    },
+    {
+      "tag": "minecraft:planks",
+      "version": "*"
+    },
+    {
+      "tag": "minecraft:wooden_stairs",
+      "version": "*"
+    },
+    {
+      "tag": "minecraft:wooden_trapdoors",
+      "version": "*"
+    },
+    {
+      "tag": "minecraft:wooden_pressure_plates",
+      "version": "*"
+    },
+    {
+      "tag": "minecraft:wooden_fences",
+      "version": "*"
+    },
+    {
+      "tag": "minecraft:fence_gates",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:note_block",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:bookshelf",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:jukebox",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:chest",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:trapped_chest",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:crafting_table",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:daylight_detector",
+      "version": "*"
+    },
+    {
+      "tag": "minecraft:banners",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:bow",
+      "version": ">= 1.11"
+    },
+    {
+      "item": "minecraft:fishing_rod",
+      "version": ">= 1.11"
+    },
+    {
+      "item": "minecraft:ladder",
+      "version": ">= 1.11"
+    },
+    {
+      "item": "minecraft:stick",
+      "version": "*"
+    },
+    {
+      "tag": "minecraft:saplings",
+      "version": "*"
+    },
+    {
+      "item": "minecraft:bowl",
+      "version": ">= 1.11"
+    },
+    {
+      "item": "minecraft:wooden_shovel",
+      "version": ">= 1.3.1-1.3.2"
+    },
+    {
+      "item": "minecraft:wooden_sword",
+      "version": ">= 1.3.1-1.3.2"
+    },
+    {
+      "item": "minecraft:wooden_hoe",
+      "version": ">= 1.3.1-1.3.2"
+    },
+    {
+      "item": "minecraft:wooden_axe",
+      "version": ">= 1.3.1-1.3.2"
+    },
+    {
+      "item": "minecraft:wooden_pickaxe",
+      "version": ">= 1.3.1-1.3.2"
+    },
+    {
+      "tag": "minecraft:signs",
+      "version": ">= 1.11"
+    },
+    {
+      "tag": "minecraft:wooden_doors",
+      "version": ">= 1.11"
+    },
+    {
+      "tag": "minecraft:boats",
+      "version": ">= 1.11"
+    },
+    {
+      "tag": "minecraft:wool",
+      "version": ">= 1.11"
+    },
+    {
+      "tag": "minecraft:wooden_buttons",
+      "version": ">= 1.11"
+    },
+    {
+      "tag": "minecraft:wool_carpets",
+      "version": ">= 1.11"
+    }
+  ]
+}

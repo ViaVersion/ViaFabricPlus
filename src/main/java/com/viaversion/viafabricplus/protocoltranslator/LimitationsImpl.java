@@ -217,7 +217,6 @@ public final class LimitationsImpl implements Limitations {
         return enchantmentDiff;
     }
 
-
     public Reference2ObjectMap<Holder<MobEffect>, ProtocolVersionRange> getEffectDiff() {
         return effectDiff;
     }
