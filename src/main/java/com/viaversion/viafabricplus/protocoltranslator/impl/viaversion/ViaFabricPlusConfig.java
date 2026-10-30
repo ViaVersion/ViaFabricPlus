@@ -54,7 +54,7 @@ public final class ViaFabricPlusConfig extends AbstractViaConfig {
             modified = true;
         }
 
-        // 5.12.2 additions
+        // 5.1.3 additions
         if (modified || !existingConfig.contains("backup-nested-items")) {
             set("backup-nested-items", true);
             modified = true;
