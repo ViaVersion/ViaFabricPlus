@@ -30,12 +30,17 @@ import com.viaversion.viaversion.protocols.v1_21_11to26_1.packet.ServerboundPack
 import com.viaversion.viaversion.protocols.v26_2to26_3.Protocol26_2To26_3;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InterpolationHandler;
+import net.minecraft.world.entity.LinearInterpolationHandler;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SteppedInterpolationHandler;
 import net.minecraft.world.item.component.SwingAnimation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
@@ -43,6 +48,15 @@ public abstract class MixinLivingEntity implements ILivingEntity {
 
     @Unique
     private boolean viaFabricPlus$skipSwingPacket;
+
+    @Redirect(method = "createInterpolationHandler", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/SteppedInterpolationHandler;create(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/entity/InterpolationHandler;"))
+    private static InterpolationHandler useLinearInterpolation(Entity entity) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2)) {
+            return LinearInterpolationHandler.create(entity);
+        } else {
+            return SteppedInterpolationHandler.create(entity);
+        }
+    }
 
     @Inject(method = "swing", at = @At("HEAD"))
     private void sendSwingPacket(InteractionHand hand, SwingAnimation animation, boolean sendToSwingingEntity, CallbackInfoReturnable<Boolean> cir) {

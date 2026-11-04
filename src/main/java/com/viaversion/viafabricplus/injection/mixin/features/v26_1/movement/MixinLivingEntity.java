@@ -24,11 +24,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.v26_1.movement;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.InterpolationHandler;
-import net.minecraft.world.entity.LinearInterpolationHandler;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.SteppedInterpolationHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -53,15 +49,6 @@ public abstract class MixinLivingEntity {
             return value;
         } else {
             return Mth.clamp(value, min, max);
-        }
-    }
-
-    @Redirect(method = "createInterpolationHandler", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/SteppedInterpolationHandler;create(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/entity/InterpolationHandler;"))
-    private static InterpolationHandler useLinearInterpolation(Entity entity) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_1)) {
-            return LinearInterpolationHandler.create(entity);
-        } else {
-            return SteppedInterpolationHandler.create(entity);
         }
     }
 
