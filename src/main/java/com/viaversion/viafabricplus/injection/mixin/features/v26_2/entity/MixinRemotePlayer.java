@@ -33,7 +33,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinRemotePlayer {
 
     @Redirect(method = "lerpMotion", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/EntityType;hasUpdateInterval()Z"))
-    private boolean useDynamicSteps(final EntityType<?> instance) {
+    private boolean useDynamicSteps(EntityType<?> instance) {
         return ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2) || instance.hasUpdateInterval();
     }
 
