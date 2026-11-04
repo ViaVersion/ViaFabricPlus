@@ -435,6 +435,7 @@
     "features.v26_2.entity.MixinLocalPlayer",
     "features.v26_2.entity.MixinMinecart",
     "features.v26_2.entity.MixinPlayer",
+    "features.v26_2.entity.MixinRemotePlayer",
     "features.v26_2.entity.MixinWanderingTrader",
     "features.v26_2.movement.MixinEntity",
     "features.v26_2.movement.MixinEntityFluidInteraction",
