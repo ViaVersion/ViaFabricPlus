@@ -50,8 +50,8 @@ public abstract class MixinLivingEntity implements ILivingEntity {
     private boolean viaFabricPlus$skipSwingPacket;
 
     @Redirect(method = "createInterpolationHandler", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/SteppedInterpolationHandler;create(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/entity/InterpolationHandler;"))
-    private static InterpolationHandler useLinearInterpolation(Entity entity) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2)) {
+    private InterpolationHandler useLinearInterpolation(Entity entity) {
+        if (entity.level().isClientSide() && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v26_2)) {
             return LinearInterpolationHandler.create(entity);
         } else {
             return SteppedInterpolationHandler.create(entity);
