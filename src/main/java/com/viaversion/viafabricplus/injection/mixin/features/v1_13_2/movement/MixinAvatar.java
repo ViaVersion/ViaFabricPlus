@@ -40,11 +40,11 @@ public abstract class MixinAvatar {
 
     @Unique
     private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_13_2 = EntityDimensions.scalable(0.6F, 1.65F).withEyeHeight(1.54F).
-        withAttachments(EntityAttachments.builder().attach(EntityAttachment.VEHICLE, Player.DEFAULT_VEHICLE_ATTACHMENT));
+        withAttachments(EntityAttachments.builder().attach(EntityAttachment.VEHICLE, Player.DEFAULT_VEHICLE_ATTACHMENT).attach(EntityAttachment.NAME_TAG, 0.0F, 1.4F, 0.0F));
 
     @Unique
     private static final EntityDimensions viaFabricPlus$sneaking_dimensions_v1_8 = EntityDimensions.scalable(0.6F, 1.8F).withEyeHeight(1.54F).
-        withAttachments(EntityAttachments.builder().attach(EntityAttachment.VEHICLE, Player.DEFAULT_VEHICLE_ATTACHMENT));
+        withAttachments(EntityAttachments.builder().attach(EntityAttachment.VEHICLE, Player.DEFAULT_VEHICLE_ATTACHMENT).attach(EntityAttachment.NAME_TAG, 0.0F, 1.55F, 0.0F));
 
     @Inject(method = "getDefaultDimensions", at = @At("HEAD"), cancellable = true)
     private void modifyDimensions(Pose pose, CallbackInfoReturnable<EntityDimensions> cir) {
