@@ -120,6 +120,7 @@
     "features.v1_12_2.screen.MixinScreen",
     "features.v1_12_2.screen.MixinStructureBlockEditScreen_1",
     "features.v1_13.MixinAbstractCommandBlockEditScreen",
+    "features.v1_13.MixinMultiPlayerGameMode",
     "features.v1_13_2.MixinBedBlock",
     "features.v1_13_2.MixinItemPacketRewriter1_14",
     "features.v1_13_2.MixinMouseHandler",
