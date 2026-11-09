@@ -177,6 +177,7 @@
     "features.v1_15_2.movement.MixinLivingEntity",
     "features.v1_15_2.movement.MixinPlayer",
     "features.v1_16_1.MixinClientPacketListener",
+    "features.v1_16_1.MixinLocalPlayer",
     "features.v1_16_1.MixinPlayer",
     "features.v1_16_4.MixinBlockBehaviour_BlockStateBase",
     "features.v1_16_4.MixinEndPortalBlock",
