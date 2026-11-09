@@ -36,7 +36,11 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Redirect(method = "dropItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;swing(Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/component/SwingAnimation;Z)Z"))
     private boolean disableSwing(LocalPlayer instance, InteractionHand hand, SwingAnimation animation, boolean sendToSwingingEntity) {
-        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_15) && instance.swing(hand, animation, sendToSwingingEntity);
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
+            return false;
+        } else {
+            return instance.swing(hand, animation, sendToSwingingEntity);
+        }
     }
 
 }

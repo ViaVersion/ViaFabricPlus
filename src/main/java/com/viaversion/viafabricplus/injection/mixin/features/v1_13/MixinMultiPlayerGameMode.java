@@ -35,7 +35,11 @@ public abstract class MixinMultiPlayerGameMode {
 
     @Redirect(method = "dropItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;removeFromSelected(Z)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack disableItemRemovalOnDrop(Inventory instance, boolean all) {
-        return ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(ProtocolVersion.v1_13_1) ? instance.removeFromSelected(all) : ItemStack.EMPTY;
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13)) {
+            return ItemStack.EMPTY;
+        } else {
+            return instance.removeFromSelected(all);
+        }
     }
 
 }
