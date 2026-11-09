@@ -32,15 +32,15 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 public final class ProtocolSlot extends VFPListEntry {
 
-    private static final Identifier AUTO_DETECT_ICON = Identifier.withDefaultNamespace("textures/item/spyglass.png");
+    private static final SpriteId AUTO_DETECT_ICON = ProtocolVersionMetadata.sprite("item/spyglass");
 
     private static final int ICON_SIZE = 16;
     private static final int TEXT_OFFSET = SLOT_MARGIN + ICON_SIZE + SLOT_MARGIN;
@@ -57,7 +57,7 @@ public final class ProtocolSlot extends VFPListEntry {
     private final ProtocolVersion protocolVersion;
     private final AbstractProtocolSelectionScreen screen;
     private final @Nullable ProtocolVersionMetadata metadata;
-    private final Identifier icon;
+    private final SpriteId icon;
 
     public ProtocolSlot(final ProtocolVersion protocolVersion, final AbstractProtocolSelectionScreen screen) {
         this.protocolVersion = protocolVersion;
@@ -66,7 +66,7 @@ public final class ProtocolSlot extends VFPListEntry {
         this.icon = resolveIcon(protocolVersion);
     }
 
-    private static Identifier resolveIcon(final ProtocolVersion protocolVersion) {
+    private static SpriteId resolveIcon(final ProtocolVersion protocolVersion) {
         // Auto Detect is no Minecraft version and therefore has no metadata to take an icon from
         if (protocolVersion == ProtocolTranslation.AUTO_DETECT_VERSION) {
             return AUTO_DETECT_ICON;
@@ -107,7 +107,7 @@ public final class ProtocolSlot extends VFPListEntry {
             context.fill(0, 0, entryWidth, entryHeight, SELECTED_BACKGROUND_COLOR);
         }
 
-        context.blit(RenderPipelines.GUI_TEXTURED, this.icon, SLOT_MARGIN, (entryHeight - ICON_SIZE) / 2, 0, 0, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE);
+        context.blitSprite(RenderPipelines.GUI_TEXTURED, context.getSprite(this.icon), SLOT_MARGIN, (entryHeight - ICON_SIZE) / 2, ICON_SIZE, ICON_SIZE);
 
         final Font font = Minecraft.getInstance().font;
         final int nameColor = !selectable ? CommonColors.GRAY : selected ? SELECTED_COLOR : -1;
