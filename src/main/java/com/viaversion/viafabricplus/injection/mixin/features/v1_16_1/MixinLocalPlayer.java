@@ -44,6 +44,15 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
         super(level, gameProfile);
     }
 
+    @Redirect(method = "moveTowardsClosestSpace", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;getY()D"))
+    private double offsetCollisionY(LocalPlayer instance) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1)) {
+            return instance.getY() + 0.5D;
+        } else {
+            return instance.getY();
+        }
+    }
+
     @Redirect(method = "suffocatesAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;collidesWithSuffocatingBlock(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/AABB;)Z"))
     private boolean useIntervalYCheck(Level instance, Entity entity, AABB aabb, @Local(argsOnly = true) BlockPos pos) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_16_1)) {
