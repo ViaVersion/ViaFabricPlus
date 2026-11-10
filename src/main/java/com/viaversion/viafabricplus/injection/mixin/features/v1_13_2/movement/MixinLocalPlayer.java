@@ -27,10 +27,13 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LocalPlayer.class)
@@ -42,6 +45,9 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     @Shadow
     public abstract boolean isShiftKeyDown();
 
+    @Shadow
+    protected abstract boolean suffocatesAt(final BlockPos pos);
+
     public MixinLocalPlayer(ClientLevel world, GameProfile profile) {
         super(world, profile);
     }
@@ -50,6 +56,26 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
     private void removeSneakingConditions(CallbackInfo ci) { // Allows sneaking while flying, inside blocks and vehicles
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
             this.crouching = this.isShiftKeyDown() && !this.isSleeping();
+        }
+    }
+
+    @Redirect(method = "moveTowardsClosestSpace", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;suffocatesAt(Lnet/minecraft/core/BlockPos;)Z", ordinal = 0))
+    private boolean checkCenterBlockSpace(LocalPlayer instance, BlockPos pos) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            final BlockPos oldPos = pos.atY(Mth.floor(this.getBoundingBox().minY + 0.5));
+            return !this.freeAt(oldPos) || (!this.isSwimming() && !this.freeAt(oldPos.above()));
+        } else {
+            return this.suffocatesAt(pos);
+        }
+    }
+
+    @Redirect(method = "moveTowardsClosestSpace", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;suffocatesAt(Lnet/minecraft/core/BlockPos;)Z", ordinal = 1))
+    private boolean checkNeighborBlockSpace(LocalPlayer instance, BlockPos pos) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            final BlockPos oldPos = pos.atY(Mth.floor(this.getBoundingBox().minY + 0.5));
+            return !this.freeAt(oldPos) || !this.freeAt(oldPos.above());
+        } else {
+            return this.suffocatesAt(pos);
         }
     }
 
