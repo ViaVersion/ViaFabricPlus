@@ -1,7 +1,7 @@
 [versions]
 minecraft = "26.3"
 fabric-loader = "0.20.1"
-fabric-api = "0.165.0+26.3"
+fabric-api = "0.166.2+26.3"
 fabric-loom = "1.19-SNAPSHOT"
 
 [libraries]
