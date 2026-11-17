@@ -23,12 +23,15 @@ package com.viaversion.viafabricplus.protocoltranslator.protocol;
 
 import com.google.common.collect.Lists;
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.api.protocoltranslator.ProtocolTranslation;
 import com.viaversion.viafabricplus.features.v1_21_5.WolfHealthTracker1_14_4;
 import com.viaversion.viafabricplus.protocoltranslator.ProtocolTranslationImpl;
+import com.viaversion.viafabricplus.protocoltranslator.protocol.storage.HorizonSessionStorage;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.protocol.AbstractProtocol;
 import com.viaversion.viaversion.api.protocol.packet.ClientboundPacketType;
+import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
 import com.viaversion.viaversion.api.protocol.packet.ServerboundPacketType;
 import com.viaversion.viaversion.api.protocol.packet.State;
 import com.viaversion.viaversion.api.protocol.packet.provider.PacketTypesProvider;
@@ -87,6 +90,7 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
         ITEM_TYPES.put(ProtocolVersion.v26_1, new ItemTypes(VersionedTypes.V26_1.item, VersionedTypes.V26_1.lengthPrefixedItem));
         ITEM_TYPES.put(ProtocolVersion.v26_2, new ItemTypes(VersionedTypes.V26_2.item, VersionedTypes.V26_2.lengthPrefixedItem));
         ITEM_TYPES.put(ProtocolVersion.v26_3, new ItemTypes(VersionedTypes.V26_3.item, VersionedTypes.V26_3.lengthPrefixedItem));
+        ITEM_TYPES.put(ProtocolTranslation.HORIZON_26_3, new ItemTypes(VersionedTypes.V26_3.item, VersionedTypes.V26_3.lengthPrefixedItem));
 
         if (!ITEM_TYPES.containsKey(ProtocolTranslationImpl.NATIVE_VERSION)) {
             throw new IllegalStateException("Missing item type for native version");
@@ -97,11 +101,65 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
         super(ClientboundPacket26_3.class, ClientboundPacket26_3.class, ServerboundPacket26_3.class, ServerboundPacket26_3.class);
     }
 
+    private static boolean isHorizon(final UserConnection user) {
+        return ProtocolTranslation.HORIZON_26_3.equals(user.getProtocolInfo().serverProtocolVersion());
+    }
+
+    private static void sendConfigurationCustomPayload(final UserConnection user, final String channel, final byte[] data) {
+        final PacketWrapper payload = PacketWrapper.create(ServerboundConfigurationPackets1_21_9.CUSTOM_PAYLOAD, user);
+        payload.write(Types.STRING, channel);
+        payload.write(Types.REMAINING_BYTES, data);
+        payload.sendToServer(ViaFabricPlusProtocol.class);
+    }
+
+    /**
+     * Rewrites client brand to {@code "horizon"} and cancels all non-Horizon serverbound custom payloads.
+     */
+    private static void handleHorizonServerboundCustomPayload(final PacketWrapper wrapper) {
+        final String channel = Key.namespaced(wrapper.passthrough(Types.STRING));
+        wrapper.read(Types.SERVERBOUND_CUSTOM_PAYLOAD_DATA);
+        if (channel.equals("minecraft:brand")) {
+            wrapper.write(Types.STRING, "horizon");
+        } else {
+            wrapper.cancel();
+        }
+    }
+
     @Override
     protected void registerPackets() {
+        this.registerClientbound(ClientboundConfigurationPackets26_3.FINISH_CONFIGURATION, wrapper -> {
+            if (isHorizon(wrapper.user())) {
+                wrapper.user().getProtocolInfo().setServerState(State.PLAY);
+            }
+        });
+        this.registerServerbound(ServerboundConfigurationPackets1_21_9.FINISH_CONFIGURATION, wrapper -> {
+            if (isHorizon(wrapper.user())) {
+                wrapper.user().getProtocolInfo().setClientState(State.PLAY);
+            }
+        });
+        this.registerClientbound(ClientboundPackets26_3.START_CONFIGURATION, wrapper -> {
+            if (isHorizon(wrapper.user())) {
+                wrapper.user().getProtocolInfo().setServerState(State.CONFIGURATION);
+                final HorizonSessionStorage storage = wrapper.user().get(HorizonSessionStorage.class);
+                if (storage != null) {
+                    storage.resetConfiguration();
+                }
+            }
+        });
+        this.registerServerbound(ServerboundPackets26_3.CONFIGURATION_ACKNOWLEDGED, wrapper -> {
+            if (isHorizon(wrapper.user())) {
+                wrapper.user().getProtocolInfo().setClientState(State.CONFIGURATION);
+            }
+        });
+
         // Fixes an issue where the Fabric Particle API causes disconnects when both the client and server have the mod installed and both are 1.21.5+.
         // See https://github.com/ViaVersion/ViaFabric/issues/428
         this.registerServerbound(ServerboundConfigurationPackets1_21_9.CUSTOM_PAYLOAD, wrapper -> {
+            if (isHorizon(wrapper.user())) {
+                handleHorizonServerboundCustomPayload(wrapper);
+                return;
+            }
+
             final ProtocolVersion serverVersion = wrapper.user().getProtocolInfo().serverProtocolVersion();
             if (serverVersion.newerThanOrEqualTo(ProtocolVersion.v1_21_5) && !serverVersion.equals(wrapper.user().getProtocolInfo().protocolVersion())) {
                 final String channel = Key.namespaced(wrapper.passthrough(Types.STRING));
@@ -117,6 +175,77 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
                 }
             }
         });
+
+        this.registerServerbound(ServerboundConfigurationPackets1_21_9.SELECT_KNOWN_PACKS, wrapper -> {
+            if (isHorizon(wrapper.user())) {
+                final HorizonSessionStorage storage = wrapper.user().get(HorizonSessionStorage.class);
+                if (storage != null) {
+                    if (storage.markPayloadsOfferSent()) {
+                        sendConfigurationCustomPayload(wrapper.user(), "horizon:payloads", new byte[]{1, 1, 0});
+                    }
+                    if (storage.markModListSent()) {
+                        sendConfigurationCustomPayload(wrapper.user(), "horizon:mod_list", new byte[]{0});
+                    }
+                }
+            }
+        });
+
+        this.registerClientbound(ClientboundConfigurationPackets26_3.CUSTOM_PAYLOAD, wrapper -> {
+            if (isHorizon(wrapper.user())) {
+                final String channel = Key.namespaced(wrapper.passthrough(Types.STRING));
+                final HorizonSessionStorage storage = wrapper.user().get(HorizonSessionStorage.class);
+                if (channel.equals("horizon:payloads")) {
+                    final byte[] data = wrapper.read(Types.REMAINING_BYTES);
+                    wrapper.cancel();
+                    if (data.length >= 2 && data[0] == 0 && storage != null && storage.markPayloadsOfferSent()) {
+                        sendConfigurationCustomPayload(wrapper.user(), "horizon:payloads", new byte[]{1, data[1], 0});
+                    }
+                } else if (channel.equals("horizon:mod_list")) {
+                    final byte[] data = wrapper.read(Types.REMAINING_BYTES);
+                    wrapper.cancel();
+                    if (storage != null && storage.markModListSent()) {
+                        sendConfigurationCustomPayload(wrapper.user(), "horizon:mod_list", data.length > 0 ? data : new byte[]{0});
+                    }
+                } else if (channel.equals("horizon:block_registry")) {
+                    final byte[] data = wrapper.read(Types.REMAINING_BYTES);
+                    wrapper.cancel();
+                    if (data.length == 32) {
+                        sendConfigurationCustomPayload(wrapper.user(), "horizon:block_registry", data);
+                    }
+                } else if (channel.equals("horizon:levels")) {
+                    final byte[] data = wrapper.read(Types.REMAINING_BYTES);
+                    wrapper.cancel();
+                    if (data.length >= 2 && data[0] == 0) {
+                        sendConfigurationCustomPayload(wrapper.user(), "horizon:levels", new byte[]{1, data[1], 0});
+                    }
+                } else if (channel.equals("horizon:menu_extra")) {
+                    final byte[] data = wrapper.read(Types.REMAINING_BYTES);
+                    wrapper.cancel();
+                    if (data.length >= 2 && data[0] == 0) {
+                        sendConfigurationCustomPayload(wrapper.user(), "horizon:menu_extra", new byte[]{1, data[1]});
+                    }
+                } else if (channel.startsWith("horizon:")) {
+                    wrapper.read(Types.REMAINING_BYTES);
+                    wrapper.cancel();
+                }
+            }
+        });
+
+        this.registerClientbound(ClientboundPackets26_3.CUSTOM_PAYLOAD, wrapper -> {
+            if (isHorizon(wrapper.user())) {
+                final String channel = Key.namespaced(wrapper.passthrough(Types.STRING));
+                if (channel.startsWith("horizon:")) {
+                    wrapper.read(Types.REMAINING_BYTES);
+                    wrapper.cancel();
+                }
+            }
+        });
+
+        this.registerServerbound(ServerboundPackets26_3.CUSTOM_PAYLOAD, wrapper -> {
+            if (isHorizon(wrapper.user())) {
+                handleHorizonServerboundCustomPayload(wrapper);
+            }
+        });
     }
 
     @Override
@@ -127,6 +256,8 @@ public final class ViaFabricPlusProtocol extends AbstractProtocol<ClientboundPac
         final ProtocolVersion serverVersion = ViaFabricPlus.api().protocolTranslation().targetVersion(connection.getChannel());
         if (serverVersion.olderThanOrEqualTo(ProtocolVersion.v1_14_4)) {
             connection.put(new WolfHealthTracker1_14_4());
+        } else if (serverVersion.equals(ProtocolTranslation.HORIZON_26_3)) {
+            connection.put(new HorizonSessionStorage());
         }
     }
 

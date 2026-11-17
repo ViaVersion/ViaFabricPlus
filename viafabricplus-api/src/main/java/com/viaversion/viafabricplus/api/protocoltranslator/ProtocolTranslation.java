@@ -24,6 +24,7 @@ package com.viaversion.viafabricplus.api.protocoltranslator;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import com.viaversion.viaversion.api.protocol.version.VersionType;
+import com.viaversion.viaversion.protocol.SpecialProtocolVersion;
 import io.netty.channel.Channel;
 import java.util.Comparator;
 import java.util.function.BiConsumer;
@@ -65,6 +66,11 @@ public interface ProtocolTranslation {
             return false;
         }
     };
+
+    /**
+     * The protocol version for Horizon 26.3 servers.
+     */
+    ProtocolVersion HORIZON_26_3 = new SpecialProtocolVersion(ProtocolVersion.v26_3.getVersion(), "Horizon 26.3", ProtocolVersion.v26_3);
 
     /**
      * The target version either selected by the user in the global menu or set per server. Note that this method

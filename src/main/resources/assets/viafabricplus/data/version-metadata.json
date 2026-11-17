@@ -423,6 +423,11 @@
     "release_date": "2026-09-15",
     "key": "wilderness_bound"
   },
+  "Horizon 26.3": {
+    "icon": "item/ender_eye",
+    "release_date": "2026-09-15",
+    "key": "horizon"
+  },
   "3D Shareware": {
     "icon": "item/knowledge_book",
     "release_date": "2019-04-01",

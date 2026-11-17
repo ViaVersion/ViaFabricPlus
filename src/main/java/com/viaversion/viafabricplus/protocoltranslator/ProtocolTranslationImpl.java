@@ -162,6 +162,7 @@ public final class ProtocolTranslationImpl implements ProtocolTranslation {
                     new ViaAprilFoolsPlatformImpl();
                 }
             );
+            ProtocolVersion.register(ProtocolTranslation.HORIZON_26_3);
             ProtocolVersion.register(ProtocolTranslation.AUTO_DETECT_VERSION);
             ViaFabricPlusProtocol.INSTANCE.initialize();
         }, Util.backgroundExecutor());
