@@ -91,6 +91,7 @@
     "features.v1_12_2.MixinSDLEventHandler",
     "features.v1_12_2.block.MixinAbstractCauldronBlock",
     "features.v1_12_2.block.MixinAnvilBlock",
+    "features.v1_12_2.block.MixinBlockBehaviour",
     "features.v1_12_2.block.MixinBrewingStandBlock",
     "features.v1_12_2.block.MixinCrossCollisionBlock",
     "features.v1_12_2.block.MixinEndPortalFrameBlock",
