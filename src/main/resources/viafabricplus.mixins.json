@@ -193,6 +193,7 @@
     "features.v1_17.MixinConnectScreen_1",
     "features.v1_17.MixinEntity",
     "features.v1_17_1.MixinAbstractContainerMenu",
+    "features.v1_17_1.MixinAbstractContainerScreen",
     "features.v1_17_1.MixinClientPacketListener",
     "features.v1_17_1.MixinLocalPlayer",
     "features.v1_17_1.MixinOptions",
