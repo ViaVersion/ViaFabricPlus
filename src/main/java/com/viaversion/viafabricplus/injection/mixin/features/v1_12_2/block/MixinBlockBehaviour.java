@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 public abstract class MixinBlockBehaviour {
 
     @ModifyConstant(method = "getLightDampening", constant = @Constant(intValue = 1))
-    private int liqudLightDampening(final int constant, @Local(argsOnly = true, name = "state") final BlockState state) {
+    private int liqudLightDampening(final int constant, @Local(argsOnly = true) final BlockState state) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2) && !state.getFluidState().isEmpty()) {
             return 3;
         } else {
