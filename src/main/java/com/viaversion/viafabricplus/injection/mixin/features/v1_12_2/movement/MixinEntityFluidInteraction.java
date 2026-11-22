@@ -50,15 +50,6 @@ public abstract class MixinEntityFluidInteraction {
         }
     }
 
-    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
-    private double adjustHeightCalculation(double a, double b) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return Math.max(a + 0.4, b);
-        } else {
-            return Math.max(a, b);
-        }
-    }
-
     @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 dontScaleCurrent(Vec3 instance, double scale) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
