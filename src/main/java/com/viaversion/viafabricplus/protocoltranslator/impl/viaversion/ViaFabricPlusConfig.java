@@ -59,6 +59,12 @@ public final class ViaFabricPlusConfig extends AbstractViaConfig {
             set("backup-nested-items", true);
             modified = true;
         }
+
+        // 5.1.4 additions
+        if (modified || !existingConfig.contains("ignore-1_20_5-1_21_4-click-items")) {
+            set("ignore-1_20_5-1_21_4-click-items", false);
+            modified = true;
+        }
         return super.updateConfig() || modified;
     }
 
