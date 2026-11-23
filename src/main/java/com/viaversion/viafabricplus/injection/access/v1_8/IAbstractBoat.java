@@ -27,6 +27,10 @@ public interface IAbstractBoat {
 
     void viaFabricPlus$setBoatInterpolationSteps(final int steps);
 
+    boolean viaFabricPlus$isBoatEmpty();
+
+    void viaFabricPlus$teleportTo(final Vec3 pos, final float yaw, final float pitch);
+
     Vec3 viaFabricPlus$getBoatVelocity();
 
     void viaFabricPlus$setBoatVelocity(final Vec3 velocity);

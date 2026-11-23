@@ -49,9 +49,23 @@ public final class PositionInterpolator1_8 extends AbstractInterpolationHandler 
 
     @Override
     protected void interpolateTo(final PositionPath position, final float yaw, final float pitch) {
-        final Vec3 pos = position.endPosition();
+        this.setPositionAndRotation(position.endPosition(), yaw, pitch, false);
+    }
+
+    /**
+     * Handles a server teleport, which snaps ridden boats instead of interpolating them.
+     *
+     * @param pos   the new position
+     * @param yaw   the new yaw
+     * @param pitch the new pitch
+     */
+    public void teleportTo(final Vec3 pos, final float yaw, final float pitch) {
+        this.setPositionAndRotation(pos, yaw, pitch, true);
+    }
+
+    private void setPositionAndRotation(final Vec3 pos, final float yaw, final float pitch, final boolean teleport) {
         final IAbstractBoat mixinBoatEntity = (IAbstractBoat) this.boatEntity;
-        if (/*interpolate &&*/ boatEntity.isVehicle() && ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_7_6)) {
+        if (teleport && boatEntity.isVehicle() && ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_7_6)) {
             boatEntity.xo = pos.x;
             boatEntity.yo = pos.y;
             boatEntity.zo = pos.z;
@@ -61,7 +75,7 @@ public final class PositionInterpolator1_8 extends AbstractInterpolationHandler 
             boatEntity.setDeltaMovement(Vec3.ZERO);
             mixinBoatEntity.viaFabricPlus$setBoatVelocity(Vec3.ZERO);
         } else {
-            if (!boatEntity.isVehicle()) {
+            if (mixinBoatEntity.viaFabricPlus$isBoatEmpty()) {
                 mixinBoatEntity.viaFabricPlus$setBoatInterpolationSteps(8);
             } else {
                 if (boatEntity.distanceToSqr(pos.x, pos.y, pos.z) <= 1) {

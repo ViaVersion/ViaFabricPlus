@@ -363,6 +363,7 @@
     "features.v1_7_6.screen.MixinPlayerInfo",
     "features.v1_7_6.screen.MixinPlayerTabOverlay",
     "features.v1_8.MixinClientLevel",
+    "features.v1_8.MixinClientPacketListener",
     "features.v1_8.MixinMinecraft",
     "features.v1_8.MixinMultiPlayerGameMode",
     "features.v1_8.block.MixinButtonBlock",

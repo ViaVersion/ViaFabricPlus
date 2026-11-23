@@ -36,6 +36,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.InterpolationHandler;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.VehicleEntity;
 import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
 import net.minecraft.world.entity.vehicle.boat.Boat;
@@ -73,6 +74,9 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
     @Unique
     private PositionInterpolator1_8 viaFabricPlus$positionInterpolator;
 
+    @Unique
+    private boolean viaFabricPlus$boatEmpty = true;
+
     public MixinAbstractBoat(EntityType<?> entityType, Level world) {
         super(entityType, world);
     }
@@ -90,6 +94,16 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
             this.viaFabricPlus$positionInterpolator = new PositionInterpolator1_8((AbstractBoat) (Object) this);
             cir.setReturnValue(this.viaFabricPlus$positionInterpolator);
+        }
+    }
+
+    @Override
+    protected void addPassenger(final Entity passenger) {
+        super.addPassenger(passenger);
+
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_8)) {
+            // Dismounting doesn't reset this, the boat keeps being simulated after the local player left it
+            this.viaFabricPlus$boatEmpty = !(passenger instanceof Player player && player.isLocalPlayer());
         }
     }
 
@@ -148,7 +162,7 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
                 }
             }
 
-            if (this.level().isClientSide() && !this.isVehicle()) {
+            if (this.level().isClientSide() && this.viaFabricPlus$boatEmpty) {
                 if (this.viaFabricPlus$boatInterpolationSteps > 0) {
                     final PositionAndRotation data = viaFabricPlus$positionInterpolator.interpolationData();
                     final double newX = this.getX() + (data.position().x - this.getX()) / this.viaFabricPlus$boatInterpolationSteps;
@@ -294,6 +308,16 @@ public abstract class MixinAbstractBoat extends VehicleEntity implements IAbstra
     @Override
     public void viaFabricPlus$setBoatInterpolationSteps(final int steps) {
         viaFabricPlus$boatInterpolationSteps = steps;
+    }
+
+    @Override
+    public boolean viaFabricPlus$isBoatEmpty() {
+        return viaFabricPlus$boatEmpty;
+    }
+
+    @Override
+    public void viaFabricPlus$teleportTo(final Vec3 pos, final float yaw, final float pitch) {
+        viaFabricPlus$positionInterpolator.teleportTo(pos, yaw, pitch);
     }
 
     @Override
