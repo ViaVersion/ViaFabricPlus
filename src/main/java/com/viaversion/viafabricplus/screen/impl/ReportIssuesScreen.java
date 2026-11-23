@@ -34,14 +34,12 @@ import net.minecraft.network.chat.Component;
 
 public final class ReportIssuesScreen extends VFPPopup {
 
-    private static final int BUTTON_WIDTH = 200;
-    private static final int BUTTON_HEIGHT = 20;
     private static final int BUTTON_MARGIN = 3;
 
     private final Map<String, Runnable> actions = new LinkedHashMap<>();
 
     public ReportIssuesScreen() {
-        super(Component.translatable("screen.viafabricplus.report_issues"), BUTTON_WIDTH + 2 * BUTTON_MARGIN, 4 * (BUTTON_HEIGHT + BUTTON_MARGIN) + BUTTON_MARGIN);
+        super(Component.translatable("screen.viafabricplus.report_issues"), Button.BIG_WIDTH + 2 * BUTTON_MARGIN, 4 * (Button.DEFAULT_HEIGHT + BUTTON_MARGIN) + BUTTON_MARGIN);
 
         actions.put("report.viafabricplus.bug_report", () -> {
             Blaze3D.openUri(URI.create("https://github.com/ViaVersion/ViaFabricPlus/issues/new?assignees=&labels=bug&projects=&template=bug_report.yml"));
@@ -71,8 +69,8 @@ public final class ReportIssuesScreen extends VFPPopup {
         int i = 0;
         for (Map.Entry<String, Runnable> entry : actions.entrySet()) {
             this.addRenderableWidget(Button.builder(Component.translatable(entry.getKey()), _ -> entry.getValue().run())
-                .pos(body.left() + (body.width() - BUTTON_WIDTH) / 2, body.top() + BUTTON_MARGIN + i * (BUTTON_HEIGHT + BUTTON_MARGIN))
-                .size(BUTTON_WIDTH, BUTTON_HEIGHT).build());
+                .pos(body.left() + (body.width() - Button.BIG_WIDTH) / 2, body.top() + BUTTON_MARGIN + i * (Button.DEFAULT_HEIGHT + BUTTON_MARGIN))
+                .size(Button.BIG_WIDTH, Button.DEFAULT_HEIGHT).build());
             i++;
         }
     }

@@ -63,6 +63,14 @@ public abstract class MixinServerSelectionList_OnlineServerEntry {
     @Final
     private FaviconTexture icon;
 
+    @Shadow
+    @Final
+    private static int STATUS_ICON_WIDTH;
+
+    @Shadow
+    @Final
+    private static int SPACING;
+
     @Unique
     private boolean viaFabricPlus$disableServerPinging = false;
 
@@ -102,7 +110,7 @@ public abstract class MixinServerSelectionList_OnlineServerEntry {
     @ModifyArg(method = "extractContent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)V"), index = 2)
     private int disableServerPinging(int x) {
         if (viaFabricPlus$disableServerPinging) { // Move server label to the right (as we remove the ping bar)
-            x += 15 /* ping bar width */ - 3 /* magical offset */;
+            x += STATUS_ICON_WIDTH + SPACING - 3 /* magical offset */;
         }
         return x;
     }

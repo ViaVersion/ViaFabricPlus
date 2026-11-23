@@ -29,13 +29,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.resources.model.sprite.SpriteId;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-public record ProtocolVersionMetadata(@Nullable Component title, LocalDate releaseDate, Identifier icon) {
+public record ProtocolVersionMetadata(@Nullable Component title, LocalDate releaseDate, SpriteId icon) {
 
-    private static final Identifier UNKNOWN_ICON = Identifier.withDefaultNamespace("textures/item/barrier.png");
+    private static final SpriteId UNKNOWN_ICON = sprite("item/barrier");
 
     private static final Map<String, ProtocolVersionMetadata> BY_VERSION_NAME = load();
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
@@ -44,13 +46,17 @@ public record ProtocolVersionMetadata(@Nullable Component title, LocalDate relea
         return BY_VERSION_NAME.get(version.getName());
     }
 
-    public static Identifier icon(final @Nullable ProtocolVersion version) {
+    public static SpriteId icon(final @Nullable ProtocolVersion version) {
         final ProtocolVersionMetadata metadata = version == null ? null : of(version);
         return metadata != null ? metadata.icon() : UNKNOWN_ICON;
     }
 
     public Component formattedReleaseDate() {
         return Component.nullToEmpty(this.releaseDate.format(DATE_FORMAT));
+    }
+
+    public static SpriteId sprite(final String texture) {
+        return new SpriteId((texture.startsWith("block/") ? Sheets.BLOCKS_MAPPER : Sheets.ITEMS_MAPPER).sheet(), Identifier.withDefaultNamespace(texture));
     }
 
     private static Map<String, ProtocolVersionMetadata> load() {
@@ -60,8 +66,8 @@ public record ProtocolVersionMetadata(@Nullable Component title, LocalDate relea
             final JsonObject entry = data.getAsJsonObject(versionName);
             final Component title = entry.has("key") ? Component.translatable("version_title.viafabricplus." + entry.get("key").getAsString()) : null;
 
-            // Vanilla textures are blitted directly as item stacks can't be created before a server bound their components
-            final Identifier icon = Identifier.withDefaultNamespace("textures/" + entry.get("icon").getAsString() + ".png");
+            // Atlas sprites are blitted directly as item stacks can't be created before a server bound their components
+            final SpriteId icon = sprite(entry.get("icon").getAsString());
             metadata.put(versionName, new ProtocolVersionMetadata(title, LocalDate.parse(entry.get("release_date").getAsString()), icon));
         }
         return metadata;

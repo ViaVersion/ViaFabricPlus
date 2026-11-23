@@ -47,6 +47,14 @@ public abstract class MixinGameModeSwitcherScreen {
     @Final
     private static int ALL_SLOTS_WIDTH;
 
+    @Shadow
+    @Final
+    private static int SLOT_AREA_PADDED;
+
+    @Shadow
+    @Final
+    private static int SLOT_PADDING;
+
     @Unique
     private GameModeSwitcherScreen.GameModeIcon[] viaFabricPlus$unwrappedGameModes;
 
@@ -61,7 +69,7 @@ public abstract class MixinGameModeSwitcherScreen {
             }
 
             viaFabricPlus$unwrappedGameModes = selections.toArray(GameModeSwitcherScreen.GameModeIcon[]::new);
-            ALL_SLOTS_WIDTH = viaFabricPlus$unwrappedGameModes.length * 31 - 5;
+            ALL_SLOTS_WIDTH = viaFabricPlus$unwrappedGameModes.length * SLOT_AREA_PADDED - SLOT_PADDING;
         }
     }
 

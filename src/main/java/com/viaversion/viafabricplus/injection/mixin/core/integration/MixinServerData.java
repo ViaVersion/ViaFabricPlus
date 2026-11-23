@@ -27,7 +27,6 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.nbt.CompoundTag;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -36,9 +35,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerData.class)
 public abstract class MixinServerData implements IServerData {
-
-    @Shadow
-    public String name;
 
     @Unique
     private ProtocolVersion viaFabricPlus$forcedVersion = null;

@@ -45,8 +45,6 @@ import org.jspecify.annotations.NonNull;
 
 public abstract class VFPTabbedScreen<T> extends VFPScreen {
 
-    private static final int TAB_BAR_HEIGHT = 24;
-
     private final Map<T, Double> scrollAmounts = new HashMap<>();
     private final TabManager tabManager = new TabManager(this::addRenderableWidget, this::removeWidget, this::onTabSelected, _ -> {
     });
@@ -92,10 +90,10 @@ public abstract class VFPTabbedScreen<T> extends VFPScreen {
         for (final T tab : this.tabKeys) {
             final ListTab listTab = new ListTab(tab);
             listTabs.add(listTab);
-            tabButtons.add(new MenuTabBar.MenuTabButton(this.tabManager, listTab, 0, TAB_BAR_HEIGHT));
+            tabButtons.add(new MenuTabBar.MenuTabButton(this.tabManager, listTab, 0, MenuTabBar.HEIGHT));
         }
         this.tabWidgets = listTabs.build();
-        this.tabBar = this.addRenderableWidget(new VFPTabBar(CONTENT_TOP, this.width, TAB_BAR_HEIGHT, this.tabManager, tabButtons.build(), this.tabWidgets));
+        this.tabBar = this.addRenderableWidget(new VFPTabBar(CONTENT_TOP, this.width, MenuTabBar.HEIGHT, this.tabManager, tabButtons.build(), this.tabWidgets));
 
         // The search results are held by a tab which isn't part of the tab bar, so selecting them
         // deselects all other tabs without any further handling
@@ -199,7 +197,7 @@ public abstract class VFPTabbedScreen<T> extends VFPScreen {
         private final @Nullable T tab;
 
         private TabList(final Minecraft minecraftClient, final int width, final int height, final int bottom, final int entryHeight, final @Nullable T tab) {
-            super(minecraftClient, width, height, CONTENT_TOP + TAB_BAR_HEIGHT, bottom, entryHeight);
+            super(minecraftClient, width, height, CONTENT_TOP + MenuTabBar.HEIGHT, bottom, entryHeight);
             this.tab = tab;
 
             if (tab == null) { // Search results are filled in by #showResults

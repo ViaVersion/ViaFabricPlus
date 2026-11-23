@@ -27,11 +27,15 @@ import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LocalPlayer.class)
 public abstract class MixinLocalPlayer extends AbstractClientPlayer {
@@ -41,6 +45,9 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
 
     @Shadow
     public abstract boolean isShiftKeyDown();
+
+    @Shadow
+    protected abstract boolean suffocatesAt(final BlockPos pos);
 
     public MixinLocalPlayer(ClientLevel world, GameProfile profile) {
         super(world, profile);
@@ -53,4 +60,24 @@ public abstract class MixinLocalPlayer extends AbstractClientPlayer {
         }
     }
 
+    @Redirect(method = "moveTowardsClosestSpace", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;suffocatesAt(Lnet/minecraft/core/BlockPos;)Z", ordinal = 1))
+    private boolean checkNeighborBlockSpace(LocalPlayer instance, BlockPos pos) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            return !this.viaFabricPlus$doesNotSuffocate(pos);
+        } else {
+            return this.suffocatesAt(pos);
+        }
+    }
+
+    @Inject(method = "suffocatesAt", at = @At("HEAD"), cancellable = true)
+    private void swimmingSuffocateCheck(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
+            cir.setReturnValue(this.isSwimming() ? !this.freeAt(pos) : !this.viaFabricPlus$doesNotSuffocate(pos));
+        }
+    }
+
+    @Unique
+    private boolean viaFabricPlus$doesNotSuffocate(final BlockPos pos) {
+        return this.freeAt(pos) && !this.level().getBlockState(pos.above()).isRedstoneConductor(this.level(), pos);
+    }
 }

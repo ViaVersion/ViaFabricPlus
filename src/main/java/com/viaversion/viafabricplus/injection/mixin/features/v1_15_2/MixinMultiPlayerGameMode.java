@@ -33,6 +33,7 @@ import net.minecraft.world.inventory.AbstractCraftingMenu;
 import net.minecraft.world.inventory.BrewingStandMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.inventory.DispenserMenu;
 import net.minecraft.world.inventory.EnchantmentMenu;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -110,7 +111,7 @@ public abstract class MixinMultiPlayerGameMode {
     private boolean viaFabricPlus$extinguishFire(BlockPos blockPos, final Direction direction) {
         blockPos = blockPos.relative(direction);
         if (this.minecraft.level.getBlockState(blockPos).getBlock() == Blocks.FIRE) {
-            this.minecraft.level.levelEvent(this.minecraft.player, 1009, blockPos, 0);
+            this.minecraft.level.levelEvent(this.minecraft.player, LevelEvent.SOUND_EXTINGUISH_FIRE, blockPos, 0);
             this.minecraft.level.removeBlock(blockPos, false);
             return true;
         }
