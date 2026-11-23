@@ -39,7 +39,11 @@ import com.viaversion.viafabricplus.util.network.SyncTasks;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.attribute.EnvironmentAttributes;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluids;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+
+import java.util.List;
 
 public final class FeaturesLoading {
 
@@ -65,6 +69,10 @@ public final class FeaturesLoading {
             }
 
             EnvironmentAttributes.RESPAWN_ANCHOR_WORKS.isSyncable = newVersion.olderThanOrEqualTo(ProtocolVersion.v1_21_9);
+
+            for (final FlowingFluid fluid : List.of(Fluids.FLOWING_WATER, Fluids.WATER, Fluids.FLOWING_LAVA, Fluids.LAVA)) {
+                fluid.shapes.clear();
+            }
         }));
     }
 

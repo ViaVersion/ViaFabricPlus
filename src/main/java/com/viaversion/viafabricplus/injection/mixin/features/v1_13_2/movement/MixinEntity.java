@@ -29,6 +29,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,6 +42,11 @@ public abstract class MixinEntity {
 
     @Shadow
     public abstract Level level();
+
+    @Redirect(method = "isInLava", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/Entity;firstTick:Z", opcode = Opcodes.GETFIELD))
+    private boolean removeFirstTickCheck(Entity instance) {
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_13_2) && instance.firstTick;
+    }
 
     @Redirect(method = {"collideWithShapes(Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;Ljava/util/List;)Lnet/minecraft/world/phys/Vec3;", "checkInsideBlocks(Ljava/util/List;Lnet/minecraft/world/entity/InsideBlockEffectApplier$StepBasedCollector;)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/core/Direction;axisStepOrder(Lnet/minecraft/world/phys/Vec3;)Lcom/google/common/collect/ImmutableList;"))
     private static ImmutableList<Direction.Axis> alwaysSortYXZ(Vec3 movement) {
