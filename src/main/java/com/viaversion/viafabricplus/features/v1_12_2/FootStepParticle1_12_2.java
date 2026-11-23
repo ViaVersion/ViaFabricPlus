@@ -21,24 +21,14 @@
 
 package com.viaversion.viafabricplus.features.v1_12_2;
 
-import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
-import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
-import net.fabricmc.fabric.api.event.registry.RegistryAttributeHolder;
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.fabricmc.fabric.impl.registry.sync.RegistryAttributeImpl;
+import com.viaversion.viaversion.api.protocol.remapper.PacketHandler;
+import com.viaversion.viaversion.api.type.Types;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SingleQuadParticle;
-import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.Registry;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -46,29 +36,56 @@ import org.joml.Quaternionf;
 
 public final class FootStepParticle1_12_2 extends SingleQuadParticle {
 
-    public static final Identifier ID = Identifier.fromNamespaceAndPath("viafabricplus", "footstep");
-    public static int RAW_ID;
+    private static final int PARTICLE_ID = 28;
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("viafabricplus", "footprint");
 
-    private FootStepParticle1_12_2(ClientLevel clientWorld, double x, double y, double z, TextureAtlasSprite sprite) {
-        super(clientWorld, x, y, z, sprite);
+    private FootStepParticle1_12_2(final ClientLevel level, final double x, final double y, final double z) {
+        super(level, x, y, z, Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.PARTICLES).getSprite(TEXTURE));
 
         this.quadSize = 0.125F;
         this.setLifetime(200);
     }
 
-    public static void init() {
-        final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
+    public static PacketHandler handleLevelParticles(final PacketHandler parentHandler) {
+        return wrapper -> {
+            final int particleId = wrapper.passthrough(Types.INT);
+            wrapper.rewindReader(1);
+            if (particleId != PARTICLE_ID) {
+                parentHandler.handle(wrapper);
+                return;
+            }
 
-        final RegistryAttributeHolder attributes = RegistryAttributeHolder.get(BuiltInRegistries.PARTICLE_TYPE);
-        final boolean wasModded = attributes.hasAttribute(RegistryAttribute.MODDED);
-        Registry.register(BuiltInRegistries.PARTICLE_TYPE, ID, footStepType);
-        if (!wasModded) {
-            // Fabric marks the registry as modded on register, which makes it require Fabric on vanilla clients joining LAN worlds
-            ((RegistryAttributeImpl) attributes).getAttributes().remove(RegistryAttribute.MODDED);
+            wrapper.cancel();
+            wrapper.read(Types.INT); // Particle ID
+            wrapper.read(Types.BOOLEAN); // Long distance
+            final float x = wrapper.read(Types.FLOAT);
+            final float y = wrapper.read(Types.FLOAT);
+            final float z = wrapper.read(Types.FLOAT);
+            final float offsetX = wrapper.read(Types.FLOAT);
+            final float offsetY = wrapper.read(Types.FLOAT);
+            final float offsetZ = wrapper.read(Types.FLOAT);
+            wrapper.read(Types.FLOAT); // Particle data
+            final int count = wrapper.read(Types.INT);
+
+            Minecraft.getInstance().execute(() -> spawn(x, y, z, offsetX, offsetY, offsetZ, count));
+        };
+    }
+
+    private static void spawn(final double x, final double y, final double z, final double offsetX, final double offsetY, final double offsetZ, final int count) {
+        final ClientLevel level = Minecraft.getInstance().level;
+        if (level == null) {
+            return;
         }
-        ParticleProviderRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
 
-        RAW_ID = BuiltInRegistries.PARTICLE_TYPE.getId(footStepType);
+        if (count == 0) {
+            Minecraft.getInstance().particleEngine.add(new FootStepParticle1_12_2(level, x, y, z));
+            return;
+        }
+
+        final RandomSource random = level.getRandom();
+        for (int i = 0; i < count; i++) {
+            Minecraft.getInstance().particleEngine.add(new FootStepParticle1_12_2(level, x + random.nextGaussian() * offsetX, y + random.nextGaussian() * offsetY, z + random.nextGaussian() * offsetZ));
+        }
     }
 
     @Override
@@ -87,25 +104,6 @@ public final class FootStepParticle1_12_2 extends SingleQuadParticle {
         }
 
         super.extractRotatedQuad(submittable, camera, new Quaternionf().rotateX(-Mth.HALF_PI), tickProgress);
-    }
-
-    public static class Factory implements ParticleProvider<SimpleParticleType> {
-
-        private final SpriteSet spriteProvider;
-
-        public Factory(SpriteSet spriteProvider) {
-            this.spriteProvider = spriteProvider;
-        }
-
-        @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, RandomSource random) {
-            if (ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_12_2)) {
-                throw new UnsupportedOperationException("FootStepParticle is not supported on versions newer than 1.12.2");
-            }
-
-            final TextureAtlasSprite sprite = spriteProvider.get(random);
-            return new FootStepParticle1_12_2(world, x, y, z, sprite);
-        }
     }
 
 }

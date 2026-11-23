@@ -32,7 +32,6 @@ import com.viaversion.viafabricplus.features.global.FontCacheReload;
 import com.viaversion.viafabricplus.features.global.ResourcePackHeaderDiff;
 import com.viaversion.viafabricplus.features.v1_11_1.FurnaceFuels1_11_2;
 import com.viaversion.viafabricplus.features.v1_11_1.Recipes1_11_2;
-import com.viaversion.viafabricplus.features.v1_12_2.FootStepParticle1_12_2;
 import com.viaversion.viafabricplus.features.v1_12_2.RenderableGlyphDiff;
 import com.viaversion.viafabricplus.features.v1_20_5.EnchantmentAttributesEmulation1_20_6;
 import com.viaversion.viafabricplus.features.v1_8.ArmorHudEmulation1_8;
@@ -82,7 +81,6 @@ public final class FeaturesLoading {
         ResourcePackHeaderDiff.init();
         RenderableGlyphDiff.init();
         ClassiCubeAccount.init();
-        FootStepParticle1_12_2.init();
     }
 
     public static void onPostGameLoading() {
