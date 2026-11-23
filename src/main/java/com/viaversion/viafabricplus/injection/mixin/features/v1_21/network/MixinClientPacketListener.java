@@ -35,6 +35,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundOpenSignEditorPacket;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
@@ -55,6 +56,11 @@ public abstract class MixinClientPacketListener extends ClientCommonPacketListen
     @Redirect(method = "handleTeleportEntity", at = @At(value = "INVOKE", target = "Ljava/util/OptionalInt;isPresent()Z"))
     private boolean dontHandleRemovedVehiclePositionChange(OptionalInt instance) {
         return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21) && instance.isPresent();
+    }
+
+    @Redirect(method = "handleMovePlayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isPassenger()Z"))
+    private boolean applyTeleportInVehicle(Player instance) {
+        return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21) && instance.isPassenger();
     }
 
     @Redirect(method = "handleOpenSignEditor", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false))
