@@ -62,8 +62,11 @@ public abstract class MixinEntityFluidInteraction implements IEntityFluidInterac
     @Override
     public void viaFabricPlus$onlyFlowWater(final Runnable runnable) {
         this.viaFabricPlus$onlyFlowWater = true;
-        runnable.run();
-        this.viaFabricPlus$onlyFlowWater = false;
+        try {
+            runnable.run();
+        } finally {
+            this.viaFabricPlus$onlyFlowWater = false;
+        }
     }
 
 }
