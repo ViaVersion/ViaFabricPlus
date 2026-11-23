@@ -19,22 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_6_1;
+package com.viaversion.viafabricplus.injection.mixin.features.b1_5;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 import net.raphimc.vialegacy.api.LegacyProtocolVersion;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(AbstractContainerScreen.class)
-public abstract class MixinAbstractContainerScreen {
+@Mixin(ChestMenu.class)
+public abstract class MixinChestMenu extends AbstractContainerMenu {
 
-    @Redirect(method = {"mouseClicked", "mouseReleased"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/MouseButtonEvent;hasShiftDown()Z"))
-    private boolean disableShiftClickItems(final MouseButtonEvent instance) {
-        return instance.hasShiftDown() && ViaFabricPlus.api().targetVersion().newerThanOrEqualTo(LegacyProtocolVersion.r1_6_1);
+    protected MixinChestMenu(@Nullable final MenuType<?> menuType, final int containerId) {
+        super(menuType, containerId);
+    }
+
+    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/ChestMenu;moveItemStackTo(Lnet/minecraft/world/item/ItemStack;IIZ)Z", ordinal = 0))
+    private boolean reverseQuickMovePlacementOrder(ChestMenu instance, ItemStack itemStack, int startSlot, int endSlot, boolean backwards) {
+        return this.moveItemStackTo(itemStack, startSlot, endSlot, ViaFabricPlus.api().targetVersion().newerThan(LegacyProtocolVersion.b1_5tob1_5_2) && backwards);
     }
 
 }
