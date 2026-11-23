@@ -75,6 +75,7 @@ public abstract class MixinEntity {
             float length = x * x + z * z;
             if (length < 1.0E-4F) {
                 cir.setReturnValue(Vec3.ZERO);
+                return;
             }
 
             length = Math.max(Mth.sqrt(length), 1.0F);
