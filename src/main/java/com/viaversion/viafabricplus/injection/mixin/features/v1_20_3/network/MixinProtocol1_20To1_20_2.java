@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = Protocol1_20To1_20_2.class, remap = false)
 public abstract class MixinProtocol1_20To1_20_2 {
 
-    @Inject(method = "lambda$queueServerboundPacket$12", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "lambda$queueServerboundPacket$13", at = @At("HEAD"), cancellable = true)
     private static void dontQueueConfigPackets(ServerboundPackets1_20_2 packetType, PacketWrapper wrapper, CallbackInfo ci) {
         if (!ViaFabricPlusImpl.impl().advanced().queueConfigPackets().isActive()) {
             ci.cancel();
