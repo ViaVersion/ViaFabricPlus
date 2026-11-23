@@ -19,33 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_10;
 
+package com.viaversion.viafabricplus.injection.mixin.features.b1_7;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
-import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.world.inventory.BrewingStandMenu;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import org.spongepowered.asm.mixin.Final;
+import net.raphimc.vialegacy.api.LegacyProtocolVersion;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(BrewingStandMenu.class)
-public abstract class MixinBrewingStandMenu {
+@Mixin(AbstractContainerMenu.class)
+public abstract class MixinAbstractContainerMenu {
 
-    @Shadow
-    @Final
-    private Slot ingredientSlot;
-
-    @Redirect(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/BrewingStandMenu$FuelSlot;mayPlaceItem(Lnet/minecraft/world/item/ItemStack;)Z"))
-    private boolean disableQuickMoveFuelWhenIngredientEmpty(ItemStack itemStack) {
-        if (ViaFabricPlus.api().targetVersion().betweenInclusive(ProtocolVersion.v1_9, ProtocolVersion.v1_10)) {
-            return BrewingStandMenu.FuelSlot.mayPlaceItem(itemStack) && !this.ingredientSlot.getItem().isEmpty();
+    @WrapOperation(method = "doClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isSameItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z", ordinal = 0))
+    private boolean repeatQuickMoveOnlyWhenShrunk(ItemStack a, ItemStack b, Operation<Boolean> original) {
+        if (ViaFabricPlus.api().targetVersion().betweenInclusive(LegacyProtocolVersion.b1_6tob1_6_6, LegacyProtocolVersion.b1_7tob1_7_3)) {
+            // Refilled crafting results keep their size, so shift-clicking them only crafted once
+            return !a.isEmpty() && a.getCount() < b.getCount();
+        } else {
+            return original.call(a, b);
         }
-
-        return BrewingStandMenu.FuelSlot.mayPlaceItem(itemStack);
     }
 
 }
