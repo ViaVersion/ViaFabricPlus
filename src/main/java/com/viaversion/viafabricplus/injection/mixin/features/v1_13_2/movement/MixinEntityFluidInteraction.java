@@ -19,33 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_13_2;
+package com.viaversion.viafabricplus.injection.mixin.features.v1_13_2.movement;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityFluidInteraction;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(FlowingFluid.class)
-public abstract class MixinFlowingFluid {
+@Mixin(EntityFluidInteraction.class)
+public abstract class MixinEntityFluidInteraction {
 
-    @Shadow
-    private static boolean hasSameAbove(FluidState fluidState, BlockGetter level, BlockPos pos) {
-        throw new UnsupportedOperationException("Implemented via mixin");
-    }
-
-    @Redirect(method = "getHeight", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FlowingFluid;hasSameAbove(Lnet/minecraft/world/level/material/FluidState;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)Z"))
-    private boolean useSelfHeight1_13(FluidState fluidState, BlockGetter level, BlockPos pos) {
+    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;getHeight(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
+    private float useOwnHeight(FluidState instance, BlockGetter level, BlockPos pos) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_13_2)) {
-            return false;
+            return instance.getOwnHeight();
         } else {
-            return hasSameAbove(fluidState, level, pos);
+            return instance.getHeight(level, pos);
         }
     }
 
