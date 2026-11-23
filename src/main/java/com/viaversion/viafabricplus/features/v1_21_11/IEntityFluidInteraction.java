@@ -22,5 +22,7 @@
 package com.viaversion.viafabricplus.features.v1_21_11;
 
 public interface IEntityFluidInteraction {
+
     void viaFabricPlus$onlyFlowWater(final Runnable runnable);
+
 }
