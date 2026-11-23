@@ -27,15 +27,44 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityFluidInteraction;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityFluidInteraction.class)
 public abstract class MixinEntityFluidInteraction {
+
+    @Unique
+    private Entity viaFabricPlus$waterEntity;
+
+    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;getFluidInteractionBox()Lnet/minecraft/world/phys/AABB;"))
+    private AABB useWaterBox1_12_2(Entity instance) {
+        this.viaFabricPlus$waterEntity = instance;
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return viaFabricPlus$getWaterBox(instance);
+        } else {
+            return instance.getFluidInteractionBox();
+        }
+    }
+
+    // The tracker height can be <= 0 inside the raised 1.12 box, 1.12 only checks for any water block in it
+    @Inject(method = "isInFluid", at = @At("RETURN"), cancellable = true)
+    private void checkWaterDirectly(TagKey<Fluid> fluid, CallbackInfoReturnable<Boolean> cir) {
+        if (this.viaFabricPlus$waterEntity != null && fluid == FluidTags.WATER && ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            final AABB box = viaFabricPlus$getWaterBox(this.viaFabricPlus$waterEntity);
+            cir.setReturnValue(this.viaFabricPlus$waterEntity.level().getBlockStatesIfLoaded(box).anyMatch(state -> state.getFluidState().is(FluidTags.WATER)));
+        }
+    }
 
     @Definition(id = "fluidTop", local = @Local(type = double.class, name = "fluidTop"))
     @Definition(id = "box", local = @Local(type = AABB.class, name = "box"))
@@ -50,15 +79,6 @@ public abstract class MixinEntityFluidInteraction {
         }
     }
 
-    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(DD)D"))
-    private double adjustHeightCalculation(double a, double b) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
-            return Math.max(a + 0.4, b);
-        } else {
-            return Math.max(a, b);
-        }
-    }
-
     @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;scale(D)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 dontScaleCurrent(Vec3 instance, double scale) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_12_2)) {
@@ -66,6 +86,11 @@ public abstract class MixinEntityFluidInteraction {
         } else {
             return instance.scale(scale);
         }
+    }
+
+    @Unique
+    private static AABB viaFabricPlus$getWaterBox(final Entity entity) {
+        return entity.getBoundingBox().inflate(0.0, -0.4F, 0.0).deflate(0.001);
     }
 
 }
