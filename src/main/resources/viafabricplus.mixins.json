@@ -248,6 +248,7 @@
     "features.v1_20_2.network.MixinLevelLoadingScreen",
     "features.v1_20_3.MixinCat",
     "features.v1_20_3.MixinEntityFluidInteraction",
+    "features.v1_20_3.MixinLivingEntity",
     "features.v1_20_3.MixinMobEffectInstance",
     "features.v1_20_3.network.MixinClientCommonPacketListenerImpl",
     "features.v1_20_3.network.MixinClientConfigurationPacketListenerImpl",
