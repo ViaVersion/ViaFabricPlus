@@ -77,7 +77,9 @@ public abstract class MixinConnection extends SimpleChannelInboundHandler<Packet
     @Inject(method = "setupCompression", at = @At("RETURN"))
     private void reorderCompression(int threshold, boolean validateDecompressed, CallbackInfo ci) {
         // Compression enabled, and elements put into pipeline, move via handlers
-        ViaChannelInitializer.reorderPipeline(channel.pipeline(), HandlerNames.COMPRESS, HandlerNames.DECOMPRESS);
+        if (this.viaFabricPlus$userConnection != null) { // Server side connections (e.g. LAN) don't have via handlers
+            ViaChannelInitializer.reorderPipeline(channel.pipeline(), HandlerNames.COMPRESS, HandlerNames.DECOMPRESS);
+        }
     }
 
     @Inject(method = "setEncryptionKey", at = @At("HEAD"), cancellable = true)

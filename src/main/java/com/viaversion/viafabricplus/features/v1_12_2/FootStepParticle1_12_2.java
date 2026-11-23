@@ -24,7 +24,10 @@ package com.viaversion.viafabricplus.features.v1_12_2;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
+import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
+import net.fabricmc.fabric.api.event.registry.RegistryAttributeHolder;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
+import net.fabricmc.fabric.impl.registry.sync.RegistryAttributeImpl;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
@@ -56,7 +59,13 @@ public final class FootStepParticle1_12_2 extends SingleQuadParticle {
     public static void init() {
         final SimpleParticleType footStepType = FabricParticleTypes.simple(true);
 
+        final RegistryAttributeHolder attributes = RegistryAttributeHolder.get(BuiltInRegistries.PARTICLE_TYPE);
+        final boolean wasModded = attributes.hasAttribute(RegistryAttribute.MODDED);
         Registry.register(BuiltInRegistries.PARTICLE_TYPE, ID, footStepType);
+        if (!wasModded) {
+            // Fabric marks the registry as modded on register, which makes it require Fabric on vanilla clients joining LAN worlds
+            ((RegistryAttributeImpl) attributes).getAttributes().remove(RegistryAttribute.MODDED);
+        }
         ParticleProviderRegistry.getInstance().register(footStepType, FootStepParticle1_12_2.Factory::new);
 
         RAW_ID = BuiltInRegistries.PARTICLE_TYPE.getId(footStepType);
