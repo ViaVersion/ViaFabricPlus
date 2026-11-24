@@ -21,6 +21,7 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_21_4.movement;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.core.BlockPos;
@@ -30,7 +31,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Entity.class)
@@ -39,19 +39,15 @@ public abstract class MixinEntity {
     @Shadow
     public double fallDistance;
 
-    @Redirect(method = "checkFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInWater()Z"))
-    private boolean moveFallModification(Entity instance) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return true; // Cancels out the code as it is inverted
-        } else {
-            return instance.isInWater();
-        }
+    @ModifyExpressionValue(method = "checkFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInWater()Z"))
+    private boolean moveFallModification(boolean original) {
+        return ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4) || original;
     }
 
     @Inject(method = "checkFallDamage", at = @At("TAIL"))
     private void applyFallModification(double ya, boolean onGround, BlockState onState, BlockPos pos, CallbackInfo ci) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4) && !onGround && ya < 0.0) {
-            this.fallDistance -= (float) ya;
+            this.fallDistance = (float) this.fallDistance - (float) ya;
         }
     }
 

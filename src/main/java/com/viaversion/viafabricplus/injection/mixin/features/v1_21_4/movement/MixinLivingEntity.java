@@ -75,11 +75,11 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     @Redirect(method = "calculateFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"))
-    private int ceilFallDamage(double value) {
+    private int ceilFallDamage(double v) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
-            return Mth.ceil(value);
+            return Mth.ceil(v);
         } else {
-            return Mth.floor(value);
+            return Mth.floor(v);
         }
     }
 
