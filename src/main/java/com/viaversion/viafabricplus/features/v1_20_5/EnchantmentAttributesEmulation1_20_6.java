@@ -69,7 +69,7 @@ public final class EnchantmentAttributesEmulation1_20_6 {
 
                 if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
                     final MobEffectInstance jumpBoost = player.getEffect(MobEffects.JUMP_BOOST);
-                    setAttribute(player, Attributes.SAFE_FALL_DISTANCE, -3.0D + (jumpBoost == null ? 0.0D : jumpBoost.getAmplifier() + 1));
+                    setAttribute(player, Attributes.SAFE_FALL_DISTANCE, 3.0D + (jumpBoost == null ? 0.0D : jumpBoost.getAmplifier() + 1));
                 }
             }
         });
