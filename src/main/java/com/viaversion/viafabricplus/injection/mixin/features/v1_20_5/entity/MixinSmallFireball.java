@@ -19,21 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.viaversion.viafabricplus.injection.mixin.features.v1_20_3.entity;
+package com.viaversion.viafabricplus.injection.mixin.features.v1_20_5.entity;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
+import com.viaversion.viafabricplus.injection.mixin.features.v1_20_3.entity.MixinAbstractHurtingProjectile;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.hurtingprojectile.DragonFireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(DragonFireball.class)
-public abstract class MixinDragonFireball extends MixinAbstractHurtingProjectile {
+@Mixin(SmallFireball.class)
+public abstract class MixinSmallFireball extends MixinAbstractHurtingProjectile {
 
-    protected MixinDragonFireball(final EntityType<? extends Projectile> type, final Level level) {
+    protected MixinSmallFireball(final EntityType<? extends Projectile> type, final Level level) {
         super(type, level);
     }
 
