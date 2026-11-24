@@ -23,32 +23,21 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_20_3;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
-import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
 
-    @Shadow
-    public abstract @Nullable MobEffectInstance getEffect(final Holder<MobEffect> effect);
-
-    @Inject(method = "calculateFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;calculateFallPower(D)D"), cancellable = true)
-    private void calculateFallDamage1_20_4(double fallDistance, float damageModifier, CallbackInfoReturnable<Integer> cir) {
-        // Older servers don't sync the safe fall distance attribute jump boost modifies since 1.20.5
+    @Redirect(method = "calculateFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"))
+    private int ceilFallDamage(double value) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            final MobEffectInstance jumpBoost = this.getEffect(MobEffects.JUMP_BOOST);
-            final float jumpBoostLevel = jumpBoost == null ? 0.0F : jumpBoost.getAmplifier() + 1;
-            cir.setReturnValue(Mth.ceil(((float) fallDistance - 3.0F - jumpBoostLevel) * damageModifier));
+            return Mth.ceil(value);
+        } else {
+            return Mth.floor(value);
         }
     }
 
