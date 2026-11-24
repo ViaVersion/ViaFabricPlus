@@ -40,15 +40,15 @@ public abstract class MixinAbstractHurtingProjectile extends Projectile {
     // Mark the projectile hurt on the client to make the Player#attack logic run, applying clientside movement changes (slowdown)
     @Override
     public boolean hurtClient(final DamageSource source) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return !this.isInvulnerableToBase(source);
-        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             if (this.isInvulnerableToBase(source)) {
                 return false;
             } else {
                 this.markHurt();
                 return source.getEntity() != null;
             }
+        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
+            return !this.isInvulnerableToBase(source);
         } else {
             return super.hurtClient(source);
         }
