@@ -23,6 +23,7 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_21_4.movement;
 
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,7 +33,9 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -69,6 +72,24 @@ public abstract class MixinLivingEntity extends Entity {
     @Redirect(method = "travelFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;onClimbable()Z"))
     private boolean dontStopGlidingWhenClimbing(LivingEntity instance) {
         return ViaFabricPlus.api().targetVersion().newerThan(ProtocolVersion.v1_21_4) && instance.onClimbable();
+    }
+
+    @Redirect(method = "calculateFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"))
+    private int ceilFallDamage(double v) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            return Mth.ceil(v);
+        } else {
+            return Mth.floor(v);
+        }
+    }
+
+    @ModifyConstant(method = "calculateFallPower", constant = @Constant(doubleValue = 1.0E-6))
+    private double removeFallEpsilon(double constant) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21_4)) {
+            return 0;
+        } else {
+            return constant;
+        }
     }
 
     @Redirect(method = "handleRelativeFrictionAndCalculateMovement", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/LivingEntity;wasInPowderSnow:Z", opcode = Opcodes.GETFIELD))

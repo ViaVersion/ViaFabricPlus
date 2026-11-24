@@ -27,6 +27,8 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -64,6 +66,11 @@ public final class EnchantmentAttributesEmulation1_20_6 {
                 setAttribute(player, Attributes.SNEAKING_SPEED, 0.3D + getEquipmentLevel(Enchantments.SWIFT_SNEAK, player) * 0.15D);
                 setAttribute(player, Attributes.SUBMERGED_MINING_SPEED, getEquipmentLevel(Enchantments.AQUA_AFFINITY, player) <= 0 ? 0.2D : 1D);
                 setAttribute(player, Attributes.ATTACK_KNOCKBACK, getEquipmentLevel(Enchantments.KNOCKBACK, player));
+
+                if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
+                    final MobEffectInstance jumpBoost = player.getEffect(MobEffects.JUMP_BOOST);
+                    setAttribute(player, Attributes.SAFE_FALL_DISTANCE, 3.0D + (jumpBoost == null ? 0.0D : jumpBoost.getAmplifier() + 1));
+                }
             }
         });
     }
