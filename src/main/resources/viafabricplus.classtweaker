@@ -55,3 +55,5 @@ accessible method net/minecraft/world/entity/Entity updateFluidInteraction ()Z
 accessible field net/minecraft/world/entity/Entity fluidInteraction Lnet/minecraft/world/entity/EntityFluidInteraction;
 accessible field net/minecraft/world/entity/Entity firstTick Z
 accessible field net/minecraft/world/level/material/FlowingFluid shapes Ljava/util/Map;
+
+accessible method net/minecraft/world/entity/player/Player deflectProjectile (Lnet/minecraft/world/entity/Entity;)Z
