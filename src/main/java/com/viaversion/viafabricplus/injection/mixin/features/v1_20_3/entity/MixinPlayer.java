@@ -21,25 +21,26 @@
 
 package com.viaversion.viafabricplus.injection.mixin.features.v1_20_3.entity;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Player.class)
 public abstract class MixinPlayer {
 
     // 1.20.4 and below used the normal attack logic for hittable projectiles, which include clientside movement changes
     // The `deflectProjectile` method did not exist prior, so we ignore it here and restore the original logic
-    @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;deflectProjectile(Lnet/minecraft/world/entity/Entity;)Z"))
-    private boolean ignoreProjectileResult(Player instance, Entity entity) {
+    @WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;deflectProjectile(Lnet/minecraft/world/entity/Entity;)Z"))
+    private boolean ignoreProjectileResult(Player instance, Entity entity, Operation<Boolean> original) {
         if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
             return false;
         } else {
-            return instance.deflectProjectile(entity);
+            return original.call(instance, entity);
         }
     }
 
