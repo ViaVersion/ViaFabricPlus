@@ -24,33 +24,37 @@ package com.viaversion.viafabricplus.injection.mixin.features.v1_20_3.entity;
 import com.viaversion.viafabricplus.ViaFabricPlus;
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.projectile.hurtingprojectile.DragonFireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.SmallFireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(AbstractHurtingProjectile.class)
-public abstract class MixinAbstractHurtingProjectile extends Projectile {
+@Mixin(Entity.class)
+public abstract class MixinEntity {
 
-    protected MixinAbstractHurtingProjectile(final EntityType<? extends Projectile> type, final Level level) {
-        super(type, level);
-    }
+    @Shadow
+    protected abstract boolean isInvulnerableToBase(DamageSource source);
+
+    @Shadow
+    protected abstract void markHurt();
 
     // Mark the projectile hurt on the client to make the Player#attack logic run, applying clientside movement changes (slowdown)
-    @Override
-    public boolean hurtClient(final DamageSource source) {
-        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3)) {
-            if (this.isInvulnerableToBase(source)) {
-                return false;
+    @Inject(method = "hurtClient", at = @At("HEAD"), cancellable = true)
+    private void legacyProjectileHurt(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_20_3) && (Object) this instanceof AbstractHurtingProjectile) {
+            // These overrode hurt() with false in <= 1.20.3
+            if ((Object) this instanceof SmallFireball || (Object) this instanceof WitherSkull || (Object) this instanceof DragonFireball || this.isInvulnerableToBase(source)) {
+                cir.setReturnValue(false);
             } else {
                 this.markHurt();
-                return source.getEntity() != null;
+                cir.setReturnValue(source.getEntity() != null);
             }
-        } else if (ViaFabricPlus.api().targetVersion().olderThanOrEqualTo(ProtocolVersion.v1_21)) {
-            return !this.isInvulnerableToBase(source);
-        } else {
-            return super.hurtClient(source);
         }
     }
 
