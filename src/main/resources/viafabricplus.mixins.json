@@ -319,6 +319,7 @@
     "features.v1_21_4.item.MixinComponentRewriter1_21_5",
     "features.v1_21_4.item.MixinItemStack",
     "features.v1_21_4.item.MixinNameTagItem",
+    "features.v1_21_4.movement.MixinEntity",
     "features.v1_21_4.movement.MixinKeyboardInput",
     "features.v1_21_4.movement.MixinLivingEntity",
     "features.v1_21_4.movement.MixinLocalPlayer",
