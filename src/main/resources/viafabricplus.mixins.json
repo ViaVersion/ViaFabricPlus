@@ -314,6 +314,7 @@
     "features.v1_21_2.MixinMushroomCow",
     "features.v1_21_2.MixinPlayer",
     "features.v1_21_4.MixinBlockItemPacketRewriter1_21_5",
+    "features.v1_21_4.MixinEntity",
     "features.v1_21_4.MixinMultiPlayerGameMode",
     "features.v1_21_4.MixinPitcherCropBlock",
     "features.v1_21_4.MixinScreen",
